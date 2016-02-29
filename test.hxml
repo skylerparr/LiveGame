@@ -1,0 +1,48 @@
+## Flash 9+
+#-main TestMain
+#-lib munit
+#-lib hamcrest
+#-cp Sources
+
+#-cp test
+#-swf-version 11
+#-swf build/as3_test.swf
+
+#--next
+
+## Flash 8
+#-main TestMain
+#-lib munit
+#-lib hamcrest
+#-cp Sources
+
+#-cp test
+#-swf-version 8
+#-swf build/as2_test.swf
+
+#--next
+
+## JavaScript
+#-main TestMain
+#-lib munit
+#-lib hamcrest
+#-cp Sources
+
+#-cp test
+#-js build/js_test.js
+
+#--next
+
+## CPP
+-main TestMain
+-lib munit
+-lib hamcrest
+-lib mockatoo
+-lib minject
+-cp Sources
+
+-cp test
+#-D HXCPP_M64
+-cpp build/cpp_test
+
+
