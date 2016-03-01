@@ -1,6 +1,7 @@
 import massive.munit.TestSuite;
 
 import core.ObjectFactoryTest;
+import display.two.TwoDimDisplayNodeContainerTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -15,5 +16,6 @@ class TestSuite extends massive.munit.TestSuite
 		super();
 
 		add(core.ObjectFactoryTest);
+		add(display.two.TwoDimDisplayNodeContainerTest);
 	}
 }
