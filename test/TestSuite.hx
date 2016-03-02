@@ -1,6 +1,7 @@
 import massive.munit.TestSuite;
 
 import core.ObjectFactoryTest;
+import display.layer.RenderableLayerManagerTest;
 import display.two.TwoDimDisplayNodeContainerTest;
 
 /**
@@ -16,6 +17,7 @@ class TestSuite extends massive.munit.TestSuite
 		super();
 
 		add(core.ObjectFactoryTest);
+		add(display.layer.RenderableLayerManagerTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
 	}
 }
