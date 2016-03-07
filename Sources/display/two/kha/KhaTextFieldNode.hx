@@ -1,5 +1,5 @@
 package display.two.kha;
-class KhaTextNode extends TwoDimDisplayNode implements TextFieldNode {
+class KhaTextFieldNode extends TwoDimDisplayNode implements TextFieldNode {
     public var text(get, set):String;
 
     public var fontSize(get, set):UInt;

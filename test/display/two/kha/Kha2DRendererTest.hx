@@ -6,7 +6,7 @@ package display.two.kha;
 //import mockatoo.Mockatoo.*;
 //using mockatoo.Mockatoo;
 //
-class KhaRenderTest {
+class Kha2DRendererTest {
 //
 //    private var khaRenderer: KhaRenderer;
 //    private var graphics: Dynamic;
@@ -17,7 +17,7 @@ class KhaRenderTest {
 //
 //    @Before
 //    public function setup():Void {
-//        khaRenderer = new KhaRenderer();
+//        khaRenderer = Kha2DRendererTest KhaRenderer();
 //        khaRenderer.init();
 //        graphics = {};
 //

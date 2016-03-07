@@ -2,7 +2,7 @@ import massive.munit.TestSuite;
 
 import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
-import display.two.kha.KhaRenderTest;
+import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
 
 /**
@@ -19,7 +19,7 @@ class TestSuite extends massive.munit.TestSuite
 
 		add(core.ObjectFactoryTest);
 		add(display.layer.RenderableLayerManagerTest);
-		add(display.two.kha.KhaRenderTest);
+		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
 	}
 }
