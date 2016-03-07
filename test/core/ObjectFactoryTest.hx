@@ -54,7 +54,7 @@ class ObjectFactoryTest {
 
         var sample: Sample = objectFactory.createInstance(Sample);
         Assert.isNotNull(sample);
-        injector.getInstance(Sample).verify();
+        Assert.areEqual(retVal, sample);
     }
 
     @Test

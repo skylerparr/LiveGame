@@ -1,3 +1,0 @@
-package display;
-interface Graphics {
-}

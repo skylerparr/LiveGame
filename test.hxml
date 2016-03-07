@@ -2,6 +2,8 @@
 #-main TestMain
 #-lib munit
 #-lib hamcrest
+#-lib mockatoo
+#-lib minject
 #-cp Sources
 
 #-cp test
@@ -26,6 +28,8 @@
 #-main TestMain
 #-lib munit
 #-lib hamcrest
+#-lib mockatoo
+#-lib minject
 #-cp Sources
 
 #-cp test

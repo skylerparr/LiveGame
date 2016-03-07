@@ -8,6 +8,9 @@ class ObjectFactory implements ObjectCreator {
     }
 
     public function createInstance(clazz:Class<Dynamic>, ?constructorArgs:Array<Dynamic>):Dynamic {
+        if(constructorArgs == null) {
+            constructorArgs = [];
+        }
         var retVal = null;
         try {
             retVal = injector.getInstance(clazz);
