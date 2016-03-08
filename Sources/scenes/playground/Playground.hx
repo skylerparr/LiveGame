@@ -1,0 +1,73 @@
+package scenes.playground;
+import kha.Color;
+import display.TextFieldNode;
+import kha.Image;
+import kha.Assets;
+import display.DisplayNodeContainer;
+import display.BitmapNode;
+import display.DisplayNode;
+import core.BaseObject;
+import display.LayerManager;
+import core.ObjectCreator;
+@:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
+class Playground implements BaseObject {
+    
+    @inject
+    public var objectCreator: ObjectCreator;
+    @inject
+    public var layerManager: LayerManager;
+    
+    public function new() {
+    }
+
+    public function init():Void {
+        showPlayground(function(): Void {
+
+        });
+    }
+
+    public function dispose():Void {
+    }
+
+    @:async
+    private function showPlayground():Void {
+        var bottomLayer: DisplayNodeContainer = layerManager.getLayerByName("bottom");
+        var middleLayer: DisplayNodeContainer = layerManager.getLayerByName("middle");
+        var topLayer: DisplayNodeContainer = layerManager.getLayerByName("top");
+
+        var grumpyCat: BitmapNode = objectCreator.createInstance(BitmapNode);
+        var image: Image = @await Assets.loadImage("grumpy_cat_nope");
+        grumpyCat.imageData = image;
+        grumpyCat.sx = 0;
+        grumpyCat.sy = 0;
+        grumpyCat.sw = image.realWidth;
+        grumpyCat.sh = image.realHeight;
+        bottomLayer.addChild(grumpyCat);
+
+        var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);
+        image = @await Assets.loadImage("wizard");
+        wizard.imageData = image;
+        wizard.sx = 0;
+        wizard.sy = 0;
+        wizard.sw = 64;
+        wizard.sh = 64;
+        middleLayer.addChild(wizard);
+
+        var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
+        hello.text = "hello world";
+        hello.fontName = "helveticaneue_light";
+        hello.fontSize = 32;
+        hello.fontColor = 0xff0000ff;
+        topLayer.addChild(hello);
+
+        wizard = objectCreator.createInstance(BitmapNode);
+        wizard.imageData = image;
+        wizard.x = 20;
+        wizard.sx = 128;
+        wizard.sy = 128;
+        wizard.sw = 64;
+        wizard.sh = 64;
+        middleLayer.addChild(wizard);
+
+    }
+}

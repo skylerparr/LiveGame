@@ -1,15 +1,21 @@
 package display.two.kha;
-import kha.Font;
-import kha.Color;
 class Kha2DRenderer implements Renderer {
-    
+
+    #if test
+    @inject
+    public var graphics: MockKha2DGraphics;
+
+    public static var fonts: Map<String, MockKhaFont>;
+    #else
     @inject
     public var graphics: kha.graphics2.Graphics;
 
+    public static var fonts: Map<String, kha.Font>;
+    #end
+
     private var container: KhaSprite;
 
-    public static var fonts: Map<String, Font>;
-    
+
     public function new(container: KhaSprite) {
         this.container = container;
     }
@@ -27,7 +33,7 @@ class Kha2DRenderer implements Renderer {
     private function renderChildren(container: KhaSprite, xPos: Float, yPos: Float) {
         for(child in container.children) {
             if(Std.is(child, KhaSprite)) {
-                renderChildren(child, child.x + xPos, child.y + yPos);
+                renderChildren(cast(child, KhaSprite), child.x + xPos, child.y + yPos);
             } else {
                 if(Std.is(child, KhaBitmapNode)) {
                     var bitmap: KhaBitmapNode = cast(child, KhaBitmapNode);
@@ -36,12 +42,22 @@ class Kha2DRenderer implements Renderer {
                 } else {
                     var textField: KhaTextFieldNode = cast(child, KhaTextFieldNode);
                     graphics.fontSize = textField.fontSize;
-                    graphics.color = Color.fromValue(textField.fontColor);
+                    graphics.color = getColorFromValue(textField.fontColor);
                     graphics.font = fonts.get(textField.fontName);
                     graphics.drawString(textField.text, textField.y, textField.y);
-//                    graphics.color = Color.White;
+                    graphics.color = kha.Color.White;
                 }
             }
         }
     }
+
+    #if test
+    private inline function getColorFromValue(value: UInt): MockKhaColor {
+        return null;
+    }
+    #else
+    private inline function getColorFromValue(value: UInt): kha.Color {
+        return kha.Color.fromValue(value);
+    }
+    #end
 }

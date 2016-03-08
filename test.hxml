@@ -47,6 +47,7 @@
 
 -cp test
 #-D HXCPP_M64
+-D test
 -cpp build/cpp_test
 
 

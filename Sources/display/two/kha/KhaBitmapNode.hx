@@ -1,17 +1,23 @@
 package display.two.kha;
 class KhaBitmapNode extends TwoDimDisplayNode implements BitmapNode {
 
+    @:isVar
     public var imageData(get, set):Dynamic;
 
+    @:isVar
     public var sx(get, set):UInt;
 
+    @:isVar
     public var sy(get, set):UInt;
 
+    @:isVar
     public var sw(get, set):UInt;
 
+    @:isVar
     public var sh(get, set):UInt;
 
     public function new() {
+        super();
     }
 
     function get_imageData():Dynamic {
@@ -39,6 +45,7 @@ class KhaBitmapNode extends TwoDimDisplayNode implements BitmapNode {
     }
 
     function set_sw(value:UInt): UInt {
+        width = value;
         return this.sw = value;
     }
 
@@ -47,6 +54,7 @@ class KhaBitmapNode extends TwoDimDisplayNode implements BitmapNode {
     }
 
     function set_sh(value:UInt): UInt {
+        height = value;
         return this.sh = value;
     }
 

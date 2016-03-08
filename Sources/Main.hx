@@ -11,6 +11,5 @@ class Main {
     private static function initialized():Void {
         var game = new LiveGame();
         System.notifyOnRender(game.render);
-        Scheduler.addTimeTask(game.update, 0, 1 / 60);
     }
 }
