@@ -20,45 +20,45 @@ class KhaBitmapNode extends TwoDimDisplayNode implements BitmapNode {
         super();
     }
 
-    function get_imageData():Dynamic {
+    public function get_imageData():Dynamic {
         return imageData;
     }
 
-    function set_imageData(value:Dynamic): Dynamic {
+    public function set_imageData(value:Dynamic): Dynamic {
         return this.imageData = value;
     }
 
-    function set_sx(value:UInt): UInt {
+    public function set_sx(value:UInt): UInt {
         return this.sx = value;
     }
 
-    function get_sx():UInt {
+    public function get_sx():UInt {
         return sx;
     }
 
-    function set_sy(value:UInt): UInt {
+    public function set_sy(value:UInt): UInt {
         return this.sy = value;
     }
 
-    function get_sy():UInt {
+    public function get_sy():UInt {
         return sy;
     }
 
-    function set_sw(value:UInt): UInt {
+    public function set_sw(value:UInt): UInt {
         width = value;
         return this.sw = value;
     }
 
-    function get_sw():UInt {
+    public function get_sw():UInt {
         return sw;
     }
 
-    function set_sh(value:UInt): UInt {
+    public function set_sh(value:UInt): UInt {
         height = value;
         return this.sh = value;
     }
 
-    function get_sh():UInt {
+    public function get_sh():UInt {
         return sh;
     }
 

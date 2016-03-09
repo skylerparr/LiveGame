@@ -10,11 +10,11 @@ class TwoDimDisplayNodeContainer extends TwoDimDisplayNode implements DisplayNod
         super();
     }
 
-    private function get_children():Array<DisplayNode> {
+    public function get_children():Array<DisplayNode> {
         return children;
     }
 
-    private function get_numChildren(): UInt {
+    public function get_numChildren(): UInt {
         return children.length;
     }
 

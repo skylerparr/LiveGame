@@ -9,8 +9,9 @@ using mockatoo.Mockatoo;
 class Kha2DRendererTest {
 
     private var khaRenderer: Kha2DRenderer;
-    private var graphics: MockKha2DGraphics;
+    private var graphics: TestableGraphics;
     private var container: KhaSprite;
+    private var fonts: Map<String, MockKhaFont>;
 
     public function new() {
 
@@ -22,9 +23,12 @@ class Kha2DRendererTest {
         container.init();
         khaRenderer = new Kha2DRenderer(container);
         khaRenderer.init();
-        graphics = mock(MockKha2DGraphics);
+        graphics = mock(TestableGraphics);
+        fonts = new Map<String, MockKhaFont>();
+        fonts.set("sample", mock(MockKhaFont));
 
         khaRenderer.graphics = graphics;
+        Kha2DRenderer.fonts = fonts;
     }
 
     @After
@@ -34,7 +38,175 @@ class Kha2DRendererTest {
     }
 
     @Test
-    public function shouldInjectGraphics(): Void {
-        Assert.areEqual(graphics, khaRenderer.graphics);
+    public function shouldDrawABitmap(): Void {
+        var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        var imageData: Dynamic = {};
+        bitmap.imageData.returns(imageData);
+        bitmap.x.returns(10);
+        bitmap.y.returns(20);
+        bitmap.sx.returns(30);
+        bitmap.sy.returns(40);
+        bitmap.sw.returns(50);
+        bitmap.sh.returns(60);
+        container.addChild(bitmap);
+
+        khaRenderer.render();
+        bitmap.imageData.verify();
+        bitmap.x.verify();
+        bitmap.y.verify();
+        bitmap.sx.verify();
+        bitmap.sy.verify();
+        bitmap.sw.verify();
+        bitmap.sh.verify();
+
+        graphics.drawSubImage(imageData, 10, 20, 30, 40, 50, 60).verify();
+    }
+
+    @Test
+    public function shouldDrawATextField(): Void {
+        var textField: KhaTextFieldNode = createTextField();
+        textField.fontSize.returns(10);
+        textField.fontName.returns("sample");
+        textField.fontColor.returns(200);
+        textField.text.returns("foo");
+        textField.x.returns(1);
+        textField.y.returns(2);
+
+        container.addChild(textField);
+
+        khaRenderer.render();
+        textField.fontColor.verify();
+        textField.fontSize.verify();
+        textField.fontName.verify();
+        textField.text.verify();
+        textField.x.verify();
+        textField.y.verify();
+
+        graphics.set_fontSize(10).verify();
+        graphics.set_font(fonts.get("sample")).verify();
+        graphics.set_color(cast any).verify(2);
+        graphics.drawString("foo", 1, 2).verify();
+    }
+
+    @Test
+    public function shouldHoldContainerOfKhaSprite(): Void {
+        var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        var textField: KhaTextFieldNode = createTextField();
+        var child: KhaSprite = mock(KhaSprite);
+        child.children.returns([textField, bitmap]);
+
+        container.addChild(child);
+        khaRenderer.render();
+
+        child.children.verify();
+        child.x.verify();
+        child.y.verify();
+        bitmap.x.verify();
+        bitmap.y.verify();
+        textField.x.verify();
+        textField.y.verify();
+    }
+
+    @Test
+    public function shouldOffsetChildrenFromParent(): Void {
+        var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        bitmap.x.returns(1);
+        bitmap.y.returns(2);
+
+        var textField: KhaTextFieldNode = createTextField();
+        textField.x.returns(3);
+        textField.y.returns(4);
+        var child: KhaSprite = mock(KhaSprite);
+        child.x.returns(100);
+        child.y.returns(50);
+        child.children.returns([textField, bitmap]);
+
+        container.addChild(child);
+        khaRenderer.render();
+
+        graphics.drawSubImage(cast any, 101, 52, 0, 0, 0, 0).verify();
+        graphics.drawString(null, 103, 54).verify();
+    }
+
+    @Test
+    public function shouldOffsetChildWithStartingTopContainer(): Void {
+        container.x = 25;
+        container.y = 35;
+
+        var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        bitmap.x.returns(1);
+        bitmap.y.returns(2);
+
+        var textField: KhaTextFieldNode = createTextField();
+        textField.x.returns(3);
+        textField.y.returns(4);
+        var child: KhaSprite = mock(KhaSprite);
+        child.x.returns(100);
+        child.y.returns(50);
+        child.children.returns([textField, bitmap]);
+
+        container.addChild(child);
+        khaRenderer.render();
+
+        graphics.drawSubImage(cast any, 126, 87, 0, 0, 0, 0).verify();
+        graphics.drawString(null, 128, 89).verify();
+    }
+
+    private inline function createTextField(): KhaTextFieldNode {
+        var textField: KhaTextFieldNode = mock(KhaTextFieldNode);
+        textField.fontName.returns("sample");
+        return textField;
     }
 }
+
+class MockColor implements MockKhaColor {
+
+    public function new() {
+    }
+}
+
+class TestableGraphics implements MockKha2DGraphics {
+
+    @:isVar
+    public var fontSize(get, set):UInt;
+
+    @:isVar
+    public var color(get, set):MockKhaColor;
+
+    @:isVar
+    public var font(get, set):MockKhaFont;
+
+    public function new() {
+    }
+
+    public function get_fontSize():UInt {
+        return fontSize;
+    }
+
+    public function set_fontSize(value:UInt) {
+        return this.fontSize = value;
+    }
+
+    public function set_color(value:MockKhaColor) {
+        return this.color = value;
+    }
+
+    public function get_color():MockKhaColor {
+        return color;
+    }
+
+    public function get_font():MockKhaFont {
+        return font;
+    }
+
+    public function set_font(value:MockKhaFont) {
+        return this.font = value;
+    }
+
+    public function drawSubImage(image:Dynamic, x:Float, y:Float, sx:Float, sy:Float, sw:Float, sh:Float):Void {
+    }
+
+    public function drawString(text:String, x:Float, y:Float):Void {
+    }
+}
+

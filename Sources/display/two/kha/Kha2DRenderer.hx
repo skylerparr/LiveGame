@@ -1,4 +1,5 @@
 package display.two.kha;
+import display.two.kha.Kha2DRendererTest.MockColor;
 class Kha2DRenderer implements Renderer {
 
     #if test
@@ -37,15 +38,15 @@ class Kha2DRenderer implements Renderer {
             } else {
                 if(Std.is(child, KhaBitmapNode)) {
                     var bitmap: KhaBitmapNode = cast(child, KhaBitmapNode);
-                    graphics.drawSubImage(bitmap.imageData, bitmap.x, bitmap.y, bitmap.sx, bitmap.sy,
+                    graphics.drawSubImage(bitmap.imageData, bitmap.x + xPos, bitmap.y + yPos, bitmap.sx, bitmap.sy,
                         bitmap.sw, bitmap.sh);
                 } else {
                     var textField: KhaTextFieldNode = cast(child, KhaTextFieldNode);
                     graphics.fontSize = textField.fontSize;
                     graphics.color = getColorFromValue(textField.fontColor);
                     graphics.font = fonts.get(textField.fontName);
-                    graphics.drawString(textField.text, textField.y, textField.y);
-                    graphics.color = kha.Color.White;
+                    graphics.drawString(textField.text, textField.x + xPos, textField.y + yPos);
+                    graphics.color = getWhite();
                 }
             }
         }
@@ -53,11 +54,18 @@ class Kha2DRenderer implements Renderer {
 
     #if test
     private inline function getColorFromValue(value: UInt): MockKhaColor {
-        return null;
+        return new MockColor();
+    }
+
+    private inline function getWhite():MockKhaColor {
+        return new MockColor();
     }
     #else
     private inline function getColorFromValue(value: UInt): kha.Color {
         return kha.Color.fromValue(value);
+    }
+    private inline function getWhite(): kha.Color {
+        return kha.Color.White;
     }
     #end
 }

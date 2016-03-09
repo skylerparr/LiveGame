@@ -16,35 +16,35 @@ class KhaTextFieldNode extends TwoDimDisplayNode implements TextFieldNode {
         super();
     }
 
-    function set_text(value:String): String {
+    public function set_text(value:String): String {
         return this.text = value;
     }
 
-    function get_text():String {
+    public function get_text():String {
         return text;
     }
 
-    function get_fontSize():UInt {
+    public function get_fontSize():UInt {
         return fontSize;
     }
 
-    function set_fontSize(value:UInt): UInt {
+    public function set_fontSize(value:UInt): UInt {
         return this.fontSize = value;
     }
 
-    function get_fontColor():UInt {
+    public function get_fontColor():UInt {
         return fontColor;
     }
 
-    function set_fontColor(value:UInt): UInt {
+    public function set_fontColor(value:UInt): UInt {
         return this.fontColor = value;
     }
 
-    function get_fontName():String {
+    public function get_fontName():String {
         return fontName;
     }
 
-    function set_fontName(value:String):String {
+    public function set_fontName(value:String):String {
         return this.fontName = value;
     }
 
