@@ -1,6 +1,5 @@
 package display.layer;
 
-import display.layer.RenderableLayerManager.RenderContainer;
 import display.two.TwoDimDisplayNodeContainer;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
@@ -13,7 +12,6 @@ class RenderableLayerManagerTest {
     private var layerManager: RenderableLayerManager;
     private var bottomContainer: DisplayNodeContainer;
     private var container: DisplayNodeContainer;
-    private var renderer: Renderer;
 
     public function new() {
 
@@ -30,27 +28,24 @@ class RenderableLayerManagerTest {
         bottomContainer = new TwoDimDisplayNodeContainer();
         bottomContainer.init();
 
-        renderer = mock(Renderer);
     }
 
     @After
     public function tearDown():Void {
         layerManager = null;
         bottomContainer = null;
-        renderer = null;
     }
 
     @Test
     public function shouldAddLayerByName(): Void {
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
-        var layers: Map<String, RenderContainer> = layerManager.getLayerMap();
-        Assert.areEqual(bottomContainer, layers.get("bottom").container);
-        Assert.areEqual(renderer, layers.get("bottom").renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
+        var layers: Map<String, DisplayNodeContainer> = layerManager.getLayerMap();
+        Assert.areEqual(bottomContainer, layers.get("bottom"));
     }
 
     @Test
     public function shouldAddLayerToTopLevelContainer(): Void {
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
         Assert.areEqual(container, bottomContainer.parent);
         Assert.areEqual(1, container.numChildren);
         Assert.areEqual(bottomContainer, container.getChildAt(0));
@@ -58,13 +53,7 @@ class RenderableLayerManagerTest {
 
     @Test
     public function shouldNotAddNullContainer(): Void {
-        layerManager.addLayerByName("bottom", null, renderer);
-        Assert.areEqual(0, container.numChildren);
-    }
-
-    @Test
-    public function shouldNotAddANullRenderer(): Void {
-        layerManager.addLayerByName("bottom", bottomContainer, null);
+        layerManager.addLayerByName("bottom", null);
         Assert.areEqual(0, container.numChildren);
     }
 
@@ -73,8 +62,8 @@ class RenderableLayerManagerTest {
         var top: DisplayNodeContainer = new TwoDimDisplayNodeContainer();
         top.init();
 
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
-        layerManager.addLayerByName("top", top, renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
+        layerManager.addLayerByName("top", top);
 
         Assert.areEqual(2, container.numChildren);
         Assert.areEqual(bottomContainer, container.getChildAt(0));
@@ -86,8 +75,8 @@ class RenderableLayerManagerTest {
         var top: DisplayNodeContainer = new TwoDimDisplayNodeContainer();
         top.init();
 
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
-        layerManager.addLayerByName("top", top, renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
+        layerManager.addLayerByName("top", top);
 
         Assert.areEqual(top, layerManager.getLayerByName("top"));
         Assert.areEqual(bottomContainer, layerManager.getLayerByName("bottom"));
@@ -95,13 +84,13 @@ class RenderableLayerManagerTest {
 
     @Test
     public function shouldReturnNullIfNotLayerFoundByName(): Void {
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
         Assert.isNull(layerManager.getLayerByName("foo"));
     }
 
     @Test
     public function shouldReturnLayerNameIfPassedAContainer(): Void {
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
         Assert.areEqual("bottom", layerManager.getLayerName(bottomContainer));
     }
 
@@ -110,8 +99,8 @@ class RenderableLayerManagerTest {
         var top: DisplayNodeContainer = new TwoDimDisplayNodeContainer();
         top.init();
 
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
-        layerManager.addLayerByName("top", top, renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
+        layerManager.addLayerByName("top", top);
 
         layerManager.removeLayerByName("bottom");
 
@@ -125,8 +114,8 @@ class RenderableLayerManagerTest {
         var top: DisplayNodeContainer = new TwoDimDisplayNodeContainer();
         top.init();
 
-        layerManager.addLayerByName("bottom", bottomContainer, renderer);
-        layerManager.addLayerByName("top", top, renderer);
+        layerManager.addLayerByName("bottom", bottomContainer);
+        layerManager.addLayerByName("top", top);
 
         layerManager.removeLayerByName("foo");
 

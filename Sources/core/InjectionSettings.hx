@@ -29,19 +29,16 @@ class InjectionSettings {
         var layerManager: RenderableLayerManager = objectFactory.createInstance(RenderableLayerManager, [container]);
 
         container = objectFactory.createInstance(KhaSprite);
-        var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer, [container]);
-        layerManager.addLayerByName("bottom", container, renderer);
+        layerManager.addLayerByName("bottom", container);
 
         container = objectFactory.createInstance(KhaSprite);
-        var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer, [container]);
-        layerManager.addLayerByName("middle", container, renderer);
+        layerManager.addLayerByName("middle", container);
 
         container = objectFactory.createInstance(KhaSprite);
-        var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer, [container]);
-        layerManager.addLayerByName("top", container, renderer);
+        layerManager.addLayerByName("top", container);
 
         injector.mapValue(LayerManager, layerManager);
-        injector.mapValue(Renderer, layerManager);
+        injector.mapValue(Renderer, renderer);
 
         Kha2DRenderer.fonts = fonts;
 

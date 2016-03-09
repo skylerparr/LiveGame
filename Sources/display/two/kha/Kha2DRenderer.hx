@@ -1,5 +1,5 @@
 package display.two.kha;
-import display.two.kha.Kha2DRendererTest.MockColor;
+
 class Kha2DRenderer implements Renderer {
 
     #if test
@@ -53,11 +53,11 @@ class Kha2DRenderer implements Renderer {
     }
 
     #if test
-    private inline function getColorFromValue(value: UInt): MockKhaColor {
+    private inline function getColorFromValue(value: UInt): display.two.kha.Kha2DRendererTest.MockColor {
         return new MockColor();
     }
 
-    private inline function getWhite():MockKhaColor {
+    private inline function getWhite():display.two.kha.Kha2DRendererTest.MockColor {
         return new MockColor();
     }
     #else

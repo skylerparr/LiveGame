@@ -1,9 +1,8 @@
 package display.layer;
-class RenderableLayerManager implements LayerManager implements Renderer {
+class RenderableLayerManager implements LayerManager {
 
-    private var layerMap: Map<String, RenderContainer>;
+    private var layerMap: Map<String, DisplayNodeContainer>;
     private var topContainer(get, null): DisplayNodeContainer;
-    private var renderers: Array<Renderer>;
 
     private function get_topContainer():DisplayNodeContainer {
         return topContainer;
@@ -14,34 +13,32 @@ class RenderableLayerManager implements LayerManager implements Renderer {
     }
 
     public function init():Void {
-        layerMap = new Map<String, RenderContainer>();
-        renderers = [];
+        layerMap = new Map<String, DisplayNodeContainer>();
     }
 
     public function dispose():Void {
     }
 
-    public function addLayerByName(layerName:String, container:DisplayNodeContainer, renderer:Renderer):Void {
-        if(container == null || renderer == null) {
+    public function addLayerByName(layerName:String, container:DisplayNodeContainer):Void {
+        if(container == null) {
             return;
         }
-        layerMap.set(layerName, {container: container, renderer: renderer});
+        layerMap.set(layerName, container);
         topContainer.addChild(container);
-        renderers.push(renderer);
     }
 
     public function getLayerByName(layerName:String):DisplayNodeContainer {
-        var renderContainer = layerMap.get(layerName);
-        if(renderContainer == null) {
+        var container: DisplayNodeContainer = layerMap.get(layerName);
+        if(container == null) {
             return null;
         }
-        return renderContainer.container;
+        return container;
     }
 
     public function getLayerName(displayNodeContainer:DisplayNodeContainer):String {
         for(key in layerMap.keys()) {
-            var layer: RenderContainer = layerMap.get(key);
-            if(layer.container == displayNodeContainer) {
+            var layer: DisplayNodeContainer = layerMap.get(key);
+            if(layer == displayNodeContainer) {
                 return key;
             }
         }
@@ -49,34 +46,24 @@ class RenderableLayerManager implements LayerManager implements Renderer {
     }
 
     public function removeLayerByName(layerName:String):Void {
-        var renderContainer: RenderContainer = layerMap.get(layerName);
-        if(renderContainer == null) {
+        var container: DisplayNodeContainer = layerMap.get(layerName);
+        if(container == null) {
             return;
         }
         layerMap.remove(layerName);
-        topContainer.removeChild(renderContainer.container);
+        topContainer.removeChild(container);
     }
 
     public function getLayers():Array<DisplayNodeContainer> {
         var retVal: Array<DisplayNodeContainer> = [];
         for(layer in layerMap) {
-            retVal.push(layer.container);
+            retVal.push(layer);
         }
         return retVal;
     }
 
-    public function getLayerMap(): Map<String, RenderContainer> {
+    public function getLayerMap(): Map<String, DisplayNodeContainer> {
         return layerMap;
     }
 
-    public function render():Void {
-        for(renderer in renderers) {
-            renderer.render();
-        }
-    }
-}
-
-typedef RenderContainer = {
-    container: DisplayNodeContainer,
-    renderer: Renderer
 }
