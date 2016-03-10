@@ -54,11 +54,11 @@ class Kha2DRenderer implements Renderer {
 
     #if test
     private inline function getColorFromValue(value: UInt): display.two.kha.Kha2DRendererTest.MockColor {
-        return new MockColor();
+        return new display.two.kha.Kha2DRendererTest.MockColor();
     }
 
     private inline function getWhite():display.two.kha.Kha2DRendererTest.MockColor {
-        return new MockColor();
+        return new display.two.kha.Kha2DRendererTest.MockColor();
     }
     #else
     private inline function getColorFromValue(value: UInt): kha.Color {

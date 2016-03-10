@@ -4,6 +4,7 @@ import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
+import util.MappedSubscriberTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -21,5 +22,6 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.layer.RenderableLayerManagerTest);
 		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
+		add(util.MappedSubscriberTest);
 	}
 }
