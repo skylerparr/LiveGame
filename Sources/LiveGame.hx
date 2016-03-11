@@ -32,6 +32,8 @@ class LiveGame {
     private var fonts: Map<String, Font>;
 
     private var xPos: Int;
+    private var yPos: Int;
+    private var engaged: Bool;
 
     public function new() {
         backbuffer = Image.createRenderTarget(800, 600);
@@ -40,22 +42,18 @@ class LiveGame {
     }
 
     private function onDown(x:Int, y:Int, z:Int):Void {
-        trace(x);
-        trace(y);
-        trace(z);
+        engaged = true;
     }
 
     private function onUp(x:Int, y:Int, z:Int):Void {
-        trace(x);
-        trace(y);
-        trace(z);
+        engaged = false;
     }
 
     private function onMove(w: Int, x:Int, y:Int, z:Int):Void {
-        trace(w);
-        trace(x);
-        trace(y);
-        trace(z);
+        if(engaged) {
+            xPos = y;
+            yPos = z;
+        }
     }
 
     public function render(framebuffer:Framebuffer):Void {
@@ -82,8 +80,10 @@ class LiveGame {
     public function update():Void {
         notifier.notify(EventNames.ENTER_GAME_LOOP, null);
 
-        xPos--;
-        viewPort.x = xPos;
+        if(engaged) {
+            viewPort.x += xPos;
+            viewPort.y += yPos;
+        }
 
         var g = backbuffer.g2;
         g.begin();
