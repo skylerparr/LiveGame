@@ -1,4 +1,5 @@
 package scenes.playground;
+import constants.LayerNames;
 import kha.Color;
 import display.TextFieldNode;
 import kha.Image;
@@ -14,8 +15,11 @@ class Playground implements BaseObject {
     
     @inject
     public var objectCreator: ObjectCreator;
-    @inject
+
+    @inject("gameWorld")
     public var layerManager: LayerManager;
+    @inject
+    public var uiLayerManager: LayerManager;
     
     public function new() {
     }
@@ -31,9 +35,8 @@ class Playground implements BaseObject {
 
     @:async
     private function showPlayground():Void {
-        var bottomLayer: DisplayNodeContainer = layerManager.getLayerByName("bottom");
-        var middleLayer: DisplayNodeContainer = layerManager.getLayerByName("middle");
-        var topLayer: DisplayNodeContainer = layerManager.getLayerByName("top");
+        var bottomLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.TERRAIN);
+        var middleLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.GAME_OBJECTS);
 
         var grumpyCat: BitmapNode = objectCreator.createInstance(BitmapNode);
         var image: Image = @await Assets.loadImage("grumpy_cat_nope");
@@ -53,13 +56,6 @@ class Playground implements BaseObject {
         wizard.sh = 64;
         middleLayer.addChild(wizard);
 
-        var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
-        hello.text = "hello world";
-        hello.fontName = "helveticaneue_light";
-        hello.fontSize = 32;
-        hello.fontColor = 0xff0000ff;
-        topLayer.addChild(hello);
-
         wizard = objectCreator.createInstance(BitmapNode);
         wizard.imageData = image;
         wizard.x = 20;
@@ -69,5 +65,13 @@ class Playground implements BaseObject {
         wizard.sh = 64;
         middleLayer.addChild(wizard);
 
+        var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
+
+        var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
+        hello.text = "hello world";
+        hello.fontName = "helveticaneue_light";
+        hello.fontSize = 32;
+        hello.fontColor = 0xff0000ff;
+        topLayer.addChild(hello);
     }
 }

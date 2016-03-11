@@ -16,6 +16,9 @@ class MappedSubscriber implements Subscriber implements EventNotifier {
     }
 
     public function subscribe(event:String, handler: Dynamic):Void {
+        if(event == null || handler == null) {
+            return;
+        }
         var handlers: Array<Dynamic> = subscriptions.get(event);
         if(handlers == null) {
             handlers = [];

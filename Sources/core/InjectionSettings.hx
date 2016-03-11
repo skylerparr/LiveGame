@@ -1,4 +1,11 @@
 package core;
+import world.two.ViewPort2D;
+import world.ViewPort;
+import constants.LayerNames;
+import util.Fps;
+import util.EventNotifier;
+import util.MappedSubscriber;
+import util.Subscriber;
 import scenes.playground.Playground;
 import display.Renderer;
 import display.two.kha.KhaTextFieldNode;
@@ -25,26 +32,50 @@ class InjectionSettings {
 
         var container: KhaSprite = objectFactory.createInstance(KhaSprite);
         var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer, [container]);
-
         var layerManager: RenderableLayerManager = objectFactory.createInstance(RenderableLayerManager, [container]);
-
-        container = objectFactory.createInstance(KhaSprite);
-        layerManager.addLayerByName("bottom", container);
-
-        container = objectFactory.createInstance(KhaSprite);
-        layerManager.addLayerByName("middle", container);
-
-        container = objectFactory.createInstance(KhaSprite);
-        layerManager.addLayerByName("top", container);
-
-        injector.mapValue(LayerManager, layerManager);
-        injector.mapValue(Renderer, renderer);
-
-        Kha2DRenderer.fonts = fonts;
 
         injector.mapClass(BitmapNode, KhaBitmapNode);
         injector.mapClass(DisplayNodeContainer, KhaSprite);
         injector.mapClass(TextFieldNode, KhaTextFieldNode);
+
+        var viewPortContainer: DisplayNodeContainer = objectFactory.createInstance(DisplayNodeContainer);
+        var gameWorldLayerManager: RenderableLayerManager = objectFactory.createInstance(RenderableLayerManager, [viewPortContainer]);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
+        gameWorldLayerManager.addLayerByName(LayerNames.TERRAIN, container);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
+        gameWorldLayerManager.addLayerByName(LayerNames.GAME_OBJECTS, container);
+
+        layerManager.addLayerByName(LayerNames.GAME_WORLD, viewPortContainer);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
+        layerManager.addLayerByName("bottom", container);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
+        layerManager.addLayerByName("middle", container);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
+        layerManager.addLayerByName("top", container);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
+        layerManager.addLayerByName(LayerNames.DEBUG, container);
+
+        injector.mapValue(LayerManager, layerManager);
+        injector.mapValue(LayerManager, gameWorldLayerManager, "gameWorld");
+        injector.mapValue(Renderer, renderer);
+
+        Kha2DRenderer.fonts = fonts;
+
+        var subscribeNotifer: MappedSubscriber = objectFactory.createInstance(MappedSubscriber);
+        injector.mapValue(Subscriber, subscribeNotifer);
+        injector.mapValue(EventNotifier, subscribeNotifer);
+
+        var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
+        injector.mapValue(ViewPort, viewPort);
+
+        var fps: Fps = objectFactory.createInstance(Fps);
+        injector.mapValue(Fps, fps);
 
         objectFactory.createInstance(Playground);
     }

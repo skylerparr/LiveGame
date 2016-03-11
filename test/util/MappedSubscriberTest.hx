@@ -102,4 +102,58 @@ class MappedSubscriberTest {
         Assert.isTrue(func2Called);
         Assert.isFalse(func3Called);
     }
+
+    @Test
+    public function shouldNotAddNullEventNames(): Void {
+        var func: Void->Void = function(): Void {}
+        subscriber.subscribe(null, func);
+
+        for(subs in subscriber.subscriptions.keys()) {
+            Assert.fail("should not have null events");
+        }
+        Assert.isTrue(true);
+    }
+
+    @Test
+    public function shouldNotAddNullHandlers(): Void {
+        subscriber.subscribe("foo", null);
+
+        for(subs in subscriber.subscriptions.keys()) {
+            Assert.fail("should not have null events");
+        }
+        Assert.isTrue(true);
+    }
+
+    @Test
+    public function shouldNotErrorIfUnsubscribingWithNullEvent(): Void {
+        subscriber.unsubscribe(null, function(): Void {});
+        Assert.isTrue(true);
+    }
+
+    @Test
+    public function shouldNotErrorIfUnsubscribingWithNullHandler(): Void {
+        subscriber.unsubscribe("foo", null);
+        Assert.isTrue(true);
+    }
+
+    @Test
+    public function shouldFailGracefullyIfNotifyArgsAreWrong(): Void {
+        var funcCalled: Bool = false;
+        var func: Int->Int->Int->Void = function(a,b,c): Void {funcCalled = true;}
+        subscriber.subscribe("foo", func);
+
+        subscriber.notify("foo", ["bar"]);
+        Assert.isTrue(funcCalled);
+    }
+
+    @Test
+    public function shouldNotFailIfPassingNullArgsToNotify(): Void {
+        var funcCalled: Bool = false;
+        var func: Void->Void = function(): Void {funcCalled = true;}
+        subscriber.subscribe("foo", func);
+
+        subscriber.notify("foo", null);
+        Assert.isTrue(funcCalled);
+
+    }
 }
