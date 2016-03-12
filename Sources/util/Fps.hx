@@ -17,6 +17,7 @@ class Fps implements BaseObject{
     @inject
     public var subscriber: Subscriber;
 
+    private var textFieldBack: TextFieldNode;
     private var textField: TextFieldNode;
     private var frameCount: UInt;
     private var previousTime: UInt;
@@ -45,12 +46,20 @@ class Fps implements BaseObject{
     }
 
     private inline function drawFps():Void {
+        var debugLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.DEBUG);
+
+        textFieldBack = objectCreator.createInstance(TextFieldNode);
+        textFieldBack.fontSize = 14;
+        textFieldBack.fontColor = 0xffffffff;
+        textFieldBack.fontName = "helveticaneue_light";
+        textFieldBack.x = 1;
+        textFieldBack.y = 1;
+        debugLayer.addChild(textFieldBack);
+
         textField = objectCreator.createInstance(TextFieldNode);
         textField.fontSize = 14;
         textField.fontColor = 0xff000000;
         textField.fontName = "helveticaneue_light";
-
-        var debugLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.DEBUG);
         debugLayer.addChild(textField);
 
         frameCount = 0;
@@ -64,9 +73,9 @@ class Fps implements BaseObject{
             return;
         }
 
-        textField.text = frameCount + " fps";
+        textFieldBack.text = textField.text = frameCount + " fps";
 
         previousTime = Timer.now();
-        frameCount = 0;
+        frameCount = 1;
     }
 }

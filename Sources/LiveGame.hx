@@ -47,6 +47,8 @@ class LiveGame {
 
     private function onUp(x:Int, y:Int, z:Int):Void {
         engaged = false;
+        xPos = 0;
+        yPos = 0;
     }
 
     private function onMove(w: Int, x:Int, y:Int, z:Int):Void {
@@ -83,6 +85,9 @@ class LiveGame {
         if(engaged) {
             viewPort.x += xPos;
             viewPort.y += yPos;
+
+            xPos = 0;
+            yPos = 0;
         }
 
         var g = backbuffer.g2;

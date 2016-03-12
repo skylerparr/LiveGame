@@ -4,6 +4,7 @@ import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
+import geom.RectangleTest;
 import util.MappedSubscriberTest;
 import world.two.ViewPort2DTest;
 
@@ -23,6 +24,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.layer.RenderableLayerManagerTest);
 		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
+		add(geom.RectangleTest);
 		add(util.MappedSubscriberTest);
 		add(world.two.ViewPort2DTest);
 	}
