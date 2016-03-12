@@ -1,5 +1,6 @@
 import massive.munit.TestSuite;
 
+import collection.UniqueCollectionTest;
 import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
@@ -20,6 +21,7 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
+		add(collection.UniqueCollectionTest);
 		add(core.ObjectFactoryTest);
 		add(display.layer.RenderableLayerManagerTest);
 		add(display.two.kha.Kha2DRendererTest);

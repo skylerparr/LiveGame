@@ -34,6 +34,7 @@ class LiveGame {
     private var xPos: Int;
     private var yPos: Int;
     private var engaged: Bool;
+    private var dirty: Bool;
 
     public function new() {
         backbuffer = Image.createRenderTarget(800, 600);
@@ -55,6 +56,7 @@ class LiveGame {
         if(engaged) {
             xPos = y;
             yPos = z;
+            dirty = true;
         }
     }
 
@@ -91,7 +93,7 @@ class LiveGame {
         }
 
         var g = backbuffer.g2;
-        g.begin();
+        g.begin(true, Color.fromValue(0));
         renderer.render();
         g.end();
 
@@ -100,5 +102,6 @@ class LiveGame {
         Scaler.scale(backbuffer, framebuffer, System.screenRotation);
         g.end();
 
+        dirty = false;
     }
 }

@@ -48,6 +48,22 @@ class Fps implements BaseObject{
     private inline function drawFps():Void {
         var debugLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.DEBUG);
 
+        var x: Int = 0;
+        var y: Int = 0;
+        for(i in 0...20000) {
+            textField = objectCreator.createInstance(TextFieldNode);
+            textField.fontSize = 14;
+            textField.fontColor = 0xff000000;
+            textField.fontName = "helveticaneue_light";
+            textField.x = x;
+            textField.y = y;
+            textField.text = "" + i;
+            debugLayer.addChild(textField);
+
+            x++;
+            y++;
+        }
+
         textFieldBack = objectCreator.createInstance(TextFieldNode);
         textFieldBack.fontSize = 14;
         textFieldBack.fontColor = 0xffffffff;
@@ -76,6 +92,6 @@ class Fps implements BaseObject{
         textFieldBack.text = textField.text = frameCount + " fps";
 
         previousTime = Timer.now();
-        frameCount = 1;
+        frameCount = 0;
     }
 }

@@ -34,14 +34,14 @@ class Kha2DRenderer implements Renderer {
     private function renderChildren(container: KhaSprite, xPos: Float, yPos: Float) {
         for(child in container.children) {
             if(Std.is(child, KhaSprite)) {
-                renderChildren(cast(child, KhaSprite), child.x + xPos, child.y + yPos);
+                renderChildren(cast child, child.x + xPos, child.y + yPos);
             } else {
                 if(Std.is(child, KhaBitmapNode)) {
-                    var bitmap: KhaBitmapNode = cast(child, KhaBitmapNode);
+                    var bitmap: KhaBitmapNode = cast child;
                     graphics.drawSubImage(bitmap.imageData, bitmap.x + xPos, bitmap.y + yPos, bitmap.sx, bitmap.sy,
                         bitmap.sw, bitmap.sh);
                 } else {
-                    var textField: KhaTextFieldNode = cast(child, KhaTextFieldNode);
+                    var textField: KhaTextFieldNode = cast child;
                     graphics.fontSize = textField.fontSize;
                     graphics.color = getColorFromValue(textField.fontColor);
                     graphics.font = fonts.get(textField.fontName);
