@@ -31,8 +31,9 @@ class Kha2DRenderer implements Renderer {
         renderChildren(container, container.x, container.y);
     }
 
-    private function renderChildren(container: KhaSprite, xPos: Float, yPos: Float) {
-        for(child in container.children) {
+    private inline function renderChildren(container: KhaSprite, xPos: Float, yPos: Float) {
+        var children = container.children;
+        for(child in children) {
             if(Std.is(child, KhaSprite)) {
                 renderChildren(cast child, child.x + xPos, child.y + yPos);
             } else {
