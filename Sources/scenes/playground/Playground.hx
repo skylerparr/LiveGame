@@ -56,14 +56,21 @@ class Playground implements BaseObject {
         wizard.sh = 64;
         middleLayer.addChild(wizard);
 
-        wizard = objectCreator.createInstance(BitmapNode);
-        wizard.imageData = image;
-        wizard.x = 20;
-        wizard.sx = 128;
-        wizard.sy = 128;
-        wizard.sw = 64;
-        wizard.sh = 64;
-        middleLayer.addChild(wizard);
+        var x: Int = 0;
+        var y: Int = 0;
+        for(i in 0...20000) {
+            wizard = objectCreator.createInstance(BitmapNode);
+            wizard.imageData = image;
+            wizard.x = 64 * i;
+            wizard.sx = 128;
+            wizard.sy = 128;
+            wizard.sw = 64;
+            wizard.sh = 64;
+            middleLayer.addChild(wizard);
+
+            x++;
+            y++;
+        }
 
         var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
 

@@ -1,5 +1,7 @@
 import massive.munit.TestSuite;
 
+import animation.kha.two.Kha2DAnimationTest;
+import animation.spec.TexturePackerJSONArrayFrameSpecTest;
 import collection.UniqueCollectionTest;
 import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
@@ -21,6 +23,8 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
+		add(animation.kha.two.Kha2DAnimationTest);
+		add(animation.spec.TexturePackerJSONArrayFrameSpecTest);
 		add(collection.UniqueCollectionTest);
 		add(core.ObjectFactoryTest);
 		add(display.layer.RenderableLayerManagerTest);
