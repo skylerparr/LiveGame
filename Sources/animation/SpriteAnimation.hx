@@ -1,8 +1,7 @@
 package animation;
-import animation.spec.TexturePackerJSONArrayFrameSpec.Frame;
 import display.BitmapNode;
 import animation.spec.TexturePackerJSONArrayFrameSpec;
-class TP_JSONArraySpriteAnimation implements Animation {
+class SpriteAnimation implements Animation {
 
     @:isVar
     public var bitmap(get, set): BitmapNode;
@@ -14,7 +13,7 @@ class TP_JSONArraySpriteAnimation implements Animation {
 
     public var numFrames(get, null):UInt;
 
-    private var currentFrame: UInt = 0;
+    public var currentFrame: UInt = 0;
 
     public function get_frameTime():UInt {
         return frameTime;
@@ -25,7 +24,7 @@ class TP_JSONArraySpriteAnimation implements Animation {
     }
 
     public function get_numFrames():UInt {
-        return numFrames;
+        return frames.length;
     }
 
     public function set_bitmap(value:BitmapNode) {
@@ -50,7 +49,7 @@ class TP_JSONArraySpriteAnimation implements Animation {
 
     private inline function goToFirstFrame():Void {
         if(bitmap != null && frames != null) {
-            goToFrame(0);
+            goToFrame();
         }
     }
 
@@ -64,17 +63,37 @@ class TP_JSONArraySpriteAnimation implements Animation {
     }
 
     public function nextFrame():Void {
-
+        if(currentFrame == maxFrames()) {
+            currentFrame = 0;
+        } else {
+            ++currentFrame;
+        }
+        goToFrame();
     }
 
     public function prevFrame():Void {
+        if(currentFrame == 0) {
+            currentFrame = maxFrames();
+        } else {
+            --currentFrame;
+        }
+        goToFrame();
     }
 
     public function setFrame(num:UInt):Void {
+        currentFrame = num;
+        if(currentFrame > maxFrames()) {
+            currentFrame = maxFrames();
+        }
+        goToFrame();
     }
 
-    private inline function goToFrame(num: UInt) {
-        var frame: Frame = frames[num];
+    private inline function maxFrames() {
+        return numFrames - 1;
+    }
+
+    private inline function goToFrame() {
+        var frame: Frame = frames[currentFrame];
 
         bitmap.sx = frame.x;
         bitmap.sy = frame.y;

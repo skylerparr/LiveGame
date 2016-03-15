@@ -1,6 +1,11 @@
 package animation;
+import animation.spec.TexturePackerJSONArrayFrameSpec.Frame;
+import display.BitmapNode;
 import core.BaseObject;
 interface Animation extends BaseObject {
+
+    public var bitmap(get, set): BitmapNode;
+    public var frames(get, set): Array<Frame>;
 
     /**
      * delay between frames

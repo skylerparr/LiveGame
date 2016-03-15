@@ -1,4 +1,6 @@
 package core;
+import animation.SpriteAnimation;
+import animation.Animation;
 import world.two.ViewPort2D;
 import world.ViewPort;
 import constants.LayerNames;
@@ -37,6 +39,7 @@ class InjectionSettings {
         injector.mapClass(BitmapNode, KhaBitmapNode);
         injector.mapClass(DisplayNodeContainer, KhaSprite);
         injector.mapClass(TextFieldNode, KhaTextFieldNode);
+        injector.mapClass(Animation, SpriteAnimation);
 
         var viewPortContainer: DisplayNodeContainer = objectFactory.createInstance(DisplayNodeContainer);
         var gameWorldLayerManager: RenderableLayerManager = objectFactory.createInstance(RenderableLayerManager, [viewPortContainer]);

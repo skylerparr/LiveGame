@@ -1,4 +1,10 @@
 package scenes.playground;
+import constants.EventNames;
+import util.Subscriber;
+import util.EventNotifier;
+import haxe.Json;
+import animation.spec.TexturePackerJSONArrayFrameSpec;
+import animation.Animation;
 import constants.LayerNames;
 import kha.Color;
 import display.TextFieldNode;
@@ -20,7 +26,12 @@ class Playground implements BaseObject {
     public var layerManager: LayerManager;
     @inject
     public var uiLayerManager: LayerManager;
-    
+
+    @inject
+    public var subscriber: Subscriber;
+
+    private var animation: Animation;
+
     public function new() {
     }
 
@@ -56,21 +67,14 @@ class Playground implements BaseObject {
         wizard.sh = 64;
         middleLayer.addChild(wizard);
 
-        var x: Int = 0;
-        var y: Int = 0;
-        for(i in 0...20000) {
-            wizard = objectCreator.createInstance(BitmapNode);
-            wizard.imageData = image;
-            wizard.x = 64 * i;
-            wizard.sx = 128;
-            wizard.sy = 128;
-            wizard.sw = 64;
-            wizard.sh = 64;
-            middleLayer.addChild(wizard);
+        var jsonString = @await Assets.loadBlob("wizard_frames_json");
+        var frames: TexturePackerJSONArrayFrameSpec = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
 
-            x++;
-            y++;
-        }
+        animation = objectCreator.createInstance(Animation);
+        animation.frames = frames.frames;
+        animation.bitmap = wizard;
+
+        subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onEnterGameLoop);
 
         var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
 
@@ -80,5 +84,9 @@ class Playground implements BaseObject {
         hello.fontSize = 32;
         hello.fontColor = 0xff0000ff;
         topLayer.addChild(hello);
+    }
+
+    private function onEnterGameLoop():Void {
+        animation.nextFrame();
     }
 }

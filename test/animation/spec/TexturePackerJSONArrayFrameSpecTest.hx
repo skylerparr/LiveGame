@@ -1,6 +1,5 @@
 package animation.spec;
 
-import animation.spec.TexturePackerJSONArrayFrameSpec.Frame;
 import haxe.Json;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
@@ -26,16 +25,22 @@ class TexturePackerJSONArrayFrameSpecTest {
 
     @Test
     public function shouldExtractFramesFromJSONArray(): Void {
-//        trace(JSONArray.dataString);
-//        var data: Dynamic = Json.parse(JSONArray.dataString);
-//        trace(data);
-//        texturePacker = new TexturePackerJSONArrayFrameSpec(data);
-//
-//        var frame: TPFrame = texturePacker.frames[0];
-//        Assert.areEqual(133, frame.x);
-//        Assert.areEqual(1, frame.y);
-//        Assert.areEqual(64, frame.width);
-//        Assert.areEqual(61, frame.height);
+        var data: Dynamic = Json.parse(JSONArray.dataString);
+        texturePacker = new TexturePackerJSONArrayFrameSpec(data);
+
+        var frame: Frame = texturePacker.frames[0];
+        Assert.areEqual(133, frame.x);
+        Assert.areEqual(1, frame.y);
+        Assert.areEqual(64, frame.width);
+        Assert.areEqual(61, frame.height);
+    }
+
+    @Test
+    public function shouldGetTheNumberOfFrames(): Void {
+        var data: Dynamic = Json.parse(JSONArray.dataString);
+        texturePacker = new TexturePackerJSONArrayFrameSpec(data);
+
+        Assert.areEqual(3, texturePacker.frames.length);
     }
 }
 
@@ -74,7 +79,7 @@ class JSONArray {
 	\"image\": \"wizard.png\",
 	\"format\": \"RGBA8888\",
 	\"size\": {\"w\":263,\"h\":64},
-	\"scale\": \"1\",
+	\"scale\": \"1\"
 }
 }
 ";
