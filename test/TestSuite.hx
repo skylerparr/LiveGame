@@ -1,6 +1,7 @@
 import massive.munit.TestSuite;
 
 import animation.spec.TexturePackerJSONArrayFrameSpecTest;
+import animation.SpriteAnimationControllerTest;
 import animation.SpriteAnimationTest;
 import collection.UniqueCollectionTest;
 import core.ObjectFactoryTest;
@@ -24,6 +25,7 @@ class TestSuite extends massive.munit.TestSuite
 		super();
 
 		add(animation.spec.TexturePackerJSONArrayFrameSpecTest);
+		add(animation.SpriteAnimationControllerTest);
 		add(animation.SpriteAnimationTest);
 		add(collection.UniqueCollectionTest);
 		add(core.ObjectFactoryTest);
