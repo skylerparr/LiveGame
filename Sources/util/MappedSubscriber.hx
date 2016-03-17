@@ -38,6 +38,10 @@ class MappedSubscriber implements Subscriber implements EventNotifier {
         }
     }
 
+    public function unsubscribeAll(event:String): Void {
+        subscriptions.remove(event);
+    }
+
     public function notify(eventName:String, args: Dynamic):Void {
         var handlers: Array<Dynamic> = subscriptions.get(eventName);
         if(handlers == null) {

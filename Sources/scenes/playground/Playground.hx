@@ -1,4 +1,6 @@
 package scenes.playground;
+import animation.AnimationController;
+import animation.AnimationManager;
 import constants.EventNames;
 import util.Subscriber;
 import util.EventNotifier;
@@ -26,9 +28,6 @@ class Playground implements BaseObject {
     public var layerManager: LayerManager;
     @inject
     public var uiLayerManager: LayerManager;
-
-    @inject
-    public var subscriber: Subscriber;
 
     private var animation: Animation;
 
@@ -71,10 +70,13 @@ class Playground implements BaseObject {
         var frames: TexturePackerJSONArrayFrameSpec = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
 
         animation = objectCreator.createInstance(Animation);
+        animation.frameTime = 50;
         animation.frames = frames.frames;
         animation.bitmap = wizard;
 
-        subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onEnterGameLoop);
+        var animationController: AnimationController = objectCreator.createInstance(AnimationController);
+        animationController.animation = animation;
+        animationController.start();
 
         var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
 
@@ -86,7 +88,4 @@ class Playground implements BaseObject {
         topLayer.addChild(hello);
     }
 
-    private function onEnterGameLoop():Void {
-        animation.nextFrame();
-    }
 }

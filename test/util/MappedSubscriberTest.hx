@@ -156,4 +156,27 @@ class MappedSubscriberTest {
         Assert.isTrue(funcCalled);
 
     }
+
+    @Test
+    public function shouldUnsubscribeFromAllEventsByName(): Void {
+        var func1Called: Bool = false;
+        var func2Called: Bool = false;
+        var func3Called: Bool = false;
+        var func: Bool->Void = function(value: Bool): Void { func1Called = value; }
+        var func2: Bool->Void = function(value: Bool): Void {func2Called = value; }
+        var func3: Void->Void = function(): Void {func3Called = true; }
+
+        subscriber.subscribe("foo", func);
+        subscriber.subscribe("foo", func2);
+        subscriber.subscribe("foo1", func3);
+
+        subscriber.unsubscribeAll("foo");
+        subscriber.notify("foo", [true]);
+        subscriber.notify("foo1", null);
+
+        Assert.isFalse(func1Called);
+        Assert.isFalse(func2Called);
+        Assert.isTrue(func3Called);
+
+    }
 }

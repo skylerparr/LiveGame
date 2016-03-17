@@ -1,4 +1,9 @@
 package core;
+import animation.SpriteAnimationController;
+import animation.AnimationController;
+import constants.EventNames;
+import animation.SubscribedAnimationManager;
+import animation.AnimationManager;
 import animation.SpriteAnimation;
 import animation.Animation;
 import world.two.ViewPort2D;
@@ -73,6 +78,11 @@ class InjectionSettings {
         var subscribeNotifer: MappedSubscriber = objectFactory.createInstance(MappedSubscriber);
         injector.mapValue(Subscriber, subscribeNotifer);
         injector.mapValue(EventNotifier, subscribeNotifer);
+
+        var animationManager: SubscribedAnimationManager = objectFactory.createInstance(SubscribedAnimationManager, [EventNames.ENTER_GAME_LOOP]);
+        injector.mapValue(AnimationManager, animationManager);
+
+        injector.mapClass(AnimationController, SpriteAnimationController);
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
         injector.mapValue(ViewPort, viewPort);

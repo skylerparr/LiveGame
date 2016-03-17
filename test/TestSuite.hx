@@ -3,6 +3,7 @@ import massive.munit.TestSuite;
 import animation.spec.TexturePackerJSONArrayFrameSpecTest;
 import animation.SpriteAnimationControllerTest;
 import animation.SpriteAnimationTest;
+import animation.SubscribedAnimationManagerTest;
 import collection.UniqueCollectionTest;
 import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
@@ -27,6 +28,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(animation.spec.TexturePackerJSONArrayFrameSpecTest);
 		add(animation.SpriteAnimationControllerTest);
 		add(animation.SpriteAnimationTest);
+		add(animation.SubscribedAnimationManagerTest);
 		add(collection.UniqueCollectionTest);
 		add(core.ObjectFactoryTest);
 		add(display.layer.RenderableLayerManagerTest);

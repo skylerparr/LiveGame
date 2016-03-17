@@ -32,7 +32,8 @@ class SpriteAnimationControllerTest {
 
         objectCreator.createInstance(MappedSubscriber).returns(animationSubscriber);
 
-        controller = new SpriteAnimationController(animation);
+        controller = new SpriteAnimationController();
+        controller.animation = animation;
         controller.animationManager = animationManager;
         controller.objectCreator = objectCreator;
         controller.init();

@@ -21,7 +21,7 @@ class KhaTextFieldNode extends TwoDimDisplayNode implements TextFieldNode {
     }
 
     public function get_text():String {
-        return text;
+        return text + "";
     }
 
     public function get_fontSize():UInt {

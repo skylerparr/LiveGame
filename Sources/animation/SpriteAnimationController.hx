@@ -13,7 +13,8 @@ class SpriteAnimationController implements AnimationController {
     @inject
     public var objectCreator: ObjectCreator;
 
-    public var animation(get, null):Animation;
+    @:isVar
+    public var animation(get, set):Animation;
 
     @:isVar
     public var loops(get, set):Bool;
@@ -27,6 +28,10 @@ class SpriteAnimationController implements AnimationController {
         return animation;
     }
 
+    public function set_animation(value:Animation) {
+        return this.animation = value;
+    }
+
     public function get_loops():Bool {
         return loops;
     }
@@ -35,8 +40,7 @@ class SpriteAnimationController implements AnimationController {
         return this.loops = value;
     }
 
-    public function new(animation: Animation) {
-        this.animation = animation;
+    public function new() {
     }
 
     public function init():Void {

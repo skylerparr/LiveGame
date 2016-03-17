@@ -48,6 +48,7 @@
 -cp test
 #-D HXCPP_M64
 -D test
+--no-inline
 -cpp build/cpp_test
 
 

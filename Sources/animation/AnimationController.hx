@@ -1,7 +1,7 @@
 package animation;
 import core.BaseObject;
 interface AnimationController extends BaseObject {
-    var animation(get, null): Animation;
+    var animation(get, set): Animation;
     var loops(get, set): Bool;
 
     function start(): Void;
