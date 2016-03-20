@@ -1,4 +1,5 @@
 package core;
+import animation.ThreadedAnimationManager;
 import animation.SpriteAnimationController;
 import animation.AnimationController;
 import constants.EventNames;
@@ -79,7 +80,11 @@ class InjectionSettings {
         injector.mapValue(Subscriber, subscribeNotifer);
         injector.mapValue(EventNotifier, subscribeNotifer);
 
+        #if cpp
+        var animationManager: ThreadedAnimationManager = objectFactory.createInstance(ThreadedAnimationManager, [EventNames.ENTER_GAME_LOOP]);
+        #else
         var animationManager: SubscribedAnimationManager = objectFactory.createInstance(SubscribedAnimationManager, [EventNames.ENTER_GAME_LOOP]);
+        #end
         injector.mapValue(AnimationManager, animationManager);
 
         injector.mapClass(AnimationController, SpriteAnimationController);

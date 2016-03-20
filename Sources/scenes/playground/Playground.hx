@@ -1,14 +1,10 @@
 package scenes.playground;
+import kha.input.Mouse;
 import animation.AnimationController;
-import animation.AnimationManager;
-import constants.EventNames;
-import util.Subscriber;
-import util.EventNotifier;
 import haxe.Json;
 import animation.spec.TexturePackerJSONArrayFrameSpec;
 import animation.Animation;
 import constants.LayerNames;
-import kha.Color;
 import display.TextFieldNode;
 import kha.Image;
 import kha.Assets;
@@ -30,14 +26,32 @@ class Playground implements BaseObject {
     public var uiLayerManager: LayerManager;
 
     private var animation: Animation;
+    private var image: Image;
+    private var frames: TexturePackerJSONArrayFrameSpec;
+    private var animationControllers: List<AnimationController>;
 
     public function new() {
     }
 
     public function init():Void {
+        animationControllers = new List<AnimationController>();
+
         showPlayground(function(): Void {
+            Mouse.get().notify(onDown, null, null, null);
 
         });
+    }
+
+    private function onDown(x:Int, y:Int, z:Int):Void {
+        if(x == 0) {
+            createWizard(y, z);
+        } else {
+            var controller: AnimationController = animationControllers.pop();
+            while(controller != null) {
+                controller.stop();
+                controller = animationControllers.pop();
+            }
+        }
     }
 
     public function dispose():Void {
@@ -49,7 +63,7 @@ class Playground implements BaseObject {
         var middleLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.GAME_OBJECTS);
 
         var grumpyCat: BitmapNode = objectCreator.createInstance(BitmapNode);
-        var image: Image = @await Assets.loadImage("grumpy_cat_nope");
+        image = @await Assets.loadImage("grumpy_cat_nope");
         grumpyCat.imageData = image;
         grumpyCat.sx = 0;
         grumpyCat.sy = 0;
@@ -57,17 +71,32 @@ class Playground implements BaseObject {
         grumpyCat.sh = image.realHeight;
         bottomLayer.addChild(grumpyCat);
 
-        var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);
         image = @await Assets.loadImage("wizard");
+        var jsonString = @await Assets.loadBlob("wizard_frames_json");
+        frames = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
+
+        var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
+
+        var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
+        hello.text = "hello world";
+        hello.fontName = "helveticaneue_light";
+        hello.fontSize = 32;
+        hello.fontColor = 0xff0000ff;
+        topLayer.addChild(hello);
+    }
+
+    private function createWizard(x:UInt, y:UInt):Void {
+        var middleLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.GAME_OBJECTS);
+
+        var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);
         wizard.imageData = image;
+        wizard.x = x;
+        wizard.y = y;
         wizard.sx = 0;
         wizard.sy = 0;
         wizard.sw = 64;
         wizard.sh = 64;
         middleLayer.addChild(wizard);
-
-        var jsonString = @await Assets.loadBlob("wizard_frames_json");
-        var frames: TexturePackerJSONArrayFrameSpec = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
 
         animation = objectCreator.createInstance(Animation);
         animation.frameTime = 50;
@@ -78,14 +107,7 @@ class Playground implements BaseObject {
         animationController.animation = animation;
         animationController.start();
 
-        var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
-
-        var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
-        hello.text = "hello world";
-        hello.fontName = "helveticaneue_light";
-        hello.fontSize = 32;
-        hello.fontColor = 0xff0000ff;
-        topLayer.addChild(hello);
+        animationControllers.add(animationController);
     }
 
 }
