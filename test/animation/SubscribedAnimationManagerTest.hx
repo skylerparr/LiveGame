@@ -76,25 +76,20 @@ class SubscribedAnimationManagerTest {
 
         animationManager.queueAnimationUpdate(animController);
 
-        animationManager.currentTime = 20;
-        ourHandler();
+        setTimeAndCallHandler(ourHandler, 20);
         animation.nextFrame().verify(0);
 
-        animationManager.currentTime = 30;
-        ourHandler();
-        animationManager.currentTime = 40;
-        ourHandler();
-        animationManager.currentTime = 50;
-        ourHandler();
-        animationManager.currentTime = 60;
-        ourHandler();
-        animationManager.currentTime = 70;
-        ourHandler();
-        animationManager.currentTime = 80;
-        ourHandler();
-        animationManager.currentTime = 90;
-        ourHandler();
+        var time: UInt = 20;
+        for(i in 0...10) {
+            time += 10;
+            setTimeAndCallHandler(ourHandler, time);
+        }
         animation.nextFrame().verify();
+    }
+
+    private inline function setTimeAndCallHandler(ourHandler:Void -> Void, time: UInt):Void {
+        animationManager.currentTime = time;
+        ourHandler();
     }
 
 }
