@@ -1,4 +1,7 @@
 package scenes.playground;
+import world.WorldPoint;
+import geom.Point;
+import world.GameWorld;
 import kha.input.Mouse;
 import animation.AnimationController;
 import haxe.Json;
@@ -20,10 +23,12 @@ class Playground implements BaseObject {
     @inject
     public var objectCreator: ObjectCreator;
 
-    @inject("gameWorld")
+    @inject("world")
     public var layerManager: LayerManager;
-    @inject
+    @inject("ui")
     public var uiLayerManager: LayerManager;
+    @inject
+    public var gameWorld: GameWorld;
 
     private var animation: Animation;
     private var image: Image;
@@ -42,9 +47,10 @@ class Playground implements BaseObject {
         });
     }
 
-    private function onDown(x:Int, y:Int, z:Int):Void {
-        if(x == 0) {
-            createWizard(y, z);
+    private function onDown(button:Int, x:Int, y:Int):Void {
+        if(button == 0) {
+            var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
+            createWizard(worldPoint.x, worldPoint.y);
         } else {
             var controller: AnimationController = animationControllers.pop();
             while(controller != null) {
@@ -85,7 +91,7 @@ class Playground implements BaseObject {
         topLayer.addChild(hello);
     }
 
-    private function createWizard(x:UInt, y:UInt):Void {
+    private inline function createWizard(x:Float, y:Float):Void {
         var middleLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.GAME_OBJECTS);
 
         var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);

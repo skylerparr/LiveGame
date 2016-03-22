@@ -11,6 +11,6 @@ interface GameObject extends WorldEntity {
     /**
      * gets,sets the direction that the entity should face
      */
-    var direction(get, set): Float;
+    var lookAt(get, set): WorldPoint;
 
 }

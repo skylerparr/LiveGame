@@ -11,7 +11,7 @@ class Fps implements BaseObject{
     @inject
     public var objectCreator: ObjectCreator;
 
-    @inject
+    @inject("ui")
     public var layerManager: LayerManager;
 
     @inject

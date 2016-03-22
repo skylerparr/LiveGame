@@ -85,8 +85,8 @@ class LiveGame {
         notifier.notify(EventNames.ENTER_GAME_LOOP, null);
 
         if(engaged) {
-            viewPort.x += xPos;
-            viewPort.y += yPos;
+            viewPort.x -= xPos;
+            viewPort.y -= yPos;
 
             xPos = 0;
             yPos = 0;

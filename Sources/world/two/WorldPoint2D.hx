@@ -29,11 +29,11 @@ class WorldPoint2D implements WorldPoint {
     }
 
     public function set_y(value:Float) {
-        return 0;
+        return this.y = value;
     }
 
     public function get_y():Float {
-        return 0;
+        return y;
     }
 
     public function set_z(value:Float) {

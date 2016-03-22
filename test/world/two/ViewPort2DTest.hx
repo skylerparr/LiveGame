@@ -111,7 +111,7 @@ class ViewPort2DTest {
         viewPort.x = 10;
         viewPort.y = 20;
 
-        Assert.areEqual(10, viewPort.container.x);
-        Assert.areEqual(20, viewPort.container.y);
+        Assert.areEqual(-10, viewPort.container.x);
+        Assert.areEqual(-20, viewPort.container.y);
     }
 }

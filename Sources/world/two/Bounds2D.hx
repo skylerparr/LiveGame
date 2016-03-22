@@ -35,11 +35,11 @@ class Bounds2D implements Bounds {
     }
 
     public function set_y(value:Float) {
-        return 0;
+        return this.y = value;
     }
 
     public function get_y():Float {
-        return 0;
+        return y;
     }
 
     public function set_z(value:Float) {
@@ -59,11 +59,11 @@ class Bounds2D implements Bounds {
     }
 
     public function set_height(value:Float) {
-        return 0;
+        return this.height = value;
     }
 
     public function get_height():Float {
-        return 0;
+        return height;
     }
 
     public function set_depth(value:Float) {

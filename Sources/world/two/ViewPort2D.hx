@@ -77,7 +77,7 @@ class ViewPort2D implements ViewPort {
 
     public function set_x(value:Float) {
         this.x = value;
-        container.x = value;
+        container.x = -value;
         dimension.x = value;
         notifier.notify(EventNames.VIEW_PORT_TRANSLATED, null);
         return this.x;
@@ -85,7 +85,7 @@ class ViewPort2D implements ViewPort {
 
     public function set_y(value:Float) {
         this.y = value;
-        container.y = value;
+        container.y = -value;
         dimension.y = value;
         notifier.notify(EventNames.VIEW_PORT_TRANSLATED, null);
         return this.y;

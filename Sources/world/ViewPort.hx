@@ -2,7 +2,6 @@ package world;
 import core.BaseObject;
 import geom.Rectangle;
 import display.DisplayNode;
-import util.Subscriber;
 interface ViewPort extends BaseObject {
     /**
      *  Returns the height of the viewport measured in world coordinates.  "Height" refers to the

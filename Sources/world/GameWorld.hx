@@ -1,4 +1,5 @@
 package world;
+import geom.Point;
 import display.DisplayNode;
 import core.BaseObject;
 interface GameWorld extends BaseObject {
@@ -21,7 +22,7 @@ interface GameWorld extends BaseObject {
      * @param item
      * @param worldPt
      */
-    function moveItemTo( item: GameObject, worldPt: WorldPoint ): Coid;
+    function moveItemTo( item: GameObject, worldPt: WorldPoint ): Void;
 
     /**
      * Remove a placeable item from the map.
@@ -40,11 +41,21 @@ interface GameWorld extends BaseObject {
      */
     function getDisplayByGameObject(gameObject: GameObject): DisplayNode;
 
+    /**
+     * currently playable area, extends passed viewport
+     */
     var totalWidth(get, null): Float;
 
+    /**
+     * currently playable area, extends passed viewport
+     */
     var totalHeight(get, null): Float;
 
     function getGameObjectById(id: String): GameObject;
 
     function getItemAt(worldPoint: WorldPoint): GameObject;
+
+    function worldToScreen(worldPoint: WorldPoint): Point;
+
+    function screenToWorld(point: Point): WorldPoint;
 }

@@ -1,4 +1,6 @@
 package core;
+import world.two.GameWorld2D;
+import world.GameWorld;
 import animation.ThreadedAnimationManager;
 import animation.SpriteAnimationController;
 import animation.AnimationController;
@@ -70,8 +72,8 @@ class InjectionSettings {
         container = objectFactory.createInstance(DisplayNodeContainer);
         layerManager.addLayerByName(LayerNames.DEBUG, container);
 
-        injector.mapValue(LayerManager, layerManager);
-        injector.mapValue(LayerManager, gameWorldLayerManager, "gameWorld");
+        injector.mapValue(LayerManager, layerManager, "ui");
+        injector.mapValue(LayerManager, gameWorldLayerManager, "world");
         injector.mapValue(Renderer, renderer);
 
         Kha2DRenderer.fonts = fonts;
@@ -91,6 +93,9 @@ class InjectionSettings {
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
         injector.mapValue(ViewPort, viewPort);
+
+        var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
+        injector.mapValue(GameWorld, gameWorld);
 
         var fps: Fps = objectFactory.createInstance(Fps);
         injector.mapValue(Fps, fps);
