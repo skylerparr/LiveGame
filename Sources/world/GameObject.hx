@@ -1,4 +1,7 @@
 package world;
+/**
+ * Is an object that can be interacted with.
+ */
 interface GameObject extends WorldEntity {
 
     /**

@@ -6,15 +6,15 @@ interface GameWorld extends BaseObject {
     /**
      * Return a collection of the placeables on the map.
      */
-    var gameObjects(get, null): List<GameObject>;
+    var gameObjects(get, null): List<WorldEntity>;
 
     /**
      * Add a placeable to the map at the provided position.
      *
-     * @param gameObject
+     * @param worldEntity
      * @param worldPt
      */
-    function addGameObject( gameObject: GameObject, worldPt: WorldPoint ): Void;
+    function addGameObject( gameObject: WorldEntity, worldPt: WorldPoint ): Void;
 
     /**
      * Move an existing Placeable item to a new point.
@@ -22,24 +22,24 @@ interface GameWorld extends BaseObject {
      * @param item
      * @param worldPt
      */
-    function moveItemTo( item: GameObject, worldPt: WorldPoint ): Void;
+    function moveItemTo( item: WorldEntity, worldPt: WorldPoint ): Void;
 
     /**
      * Remove a placeable item from the map.
      *
-     * @param gameObject
+     * @param worldEntity
      */
-    function removeGameObject( gameObject: GameObject ): Void;
+    function removeGameObject( gameObject: WorldEntity ): Void;
 
     function removeAllObjects(): Void;
 
     /**
      * Given a game Object the world map will return a display node associated with it.
      *
-     * @param gameObject
+     * @param worldEntity
      * @return display associated with the game Object
      */
-    function getDisplayByGameObject(gameObject: GameObject): DisplayNode;
+    function getDisplayByGameObject(gameObject: WorldEntity): DisplayNode;
 
     /**
      * currently playable area, extends passed viewport
@@ -51,9 +51,9 @@ interface GameWorld extends BaseObject {
      */
     var totalHeight(get, null): Float;
 
-    function getGameObjectById(id: String): GameObject;
+    function getGameObjectById(id: String): WorldEntity;
 
-    function getItemAt(worldPoint: WorldPoint): GameObject;
+    function getItemAt(worldPoint: WorldPoint): WorldEntity;
 
     function worldToScreen(worldPoint: WorldPoint): Point;
 

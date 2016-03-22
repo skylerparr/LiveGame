@@ -1,5 +1,13 @@
 package world.two;
 
+import units.EntityFactory;
+import mocks.MockViewPort;
+import core.ObjectCreator;
+import mocks.MockDisplayNodeContainer;
+import mocks.MockGameObject;
+import display.DisplayNodeContainer;
+import constants.LayerNames;
+import display.LayerManager;
 import geom.Rectangle;
 import display.DisplayNode;
 import geom.Point;
@@ -13,6 +21,9 @@ class GameWorld2DTest {
 
     private var gameWorld: GameWorld2D;
     private var viewPort: MockViewPort;
+    private var layerManager: LayerManager;
+    private var gameLayer: MockDisplayNodeContainer;
+    private var entityFactory: EntityFactory;
     private var wp: WorldPoint2D;
     private var point: Point;
 
@@ -25,9 +36,16 @@ class GameWorld2DTest {
         viewPort = mock(MockViewPort);
         wp = new WorldPoint2D();
         point = new Point();
+        layerManager = mock(LayerManager);
+        gameLayer = mock(MockDisplayNodeContainer);
+        entityFactory = mock(EntityFactory);
+
+        layerManager.getLayerByName(LayerNames.GAME_OBJECTS).returns(gameLayer);
 
         gameWorld = new GameWorld2D();
         gameWorld.viewPort = viewPort;
+        gameWorld.layerManger = layerManager;
+        gameWorld.entityFactory = entityFactory;
         gameWorld.init();
     }
 
@@ -107,111 +125,45 @@ class GameWorld2DTest {
         Assert.areEqual(25, wp.x);
         Assert.areEqual(46, wp.y);
     }
+
+    @Test
+    public function shouldAddTheUnitToTheGameWorldAtASpecificWorldPoint(): Void {
+        var gameObject: MockGameObject = mock(MockGameObject);
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+
+        entityFactory.createViewForEntity(gameObject).returns(display);
+
+        wp.x = 83;
+        wp.y = 347;
+        gameWorld.addGameObject(gameObject, wp);
+
+        Assert.areEqual(gameObject, gameWorld.gameObjects.pop());
+
+        gameLayer.addChild(display).verify();
+        display.set_x(83).verify();
+        display.set_y(347).verify();
+        gameObject.set_x(83).verify();
+        gameObject.set_y(347).verify();
+    }
+
+    @Test
+    public function shouldMoveDisplayToDesiredLocation(): Void {
+        var gameObject: MockGameObject = mock(MockGameObject);
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+
+        entityFactory.createViewForEntity(gameObject).returns(display);
+
+        wp.x = 83;
+        wp.y = 347;
+        gameWorld.addGameObject(gameObject, wp);
+        wp.x = 23;
+        wp.y = 47;
+        gameWorld.moveItemTo(gameObject, wp);
+
+        display.set_x(23).verify();
+        display.set_y(47).verify();
+        gameObject.set_x(23).verify();
+        gameObject.set_y(47).verify();
+    }
 }
 
-class MockViewPort implements ViewPort {
-
-    public function isInViewableRegion(value:DisplayNode):Bool {
-        return false;
-    }
-
-    public function subscribeToTranslate(listener:Void->Void):Void {
-    }
-
-    public function unsubscribeToTranslate(listener:Void->Void):Void {
-    }
-
-    public function subscribeToResize(listener:Void->Void):Void {
-    }
-
-    public function unsubscribeToResize(listener:Void->Void):Void {
-    }
-
-    public function init():Void {
-    }
-
-    public function dispose():Void {
-    }
-
-    @:isVar
-    public var height(get, set):Float;
-
-    @:isVar
-    public var width(get, set):Float;
-
-    @:isVar
-    public var x(get, set):Float;
-
-    @:isVar
-    public var y(get, set):Float;
-
-    @:isVar
-    public var z(get, set):Float;
-
-    @:isVar
-    public var scale(get, set):Float;
-
-    @:isVar
-    public var dimension(get, set):Rectangle;
-
-    public function new() {
-    }
-
-    public function set_height(value:Float) {
-        return this.height = value;
-    }
-
-    public function get_height():Float {
-        return height;
-    }
-
-    public function get_width():Float {
-        return width;
-    }
-
-    public function set_width(value:Float) {
-        return this.width = value;
-    }
-
-    public function get_x():Float {
-        return x;
-    }
-
-    public function set_x(value:Float) {
-        return this.x = value;
-    }
-
-    public function set_y(value:Float) {
-        return this.y = value;
-    }
-
-    public function get_y():Float {
-        return y;
-    }
-
-    public function set_z(value:Float) {
-        return this.z = value;
-    }
-
-    public function get_z():Float {
-        return z;
-    }
-
-    public function get_scale():Float {
-        return scale;
-    }
-
-    public function set_scale(value:Float) {
-        return this.scale = value;
-    }
-
-    public function get_dimension():Rectangle {
-        return dimension;
-    }
-
-    public function set_dimension(value:Rectangle) {
-        return this.dimension = value;
-    }
-
-
-}

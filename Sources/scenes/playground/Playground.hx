@@ -98,10 +98,6 @@ class Playground implements BaseObject {
         wizard.imageData = image;
         wizard.x = x;
         wizard.y = y;
-        wizard.sx = 0;
-        wizard.sy = 0;
-        wizard.sw = 64;
-        wizard.sh = 64;
         middleLayer.addChild(wizard);
 
         animation = objectCreator.createInstance(Animation);

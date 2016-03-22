@@ -1,29 +1,40 @@
 package world.two;
 import display.DisplayNode;
+import units.EntityFactory;
+import constants.LayerNames;
+import display.DisplayNodeContainer;
+import display.LayerManager;
 import geom.Point;
 class GameWorld2D implements GameWorld {
 
     @inject
     public var viewPort: ViewPort;
+    @inject("world")
+    public var layerManger: LayerManager;
+    @inject
+    public var entityFactory: EntityFactory;
 
     private var point: Point;
     private var worldPoint: WorldPoint2D;
+
+    private var gameObjectLayer: DisplayNodeContainer;
+    private var objectToDisplayMap: Map<WorldEntity, DisplayNode>;
 
     public function new() {
     }
 
     @:isVar
-    public var gameObjects(get, set):List<GameObject>;
+    public var gameObjects(get, set):List<WorldEntity>;
     @:isVar
     public var totalHeight(get, set):Float;
     @:isVar
     public var totalWidth(get, set):Float;
 
-    public function get_gameObjects():List<GameObject> {
+    public function get_gameObjects():List<WorldEntity> {
         return gameObjects;
     }
 
-    public function set_gameObjects(value:List<GameObject>) {
+    public function set_gameObjects(value:List<WorldEntity>) {
         return this.gameObjects = value;
     }
 
@@ -46,6 +57,10 @@ class GameWorld2D implements GameWorld {
     public function init():Void {
         point = new Point();
         worldPoint = new WorldPoint2D();
+
+        gameObjectLayer = layerManger.getLayerByName(LayerNames.GAME_OBJECTS);
+        gameObjects = new List<WorldEntity>();
+        objectToDisplayMap = new Map<WorldEntity, DisplayNode>();
     }
 
     public function dispose():Void {
@@ -53,27 +68,44 @@ class GameWorld2D implements GameWorld {
         worldPoint = null;
     }
 
-    public function addGameObject(gameObject:GameObject, worldPt:WorldPoint):Void {
+    public function addGameObject(worldEntity:WorldEntity, worldPt:WorldPoint):Void {
+        var display: DisplayNode = entityFactory.createViewForEntity(worldEntity);
+        setDisplayAndGameObjectLocation(worldEntity, display, worldPt);
+
+        gameObjects.add(worldEntity);
+        objectToDisplayMap.set(worldEntity, display);
+        gameObjectLayer.addChild(display);
     }
 
-    public function moveItemTo(item:GameObject, worldPt:WorldPoint):Void {
+    public function moveItemTo(gameObject:WorldEntity, worldPt:WorldPoint):Void {
+        var display: DisplayNode = objectToDisplayMap.get(gameObject);
+        if(display != null) {
+            setDisplayAndGameObjectLocation(gameObject, display, worldPt);
+        }
     }
 
-    public function removeGameObject(gameObject:GameObject):Void {
+    private inline function setDisplayAndGameObjectLocation(worldEntity: WorldEntity, display: DisplayNode, worldPt: WorldPoint):Void {
+        worldEntity.x = worldPt.x;
+        display.x = worldPt.x;
+        worldEntity.y = worldPt.y;
+        display.y = worldPt.y;
+    }
+
+    public function removeGameObject(gameObject:WorldEntity):Void {
     }
 
     public function removeAllObjects():Void {
     }
 
-    public function getDisplayByGameObject(gameObject:GameObject):DisplayNode {
+    public function getDisplayByGameObject(gameObject:WorldEntity):DisplayNode {
         return null;
     }
 
-    public function getGameObjectById(id:String):GameObject {
+    public function getGameObjectById(id:String):WorldEntity {
         return null;
     }
 
-    public function getItemAt(worldPoint:WorldPoint):GameObject {
+    public function getItemAt(worldPoint:WorldPoint):WorldEntity {
         return null;
     }
 
