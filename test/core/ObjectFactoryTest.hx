@@ -76,6 +76,26 @@ class ObjectFactoryTest {
 
         Assert.isTrue(sample.initialized);
     }
+
+    @Test
+    public function shouldCallDisposeOnBaseObject(): Void {
+        injector.getInstance(SampleBase).throws(new AnyException());
+        var sample: SampleBase = objectFactory.createInstance(SampleBase);
+        objectFactory.disposeInstance(sample);
+        Assert.isFalse(sample.initialized);
+    }
+
+    @Test
+    public function shouldDoNothingOnNonBaseObject(): Void {
+        var sample: Sample = objectFactory.createInstance(Sample);
+        try {
+            objectFactory.disposeInstance(sample);
+            Assert.isTrue(true);
+        } catch(e: Dynamic) {
+            Assert.fail("should not crash");
+        }
+
+    }
 }
 
 class Sample {
@@ -97,6 +117,7 @@ class SampleWithArgs {
 
 class SampleBase implements BaseObject {
     public var initialized: Bool = false;
+
     public function new() {
 
     }
@@ -106,6 +127,7 @@ class SampleBase implements BaseObject {
     }
 
     public function dispose():Void {
+        initialized = false;
     }
 }
 

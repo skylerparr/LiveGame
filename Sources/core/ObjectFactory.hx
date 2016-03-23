@@ -25,4 +25,11 @@ class ObjectFactory implements ObjectCreator {
 
         return retVal;
     }
+
+    public function disposeInstance(object:Dynamic): Void {
+        if(Std.is(object, BaseObject)) {
+            object.dispose();
+        }
+    }
+
 }

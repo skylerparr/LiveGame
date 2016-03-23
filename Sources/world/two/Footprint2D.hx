@@ -2,8 +2,10 @@ package world.two;
 import geom.Rectangle;
 import geom.Point;
 class Footprint2D implements Footprint {
+    @:isVar
     public var registrationPoint(get, set):Point;
 
+    @:isVar
     public var footprint(get, set):Rectangle;
 
     public function new() {
