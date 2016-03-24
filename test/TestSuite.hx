@@ -14,6 +14,7 @@ import input.kha.KhaMouseInputSourceTest;
 import util.MappedSubscriberTest;
 import world.two.GameWorld2DTest;
 import world.two.ViewPort2DTest;
+import world.TypeResolvedEntityFactoryTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -41,5 +42,6 @@ class TestSuite extends massive.munit.TestSuite
 		add(util.MappedSubscriberTest);
 		add(world.two.GameWorld2DTest);
 		add(world.two.ViewPort2DTest);
+		add(world.TypeResolvedEntityFactoryTest);
 	}
 }

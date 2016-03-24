@@ -1,10 +1,16 @@
-package mocks;
-
+package gameentities;
 import world.Bounds;
 import world.Footprint;
 import world.WorldPoint;
 import world.GameObject;
-class MockGameObject implements GameObject {
+class WizardGameObject implements GameObject {
+
+    private static var genId: UInt = 0;
+
+    public function new() {
+        id = "" + genId++;
+
+    }
 
     public function init():Void {
     }
@@ -12,30 +18,38 @@ class MockGameObject implements GameObject {
     public function dispose():Void {
     }
 
-    @:isVar public var visible(get, set):Bool;
+    @:isVar
+    public var visible(get, set):Bool;
 
-    @:isVar public var worldPoint(get, set):WorldPoint;
+    @:isVar
+    public var worldPoint(get, set):WorldPoint;
 
-    @:isVar public var lookAt(get, set):WorldPoint;
+    @:isVar
+    public var lookAt(get, set):WorldPoint;
 
-    @:isVar public var id(get, set):String;
+    @:isVar
+    public var id(get, set):String;
 
-    @:isVar public var footprint(get, set):Footprint;
+    @:isVar
+    public var footprint(get, set):Footprint;
 
-    @:isVar public var bounds(get, set):Bounds;
+    @:isVar
+    public var bounds(get, set):Bounds;
 
-    @:isVar public var type(get, set):String;
+    @:isVar
+    public var type(get, set):String;
 
-    @:isVar public var category(get, set):String;
+    @:isVar
+    public var category(get, set):String;
 
-    @:isVar public var x(get, set):Float;
+    @:isVar
+    public var x(get, set):Float;
 
-    @:isVar public var y(get, set):Float;
+    @:isVar
+    public var y(get, set):Float;
 
-    @:isVar public var z(get, set):Float;
-
-    public function new() {
-    }
+    @:isVar
+    public var z(get, set):Float;
 
     public function get_visible():Bool {
         return visible;
@@ -124,5 +138,4 @@ class MockGameObject implements GameObject {
     public function get_z():Float {
         return z;
     }
-
 }

@@ -1,4 +1,6 @@
 package scenes.playground;
+import gameentities.WizardGameObject;
+import world.two.WorldPoint2D;
 import world.WorldPoint;
 import geom.Point;
 import world.GameWorld;
@@ -30,17 +32,12 @@ class Playground implements BaseObject {
     @inject
     public var gameWorld: GameWorld;
 
-    private var animation: Animation;
-    private var image: Image;
-    private var frames: TexturePackerJSONArrayFrameSpec;
-    private var animationControllers: List<AnimationController>;
+    private var lastWizard: WizardGameObject;
 
     public function new() {
     }
 
     public function init():Void {
-        animationControllers = new List<AnimationController>();
-
         showPlayground(function(): Void {
             Mouse.get().notify(onDown, null, null, null);
 
@@ -49,14 +46,9 @@ class Playground implements BaseObject {
 
     private function onDown(button:Int, x:Int, y:Int):Void {
         if(button == 0) {
-            var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
-            createWizard(worldPoint.x, worldPoint.y);
+            createWizard(x, y);
         } else {
-            var controller: AnimationController = animationControllers.pop();
-            while(controller != null) {
-                controller.stop();
-                controller = animationControllers.pop();
-            }
+            moveLastWizard(x, y);
         }
     }
 
@@ -69,17 +61,13 @@ class Playground implements BaseObject {
         var middleLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.GAME_OBJECTS);
 
         var grumpyCat: BitmapNode = objectCreator.createInstance(BitmapNode);
-        image = @await Assets.loadImage("grumpy_cat_nope");
+        var image = @await Assets.loadImage("grumpy_cat_nope");
         grumpyCat.imageData = image;
         grumpyCat.sx = 0;
         grumpyCat.sy = 0;
         grumpyCat.sw = image.realWidth;
         grumpyCat.sh = image.realHeight;
         bottomLayer.addChild(grumpyCat);
-
-        image = @await Assets.loadImage("wizard");
-        var jsonString = @await Assets.loadBlob("wizard_frames_json");
-        frames = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
 
         var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
 
@@ -92,24 +80,14 @@ class Playground implements BaseObject {
     }
 
     private inline function createWizard(x:Float, y:Float):Void {
-        var middleLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.GAME_OBJECTS);
+        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
+        lastWizard = objectCreator.createInstance(WizardGameObject);
+        gameWorld.addGameObject(lastWizard, worldPoint);
+    }
 
-        var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);
-        wizard.imageData = image;
-        wizard.x = x;
-        wizard.y = y;
-        middleLayer.addChild(wizard);
-
-        animation = objectCreator.createInstance(Animation);
-        animation.frameTime = 50;
-        animation.frames = frames.frames;
-        animation.bitmap = wizard;
-
-        var animationController: AnimationController = objectCreator.createInstance(AnimationController);
-        animationController.animation = animation;
-        animationController.start();
-
-        animationControllers.add(animationController);
+    private inline function moveLastWizard(x:Float, y:Float):Void {
+        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
+        gameWorld.moveItemTo(lastWizard, worldPoint);
     }
 
 }

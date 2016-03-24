@@ -1,4 +1,8 @@
 package core;
+import gameentities.WizardDisplay;
+import gameentities.WizardGameObject;
+import world.TypeResolvedEntityFactory;
+import units.EntityFactory;
 import world.two.GameWorld2D;
 import world.GameWorld;
 import animation.ThreadedAnimationManager;
@@ -93,6 +97,11 @@ class InjectionSettings {
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
         injector.mapValue(ViewPort, viewPort);
+
+        var entityFactory: TypeResolvedEntityFactory = objectFactory.createInstance(TypeResolvedEntityFactory);
+        injector.mapValue(EntityFactory, entityFactory);
+
+        entityFactory.mapTypeToType(WizardGameObject, WizardDisplay);
 
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
         injector.mapValue(GameWorld, gameWorld);

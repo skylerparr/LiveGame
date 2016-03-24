@@ -326,6 +326,50 @@ class GameWorld2DTest {
         Assert.areEqual(gameObject, entity);
     }
 
+    @Test
+    public function shouldGetEntityFromWorldPointWithFootPrintOffset(): Void {
+        var gameObject: MockGameObject = mock(MockGameObject);
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+
+        entityFactory.createViewForEntity(gameObject).returns(display);
+
+        var footprint: Footprint2D = new Footprint2D();
+        footprint.footprint = new Rectangle(5, 10, 30, 20);
+        gameObject.footprint.returns(footprint);
+        gameObject.worldPoint.returns(new WorldPoint2D(83, 347));
+        wp.x = 83;
+        wp.z = 347;
+
+        gameWorld.addGameObject(gameObject, wp);
+
+        var entity: WorldEntity = gameWorld.getItemAt(new WorldPoint2D(85, 350));
+        Assert.isNull(entity);
+
+        entity = gameWorld.getItemAt(new WorldPoint2D(100, 360));
+        Assert.areEqual(gameObject, entity);
+    }
+
+    @Test
+    public function shouldReturnNullIfPassingNullWorldPointToGetItemAt(): Void {
+        var gameObject: MockGameObject = mock(MockGameObject);
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+
+        entityFactory.createViewForEntity(gameObject).returns(display);
+
+        var footprint: Footprint2D = new Footprint2D();
+        footprint.footprint = new Rectangle(5, 10, 30, 20);
+        gameObject.footprint.returns(footprint);
+        gameObject.worldPoint.returns(new WorldPoint2D(83, 347));
+        wp.x = 83;
+        wp.z = 347;
+
+        gameWorld.addGameObject(gameObject, wp);
+
+        var entity: WorldEntity = gameWorld.getItemAt(null);
+        Assert.isNull(entity);
+
+    }
+
     private function getGameObjectCount(): UInt {
         var objCount: Int = 0;
         for(i in gameWorld.gameObjects) {

@@ -133,6 +133,9 @@ class GameWorld2D implements GameWorld {
     }
 
     public function getItemAt(worldPoint:WorldPoint):WorldEntity {
+        if(worldPoint == null) {
+            return null;
+        }
         var rect: Rectangle = new Rectangle();
 
         var retVal: WorldEntity = null;
@@ -140,8 +143,8 @@ class GameWorld2D implements GameWorld {
             var footprintRect: Rectangle = entity.footprint.footprint;
             var entityLocation: WorldPoint = entity.worldPoint;
 
-            rect.x = entityLocation.x;
-            rect.y = entityLocation.z;
+            rect.x = entityLocation.x + footprintRect.x;
+            rect.y = entityLocation.z + footprintRect.y;
             rect.width = footprintRect.width;
             rect.height = footprintRect.height;
 
