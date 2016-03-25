@@ -85,8 +85,8 @@ class GameWorld2DTest {
         wp.z = 18;
         var p: Point = gameWorld.worldToScreen(wp);
 
-        Assert.areEqual(6, p.x);
-        Assert.areEqual(14, p.y);
+        Assert.areEqual(-6, p.x);
+        Assert.areEqual(-14, p.y);
     }
 
     @Test
