@@ -3,3 +3,5 @@
 /korefile.js
 *.iml
 report
+.DS_Store
+*.xcf

@@ -156,8 +156,8 @@ class GameWorld2D implements GameWorld {
     }
 
     public function worldToScreen(wp:WorldPoint):Point {
-        point.x = viewPort.x - wp.x;
-        point.y = viewPort.y - wp.z;
+        point.x = wp.x - viewPort.x;
+        point.y = wp.z - viewPort.y;
         return point;
     }
 

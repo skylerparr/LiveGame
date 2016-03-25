@@ -1,17 +1,15 @@
 package scenes.playground;
-import gameentities.WizardGameObject;
-import world.two.WorldPoint2D;
-import world.WorldPoint;
 import geom.Point;
+import world.two.WorldPoint2D;
+import constants.EventNames;
+import util.Subscriber;
+import gameentities.WizardGameObject;
+import world.WorldPoint;
 import world.GameWorld;
 import kha.input.Mouse;
-import animation.AnimationController;
 import haxe.Json;
-import animation.spec.TexturePackerJSONArrayFrameSpec;
-import animation.Animation;
 import constants.LayerNames;
 import display.TextFieldNode;
-import kha.Image;
 import kha.Assets;
 import display.DisplayNodeContainer;
 import display.BitmapNode;
@@ -31,8 +29,15 @@ class Playground implements BaseObject {
     public var uiLayerManager: LayerManager;
     @inject
     public var gameWorld: GameWorld;
+    @inject
+    public var subscriber: Subscriber;
 
     private var lastWizard: WizardGameObject;
+    private var xPos: Float = 0;
+    private var yPos: Float = 0;
+    private var currentXPos: Int = 0;
+    private var currentYPos: Int = 0;
+    private var wizardMoving: Bool = false;
 
     public function new() {
     }
@@ -40,15 +45,60 @@ class Playground implements BaseObject {
     public function init():Void {
         showPlayground(function(): Void {
             Mouse.get().notify(onDown, null, null, null);
-
         });
+
+        subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onGameLoop);
+    }
+
+    private function onGameLoop():Void {
+        if(!wizardMoving) {
+            return;
+        }
+        if(xPos > currentXPos) {
+            currentXPos++;
+            if(currentXPos >= xPos) {
+                currentXPos = Std.int(xPos);
+            }
+        } else {
+            currentXPos--;
+            if(currentXPos <= xPos) {
+                currentXPos = Std.int(xPos);
+            }
+        }
+        if(yPos > currentYPos) {
+            currentYPos++;
+            if(currentYPos >= yPos) {
+                currentYPos = Std.int(yPos);
+            }
+        } else {
+            currentYPos--;
+            if(currentYPos <= yPos) {
+                currentYPos = Std.int(yPos);
+            }
+        }
+
+        moveLastWizard(currentXPos, currentYPos);
+
+        if(currentXPos == xPos && currentYPos == yPos) {
+            wizardMoving = false;
+        }
+
     }
 
     private function onDown(button:Int, x:Int, y:Int):Void {
         if(button == 0) {
-            createWizard(x, y);
+            if(lastWizard == null) {
+                createWizard(x, y);
+            }
         } else {
-            moveLastWizard(x, y);
+            xPos = x;
+            yPos = y;
+
+            var point: Point = gameWorld.worldToScreen(new WorldPoint2D(lastWizard.x, lastWizard.z));
+            currentXPos = Std.int(point.x);
+            currentYPos = Std.int(point.y);
+
+            wizardMoving = true;
         }
     }
 
