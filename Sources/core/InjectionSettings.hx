@@ -1,4 +1,6 @@
 package core;
+import gameentities.NecroDisplay;
+import gameentities.NecroGameObject;
 import gameentities.WizardDisplay;
 import gameentities.WizardGameObject;
 import world.TypeResolvedEntityFactory;
@@ -102,6 +104,7 @@ class InjectionSettings {
         injector.mapValue(EntityFactory, entityFactory);
 
         entityFactory.mapTypeToType(WizardGameObject, WizardDisplay);
+        entityFactory.mapTypeToType(NecroGameObject, NecroDisplay);
 
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
         injector.mapValue(GameWorld, gameWorld);

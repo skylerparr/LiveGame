@@ -1,4 +1,5 @@
 package gameentities;
+import world.two.WorldPoint2D;
 import world.Bounds;
 import world.Footprint;
 import world.WorldPoint;
@@ -9,10 +10,10 @@ class WizardGameObject implements GameObject {
 
     public function new() {
         id = "" + genId++;
-
     }
 
     public function init():Void {
+        worldPoint = new WorldPoint2D();
     }
 
     public function dispose():Void {
@@ -22,7 +23,7 @@ class WizardGameObject implements GameObject {
     public var visible(get, set):Bool;
 
     @:isVar
-    public var worldPoint(get, set):WorldPoint;
+    public var worldPoint(get, null):WorldPoint;
 
     @:isVar
     public var lookAt(get, set):WorldPoint;
@@ -60,18 +61,17 @@ class WizardGameObject implements GameObject {
     }
 
     public function get_worldPoint():WorldPoint {
+        worldPoint.x = x;
+        worldPoint.y = y;
+        worldPoint.z = z;
         return worldPoint;
-    }
-
-    public function set_worldPoint(value:WorldPoint) {
-        return this.worldPoint = value;
     }
 
     public function get_lookAt():WorldPoint {
         return lookAt;
     }
 
-    public function set_lookAt(value:WorldPoint) {
+    public function set_lookAt(value:WorldPoint): WorldPoint {
         return this.lookAt = value;
     }
 

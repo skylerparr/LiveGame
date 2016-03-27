@@ -1,4 +1,6 @@
 package scenes.playground;
+import gameentities.NecroDisplay;
+import gameentities.NecroGameObject;
 import geom.Point;
 import world.two.WorldPoint2D;
 import constants.EventNames;
@@ -32,12 +34,11 @@ class Playground implements BaseObject {
     @inject
     public var subscriber: Subscriber;
 
-    private var lastWizard: WizardGameObject;
-    private var xPos: Float = 0;
-    private var yPos: Float = 0;
+    private var lastUnit: NecroGameObject;
     private var currentXPos: Int = 0;
     private var currentYPos: Int = 0;
-    private var wizardMoving: Bool = false;
+    private var unitMoving: Bool = false;
+    private var targetLocation: WorldPoint = new WorldPoint2D();
 
     public function new() {
     }
@@ -51,9 +52,11 @@ class Playground implements BaseObject {
     }
 
     private function onGameLoop():Void {
-        if(!wizardMoving) {
+        if(!unitMoving) {
             return;
         }
+        var xPos = targetLocation.x;
+        var yPos = targetLocation.z;
         if(xPos > currentXPos) {
             currentXPos++;
             if(currentXPos >= xPos) {
@@ -80,25 +83,25 @@ class Playground implements BaseObject {
         moveLastWizard(currentXPos, currentYPos);
 
         if(currentXPos == xPos && currentYPos == yPos) {
-            wizardMoving = false;
+            unitMoving = false;
         }
 
     }
 
     private function onDown(button:Int, x:Int, y:Int):Void {
         if(button == 0) {
-            if(lastWizard == null) {
+            if(lastUnit == null) {
                 createWizard(x, y);
             }
         } else {
-            xPos = x;
-            yPos = y;
+            currentXPos = Std.int(lastUnit.x);
+            currentYPos = Std.int(lastUnit.z);
 
-            var point: Point = gameWorld.worldToScreen(new WorldPoint2D(lastWizard.x, lastWizard.z));
-            currentXPos = Std.int(point.x);
-            currentYPos = Std.int(point.y);
+            targetLocation = gameWorld.screenToWorld(new Point(x, y));
 
-            wizardMoving = true;
+            unitMoving = true;
+
+            lastUnit.lookAt = targetLocation;
         }
     }
 
@@ -131,13 +134,16 @@ class Playground implements BaseObject {
 
     private inline function createWizard(x:Float, y:Float):Void {
         var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
-        lastWizard = objectCreator.createInstance(WizardGameObject);
-        gameWorld.addGameObject(lastWizard, worldPoint);
+        lastUnit = objectCreator.createInstance(NecroGameObject);
+        gameWorld.addGameObject(lastUnit, worldPoint);
+
+        var unitDisplay: NecroDisplay = cast gameWorld.getDisplayByGameObject(lastUnit);
+        lastUnit.display = unitDisplay;
     }
 
     private inline function moveLastWizard(x:Float, y:Float):Void {
-        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
-        gameWorld.moveItemTo(lastWizard, worldPoint);
+        var worldPoint: WorldPoint = new WorldPoint2D(x, y);
+        gameWorld.moveItemTo(lastUnit, worldPoint);
     }
 
 }

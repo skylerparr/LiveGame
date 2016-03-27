@@ -9,4 +9,9 @@ class Point {
         this.y = y;
     }
 
+    public static inline function distance(pt1: Point, pt2: Point): Float {
+        var dx = pt1.x - pt2.x;
+        var dy = pt1.y - pt2.y;
+        return Math.sqrt (dx * dx + dy * dy);
+    }
 }
