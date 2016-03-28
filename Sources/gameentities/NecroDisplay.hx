@@ -1,4 +1,5 @@
 package gameentities;
+import animation.Frame;
 import Reflect;
 import display.two.kha.KhaSprite;
 import core.ObjectCreator;
@@ -41,9 +42,9 @@ class NecroDisplay extends KhaSprite {
     private function createDisplay():Void {
         image = @await Assets.loadImage("necro_run");
 
-        var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);
-        wizard.imageData = image;
-        addChild(wizard);
+        var bitmap: BitmapNode = objectCreator.createInstance(BitmapNode);
+        bitmap.imageData = image;
+        addChild(bitmap);
 
         var poseIndex: String = "";
         for(i in 0...15) {
@@ -59,11 +60,15 @@ class NecroDisplay extends KhaSprite {
         animation = objectCreator.createInstance(Animation);
         animation.frameTime = 70;
         animation.frames = directions[0].frames;
-        animation.bitmap = wizard;
+        animation.bitmap = bitmap;
 
         animationController = objectCreator.createInstance(AnimationController);
         animationController.animation = animation;
         animationController.start();
+
+        var firstFrame: Frame = directions[0].frames[0];
+        bitmap.x = firstFrame.width * -0.5;
+        bitmap.y = firstFrame.height * -0.5;
     }
 
     public function setDirection(index: Int): Void {

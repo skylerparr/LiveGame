@@ -35,9 +35,10 @@ class Playground implements BaseObject {
     public var subscriber: Subscriber;
 
     private var lastUnit: NecroGameObject;
-    private var currentXPos: Int = 0;
-    private var currentYPos: Int = 0;
-    private var unitMoving: Bool = false;
+    private var currentXPos: Float = 0;
+    private var currentYPos: Float = 0;
+    private var rise: Float = 0;
+    private var run: Float = 0;
     private var targetLocation: WorldPoint = new WorldPoint2D();
 
     public function new() {
@@ -52,40 +53,19 @@ class Playground implements BaseObject {
     }
 
     private function onGameLoop():Void {
-        if(!unitMoving) {
+        if(lastUnit == null) {
             return;
         }
         var xPos = targetLocation.x;
         var yPos = targetLocation.z;
-        if(xPos > currentXPos) {
-            currentXPos++;
-            if(currentXPos >= xPos) {
-                currentXPos = Std.int(xPos);
-            }
-        } else {
-            currentXPos--;
-            if(currentXPos <= xPos) {
-                currentXPos = Std.int(xPos);
-            }
-        }
-        if(yPos > currentYPos) {
-            currentYPos++;
-            if(currentYPos >= yPos) {
-                currentYPos = Std.int(yPos);
-            }
-        } else {
-            currentYPos--;
-            if(currentYPos <= yPos) {
-                currentYPos = Std.int(yPos);
-            }
-        }
 
         moveLastWizard(currentXPos, currentYPos);
 
-        if(currentXPos == xPos && currentYPos == yPos) {
-            unitMoving = false;
-        }
+        currentXPos = lastUnit.x;
+        currentYPos = lastUnit.z;
 
+        rise = targetLocation.z - currentYPos;
+        run = targetLocation.x - currentXPos;
     }
 
     private function onDown(button:Int, x:Int, y:Int):Void {
@@ -94,14 +74,18 @@ class Playground implements BaseObject {
                 createWizard(x, y);
             }
         } else {
-            currentXPos = Std.int(lastUnit.x);
-            currentYPos = Std.int(lastUnit.z);
+            currentXPos = lastUnit.x;
+            currentYPos = lastUnit.z;
 
             targetLocation = gameWorld.screenToWorld(new Point(x, y));
 
-            unitMoving = true;
-
             lastUnit.lookAt = targetLocation;
+
+            rise = targetLocation.z - currentYPos;
+            run = targetLocation.x - currentXPos;
+
+            trace(rise / run);
+            trace(run / rise);
         }
     }
 
