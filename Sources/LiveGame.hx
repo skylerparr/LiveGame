@@ -43,7 +43,9 @@ class LiveGame {
     }
 
     private function onDown(x:Int, y:Int, z:Int):Void {
-        engaged = true;
+        if(x == 0) {
+            engaged = true;
+        }
     }
 
     private function onUp(x:Int, y:Int, z:Int):Void {

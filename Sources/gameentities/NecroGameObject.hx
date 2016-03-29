@@ -17,7 +17,7 @@ class NecroGameObject extends WizardGameObject {
         var direction: Float = MathUtil.getDirectionInDegrees(worldPoint, value);
         direction = (direction + 180) % 360;
         var distanceBetweenDirections: Float = 360 / display.totalDirections;
-        var animationDirection: UInt = Std.int(direction / distanceBetweenDirections);
+        var animationDirection: UInt = Std.int((direction + (distanceBetweenDirections * 0.5)) / distanceBetweenDirections);
         display.setDirection(animationDirection);
 
         return value;
