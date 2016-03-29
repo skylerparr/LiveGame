@@ -51,7 +51,7 @@ class Kha2DRendererTest {
         container.addChild(bitmap);
 
         khaRenderer.render();
-        bitmap.imageData.verify();
+        bitmap.imageData.verify(2);
         bitmap.x.verify();
         bitmap.y.verify();
         bitmap.sx.verify();
@@ -60,6 +60,30 @@ class Kha2DRendererTest {
         bitmap.sh.verify();
 
         graphics.drawSubImage(imageData, 10, 20, 30, 40, 50, 60).verify();
+    }
+
+    @Test
+    public function shouldNotThrowExceptionIfBitmapImageDataIsNull(): Void {
+        var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        bitmap.imageData.returns(null);
+        bitmap.x.returns(10);
+        bitmap.y.returns(20);
+        bitmap.sx.returns(30);
+        bitmap.sy.returns(40);
+        bitmap.sw.returns(50);
+        bitmap.sh.returns(60);
+        container.addChild(bitmap);
+
+        khaRenderer.render();
+        bitmap.imageData.verify(1);
+        bitmap.x.verify(0);
+        bitmap.y.verify(0);
+        bitmap.sx.verify(0);
+        bitmap.sy.verify(0);
+        bitmap.sw.verify(0);
+        bitmap.sh.verify(0);
+
+        graphics.drawSubImage(null, 10, 20, 30, 40, 50, 60).verify(0);
     }
 
     @Test
@@ -91,6 +115,8 @@ class Kha2DRendererTest {
     @Test
     public function shouldHoldContainerOfKhaSprite(): Void {
         var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        var imageData: Dynamic = {};
+        bitmap.imageData.returns(imageData);
         var textField: KhaTextFieldNode = createTextField();
         var child: KhaSprite = mock(KhaSprite);
         child.children.returns([textField, bitmap]);
@@ -110,6 +136,8 @@ class Kha2DRendererTest {
     @Test
     public function shouldOffsetChildrenFromParent(): Void {
         var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        var imageData: Dynamic = {};
+        bitmap.imageData.returns(imageData);
         bitmap.x.returns(1);
         bitmap.y.returns(2);
 
@@ -134,6 +162,8 @@ class Kha2DRendererTest {
         container.y = 35;
 
         var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        var imageData: Dynamic = {};
+        bitmap.imageData.returns(imageData);
         bitmap.x.returns(1);
         bitmap.y.returns(2);
 

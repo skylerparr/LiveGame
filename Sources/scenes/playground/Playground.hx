@@ -1,4 +1,6 @@
 package scenes.playground;
+import constants.Poses;
+import util.MathUtil;
 import gameentities.NecroDisplay;
 import gameentities.NecroGameObject;
 import geom.Point;
@@ -35,8 +37,6 @@ class Playground implements BaseObject {
     public var subscriber: Subscriber;
 
     private var lastUnit: NecroGameObject;
-    private var currentXPos: Float = 0;
-    private var currentYPos: Float = 0;
     private var rise: Float = 0;
     private var run: Float = 0;
     private var targetLocation: WorldPoint = new WorldPoint2D();
@@ -56,16 +56,29 @@ class Playground implements BaseObject {
         if(lastUnit == null) {
             return;
         }
-        var xPos = targetLocation.x;
-        var yPos = targetLocation.z;
 
-        moveLastWizard(currentXPos, currentYPos);
+        if(between(invert(run), invert(rise))) {
+            moveLastWizard(targetLocation.x, targetLocation.z);
+            lastUnit.setPose(Poses.IDLE);
+            return;
+        }
 
-        currentXPos = lastUnit.x;
-        currentYPos = lastUnit.z;
+        moveLastWizard(lastUnit.x + run, lastUnit.z + rise);
+    }
 
-        rise = targetLocation.z - currentYPos;
-        run = targetLocation.x - currentXPos;
+    private inline function invert(value: Float): Float {
+        if(value < 0) {
+            value = -value;
+        }
+        return value;
+    }
+
+    private inline function between(_run: Float, _rise: Float):Bool {
+        return (lastUnit.x >= targetLocation.x - _run) &&
+            (lastUnit.x <= targetLocation.x + _run) &&
+            (lastUnit.z >= targetLocation.z - _rise) &&
+            (lastUnit.z <= targetLocation.z + _rise);
+
     }
 
     private function onDown(button:Int, x:Int, y:Int):Void {
@@ -74,18 +87,20 @@ class Playground implements BaseObject {
                 createWizard(x, y);
             }
         } else {
-            currentXPos = lastUnit.x;
-            currentYPos = lastUnit.z;
-
+            if(lastUnit == null) {
+                return;
+            }
             targetLocation = gameWorld.screenToWorld(new Point(x, y));
 
             lastUnit.lookAt = targetLocation;
 
-            rise = targetLocation.z - currentYPos;
-            run = targetLocation.x - currentXPos;
+            var velocity: Float = 40 * 1 / 60;
+            var angle: Float = MathUtil.getDirectionInDegrees(lastUnit.worldPoint, targetLocation) - 90;
 
-            trace(rise / run);
-            trace(run / rise);
+            run = Math.cos(MathUtil.degreesToRadians(angle)) * velocity;
+            rise = Math.sin(MathUtil.degreesToRadians(angle)) * velocity;
+
+            lastUnit.setPose(Poses.RUN);
         }
     }
 

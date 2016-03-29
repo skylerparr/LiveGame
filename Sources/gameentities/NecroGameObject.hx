@@ -1,4 +1,5 @@
 package gameentities;
+import constants.Poses;
 import util.MathUtil;
 import geom.Point;
 import world.two.WorldPoint2D;
@@ -21,6 +22,10 @@ class NecroGameObject extends WizardGameObject {
         display.setDirection(animationDirection);
 
         return value;
+    }
+
+    public function setPose(pose: Poses): Void {
+        display.setPose(pose);
     }
 
 }

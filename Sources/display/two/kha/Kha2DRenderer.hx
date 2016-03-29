@@ -39,8 +39,10 @@ class Kha2DRenderer implements Renderer {
             } else {
                 if(Std.is(child, KhaBitmapNode)) {
                     var bitmap: KhaBitmapNode = cast child;
-                    graphics.drawSubImage(bitmap.imageData, bitmap.x + xPos, bitmap.y + yPos, bitmap.sx, bitmap.sy,
+                    if(bitmap.imageData != null) {
+                        graphics.drawSubImage(bitmap.imageData, bitmap.x + xPos, bitmap.y + yPos, bitmap.sx, bitmap.sy,
                         bitmap.sw, bitmap.sh);
+                    }
                 } else {
                     var textField: KhaTextFieldNode = cast child;
                     graphics.fontSize = textField.fontSize;
