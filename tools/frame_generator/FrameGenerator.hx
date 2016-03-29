@@ -30,8 +30,8 @@ class FrameGenerator {
 
         prefix = args[2];
 
-        var frameWidth: UInt = Std.int(imageWidth / framesWide);
-        var frameHeight: UInt = Std.int(imageHeight / framesHigh);
+        var frameWidth: UInt = Math.round(imageWidth / framesWide);
+        var frameHeight: UInt = Math.round(imageHeight / framesHigh);
 
         for(j in 0...framesHigh) {
             var frames: Array<Dynamic> = [];
