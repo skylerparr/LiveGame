@@ -8,21 +8,21 @@ class FrameGenerator {
     private static var imageWidth: UInt;
     private static var imageHeight: UInt;
 
-    private static var frameWidth: UInt;
-    private static var frameHeight: UInt;
+    private static var framesWide: UInt;
+    private static var framesHigh: UInt;
 
     private static var prefix: String;
 
     public static function main() {
         var args: Array<String> = Sys.args();
         if(args.length != 3) {
-            trace("must specify frame dimensions (WxH) and image dimensions (WxH) and prefix");
+            trace("must specify number of frames wide and number of frame high (nWxnH) and image dimensions (WxH) and prefix");
             return;
         }
 
         var frameDimensions: Array<String> = args[0].split("x");
-        frameWidth = Std.parseInt(frameDimensions[0]);
-        frameHeight = Std.parseInt(frameDimensions[1]);
+        framesWide = Std.parseInt(frameDimensions[0]);
+        framesHigh = Std.parseInt(frameDimensions[1]);
 
         var imageDimensions: Array<String> = args[1].split("x");
         imageWidth = Std.parseInt(imageDimensions[0]);
@@ -30,12 +30,12 @@ class FrameGenerator {
 
         prefix = args[2];
 
-        var numberOfFramesWide: UInt = Std.int(imageWidth / frameWidth);
-        var numberOfDirections: UInt = Std.int(imageHeight / frameHeight);
+        var frameWidth: UInt = Std.int(imageWidth / framesWide);
+        var frameHeight: UInt = Std.int(imageHeight / framesHigh);
 
-        for(j in 0...numberOfDirections) {
+        for(j in 0...framesHigh) {
             var frames: Array<Dynamic> = [];
-            for(i in 0...numberOfFramesWide) {
+            for(i in 0...framesWide) {
                 frames.push({frame: {x: frameWidth * i, y: j * frameHeight, w: frameWidth, h: frameHeight}});
             }
             var pose: Dynamic = {frames: frames};
