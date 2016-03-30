@@ -1,4 +1,6 @@
 package scenes.playground;
+import input.kha.KhaKeyboardInputSourceListener;
+import input.KeyboardInputSourceListener;
 import constants.Poses;
 import util.MathUtil;
 import gameentities.NecroDisplay;
@@ -50,6 +52,8 @@ class Playground implements BaseObject {
         });
 
         subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onGameLoop);
+
+        objectCreator.createInstance(KhaKeyboardInputSourceListener);
     }
 
     private function onGameLoop():Void {

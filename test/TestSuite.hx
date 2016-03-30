@@ -10,6 +10,7 @@ import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
 import geom.RectangleTest;
+import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
 import util.MappedSubscriberTest;
 import world.two.GameWorld2DTest;
@@ -38,6 +39,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
 		add(geom.RectangleTest);
+		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);
 		add(util.MappedSubscriberTest);
 		add(world.two.GameWorld2DTest);

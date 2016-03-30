@@ -1,5 +1,6 @@
 package input;
-interface PointingInputSourceListener {
+import core.BaseObject;
+interface PointingInputSourceListener extends BaseObject {
     function onToolDeactivated( tool: PointingTool ): Void;
 
     /**
