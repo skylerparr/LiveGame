@@ -1,4 +1,7 @@
 package;
+import kha.audio1.AudioChannel;
+import kha.audio1.Audio;
+import kha.Sound;
 import kha.input.Mouse;
 import world.ViewPort;
 import constants.EventNames;
@@ -36,10 +39,18 @@ class LiveGame {
     private var engaged: Bool;
     private var dirty: Bool;
 
+    private var audioChannel: AudioChannel;
+
     public function new() {
         backbuffer = Image.createRenderTarget(800, 600);
 
+        Assets.loadSound("song_2", onSongLoaded);
+
         Mouse.get().notify(onDown, onUp, onMove, null);
+    }
+
+    private function onSongLoaded(sound):Void {
+        audioChannel = Audio.play(sound, true);
     }
 
     private function onDown(x:Int, y:Int, z:Int):Void {
@@ -92,6 +103,11 @@ class LiveGame {
 
             xPos = 0;
             yPos = 0;
+
+            audioChannel.volume -= 0.0002;
+            if(audioChannel.volume <= 0) {
+                audioChannel.volume = 0;
+            }
         }
 
         var g = backbuffer.g2;

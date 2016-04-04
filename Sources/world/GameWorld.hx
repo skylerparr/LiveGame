@@ -42,7 +42,7 @@ interface GameWorld extends BaseObject {
     function getDisplayByGameObject(gameObject: WorldEntity): DisplayNode;
 
     /**
-     * currently playable area, extends passed viewport
+     * current playable area, extends passed viewport
      */
     var totalWidth(get, null): Float;
 
