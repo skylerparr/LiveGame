@@ -27,6 +27,8 @@ class KhaKeyboardInputSourceListener implements BaseObject {
     }
 
     public function onKeyUp(key: #if test input.kha.MockKeyboardKey #else kha.Key #end, char:String):Void {
+        keyEvent.key = char;
+        gameInputTools.keyboardTool.onKeyUp(keyEvent);
     }
 
     #if test
