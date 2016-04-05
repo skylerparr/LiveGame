@@ -44,7 +44,7 @@ class LiveGame {
     public function new() {
         backbuffer = Image.createRenderTarget(800, 600);
 
-        Assets.loadSound("song_2", onSongLoaded);
+        Assets.loadSound("song_1", onSongLoaded);
 
         Mouse.get().notify(onDown, onUp, onMove, null);
     }

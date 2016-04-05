@@ -12,6 +12,7 @@ import display.two.TwoDimDisplayNodeContainerTest;
 import geom.RectangleTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
+import sound.kha.KhaSoundHandleTest;
 import util.MappedSubscriberTest;
 import world.two.GameWorld2DTest;
 import world.two.ViewPort2DTest;
@@ -41,6 +42,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(geom.RectangleTest);
 		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);
+		add(sound.kha.KhaSoundHandleTest);
 		add(util.MappedSubscriberTest);
 		add(world.two.GameWorld2DTest);
 		add(world.two.ViewPort2DTest);
