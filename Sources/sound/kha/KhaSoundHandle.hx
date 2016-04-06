@@ -8,6 +8,17 @@ import kha.audio1.AudioChannel;
 #end
 class KhaSoundHandle implements SoundHandle {
 
+    private inline static var EVENT_PLAY: String = "soundPlay";
+    private inline static var EVENT_STOP: String = "soundStop";
+    private inline static var EVENT_PAUSE: String = "soundPause";
+    private inline static var EVENT_FINISH: String = "soundFinish";
+
+    private inline static var STATE_INIT: Int = 0;
+    private inline static var STATE_PLAYING: Int = 1;
+    private inline static var STATE_STOPPED: Int = 2;
+    private inline static var STATE_PAUSED: Int = 3;
+    private inline static var STATE_FINISHED: Int = 4;
+
     @inject
     public var objectCreator: ObjectCreator;
     
@@ -19,9 +30,10 @@ class KhaSoundHandle implements SoundHandle {
 
     public var length(get, null):Float;
 
-    private var sound: AudioChannel;
-    private var isPlaying: Bool = false;
-    private var mappedSubscriber: MappedSubscriber;
+    public var sound: AudioChannel;
+    public var mappedSubscriber: MappedSubscriber;
+
+    public var currentState: Int = STATE_INIT;
 
     public function new(sound: AudioChannel) {
         this.sound = sound;
@@ -69,7 +81,7 @@ class KhaSoundHandle implements SoundHandle {
     }
 
     public function init():Void {
-//        mappedSubscriber = objectCreator.createInstance(MappedSubscriber);
+        mappedSubscriber = objectCreator.createInstance(MappedSubscriber);
     }
 
     public function dispose():Void {
@@ -79,48 +91,85 @@ class KhaSoundHandle implements SoundHandle {
         if(isLoadedAndPlaying()) {
             return;
         }
-        isPlaying = true;
+        currentState = STATE_PLAYING;
         sound.play();
+        mappedSubscriber.notify(EVENT_PLAY, null);
     }
 
     public function pause():Void {
-        if(!isPlaying) {
+        if(!isPlaying()) {
             return;
         }
-        isPlaying = false;
+        currentState = STATE_PAUSED;
         sound.pause();
+        mappedSubscriber.notify(EVENT_PAUSE, null);
     }
 
     public function resume():Void {
-        if(isLoadedAndPlaying()) {
+        if(isLoadedAndPlaying() || currentState == STATE_INIT) {
             return;
         }
+        currentState = STATE_PLAYING;
         sound.play();
-    }
-
-    private inline function isLoadedAndPlaying():Bool {
-        return (sound == null || isPlaying);
+        mappedSubscriber.notify(EVENT_PLAY, null);
     }
 
     public function stop():Void {
-        if(!isPlaying) {
+        if(!isPlaying()) {
             return;
         }
+        currentState = STATE_STOPPED;
         sound.stop();
+        sound = null;
+        mappedSubscriber.notify(EVENT_STOP, null);
     }
 
-    public function onPlay(callback: Void->Void):Void {
-        trace(mappedSubscriber);
-//        mappedSubscriber.subscribe("playSound", callback);
+    private inline function isLoadedAndPlaying():Bool {
+        return sound == null || isPlaying();
     }
 
-    public function onPause(callback: Void->Void):Void {
+    private inline function isPlaying(): Bool {
+        return currentState == STATE_PLAYING;
     }
 
-    public function onStop(callback: Void->Void):Void {
+    public function subscribeOnPlay(callback:Void -> Void):Void {
+        mappedSubscriber.subscribe(EVENT_PLAY, callback);
     }
 
-    public function onFinish(callback: Void->Void):Void {
+    public function subscribeOnPause(callback:Void -> Void):Void {
+        mappedSubscriber.subscribe(EVENT_PAUSE, callback);
+    }
+
+    public function subscribeOnStop(callback:Void -> Void):Void {
+        mappedSubscriber.subscribe(EVENT_STOP, callback);
+    }
+
+    public function subscribeOnFinish(callback:Void -> Void):Void {
+        mappedSubscriber.subscribe(EVENT_FINISH, callback);
+    }
+
+    public function unsubscribeOnPlay(callback:Void -> Void):Void {
+        mappedSubscriber.unsubscribe(EVENT_PLAY, callback);
+    }
+
+    public function unsubscribeOnPause(callback:Void -> Void):Void {
+        mappedSubscriber.unsubscribe(EVENT_PAUSE, callback);
+    }
+
+    public function unsubscribeOnStop(callback:Void -> Void):Void {
+        mappedSubscriber.unsubscribe(EVENT_STOP, callback);
+    }
+
+    public function unsubscribeOnFinish(callback:Void -> Void):Void {
+        mappedSubscriber.unsubscribe(EVENT_FINISH, callback);
+    }
+
+    public function onUpdate(): Void {
+        if(sound != null && sound.finished && currentState != STATE_FINISHED) {
+            currentState = STATE_FINISHED;
+            sound = null;
+            mappedSubscriber.notify(EVENT_FINISH, null);
+        }
     }
 
 }

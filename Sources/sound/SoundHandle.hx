@@ -10,8 +10,13 @@ interface SoundHandle extends BaseObject {
     function resume(): Void;
     function stop(): Void;
 
-    function onPlay(callback: Void->Void): Void;
-    function onPause(callback: Void->Void): Void;
-    function onStop(callback: Void->Void): Void;
-    function onFinish(callback: Void->Void): Void;
+    function subscribeOnPlay(callback: Void->Void): Void;
+    function subscribeOnPause(callback: Void->Void): Void;
+    function subscribeOnStop(callback: Void->Void): Void;
+    function subscribeOnFinish(callback: Void->Void): Void;
+
+    function unsubscribeOnPlay(callback: Void->Void): Void;
+    function unsubscribeOnPause(callback: Void->Void): Void;
+    function unsubscribeOnStop(callback: Void->Void): Void;
+    function unsubscribeOnFinish(callback: Void->Void): Void;
 }

@@ -1,5 +1,6 @@
 package sound.kha;
 
+import mockatoo.Mock;
 import util.EventNotifier;
 import util.MappedSubscriber;
 import util.Subscriber;
@@ -30,12 +31,12 @@ class KhaSoundHandleTest {
     public function setup():Void {
         objectCreator = mock(ObjectCreator);
         subscriber = new MappedSubscriber();
-//        subscriber.init();
-//        objectCreator.createInstance(MappedSubscriber).returns(subscriber);
+        subscriber.init();
+        objectCreator.createInstance(MappedSubscriber).returns(subscriber);
         sound = mock(AudioChannel);
 
         soundHandle = new KhaSoundHandle(sound);
-//        soundHandle.objectCreator = objectCreator;
+        soundHandle.objectCreator = objectCreator;
         soundHandle.init();
     }
 
@@ -184,19 +185,243 @@ class KhaSoundHandleTest {
         Assert.isTrue(true);
     }
 
-//    @Test
-//    public function shouldCallStartHandlerWhenMusicStarts(): Void {
-//        soundHandle.onPlay(function(): Void {
-//
-//        });
-//        soundHandle.play();
-//
-//        subscriber.subscribe("soundPlayed", cast any).verify();
-//        subscriber.notify("soundPlayed", null).verify();
-//    }
+    @Test
+    public function shouldCallStartHandlerWhenMusicStarts(): Void {
+        var callbackCalled: Bool = false;
+        soundHandle.subscribeOnPlay(function(): Void {
+            callbackCalled = true;
+        });
+        soundHandle.play();
+        Assert.isTrue(callbackCalled);
+    }
+
+    @Test
+    public function shouldNotCallPlayHandlerIfUnsubscribed(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPlay(callback);
+        soundHandle.play();
+        soundHandle.unsubscribeOnPlay(callback);
+        soundHandle.pause();
+        soundHandle.play();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldCallPauseHandler(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPause(callback);
+        soundHandle.play();
+        soundHandle.pause();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldNotCallPauseHandlerIfNotSubscribed(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPause(callback);
+        soundHandle.play();
+        soundHandle.pause();
+        soundHandle.unsubscribeOnPause(callback);
+        soundHandle.play();
+        soundHandle.pause();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+    
+    @Test
+    public function shouldCallStopHandler(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnStop(callback);
+        soundHandle.play();
+        soundHandle.stop();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+    
+    @Test
+    public function shouldNotCallStopHandlerIfNotSubscribed(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnStop(callback);
+        soundHandle.play();
+        soundHandle.stop();
+        soundHandle.unsubscribeOnStop(callback);
+        soundHandle.play();
+        soundHandle.stop();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldCallPlayHandlerIfResumeIsInvoked(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.play();
+        soundHandle.subscribeOnPlay(callback);
+        soundHandle.pause();
+        soundHandle.resume();
+        soundHandle.unsubscribeOnPlay(callback);
+        soundHandle.pause();
+        soundHandle.resume();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldCallFinishedHandler(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnFinish(callback);
+        soundHandle.play();
+        sound.finished.returns(false);
+
+        soundHandle.onUpdate();
+        Assert.areEqual(0, callbackCalledCount);
+
+        Mockatoo.reset(sound);
+        sound.finished.returns(true);
+        soundHandle.onUpdate();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldNotCallFinishedHandlerIfUnsubscribed(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnFinish(callback);
+        soundHandle.play();
+        sound.finished.returns(true);
+
+        soundHandle.onUpdate();
+        Assert.areEqual(1, callbackCalledCount);
+
+        Mockatoo.reset(sound);
+        sound.finished.returns(true);
+        soundHandle.unsubscribeOnFinish(callback);
+        soundHandle.onUpdate();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldNotCallFinishedEventMoreThanOnce(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnFinish(callback);
+        soundHandle.play();
+        sound.finished.returns(true);
+
+        soundHandle.onUpdate();
+        Assert.areEqual(1, callbackCalledCount);
+
+        Mockatoo.reset(sound);
+        sound.finished.returns(true);
+        soundHandle.onUpdate();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldNotPauseIfStopped(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPause(callback);
+        soundHandle.play();
+        soundHandle.stop();
+        soundHandle.pause();
+
+        Assert.areEqual(0, callbackCalledCount);
+    }
+    
+    @Test
+    public function shouldNotBeAbleToRestartIfStopped(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPlay(callback);
+        soundHandle.play();
+        soundHandle.stop();
+        soundHandle.resume();
+
+        soundHandle.onUpdate();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldNotResumeIfHasNotBeenPlayed(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPlay(callback);
+        soundHandle.resume();
+
+        Assert.areEqual(0, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldNotResumeIfStopped(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPlay(callback);
+        soundHandle.play();
+        soundHandle.stop();
+        soundHandle.resume();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
+
+    @Test
+    public function shouldNotPlayIfAlreadyFinished(): Void {
+        var callbackCalledCount: Int = 0;
+        var callback: Void->Void = function(): Void {
+            callbackCalledCount++;
+        }
+        soundHandle.subscribeOnPlay(callback);
+        soundHandle.play();
+
+        sound.finished.returns(true);
+        soundHandle.onUpdate();
+
+        soundHandle.play();
+
+        Assert.areEqual(1, callbackCalledCount);
+    }
 
     private function initializeWithNull():Void {
         soundHandle = new KhaSoundHandle(null);
+        soundHandle.objectCreator = objectCreator;
         soundHandle.init();
     }
 }
