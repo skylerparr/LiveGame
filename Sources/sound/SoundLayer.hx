@@ -1,9 +1,14 @@
 package sound;
-interface SoundLayer {
+import core.BaseObject;
+interface SoundLayer extends BaseObject {
     var volume(get, set): Float;
+    var allSounds(get, null): Array<SoundHandle>;
 
-    function play(name: String): SoundHandle;
+    function play(): Void;
     function pause(): Void;
     function resume(): Void;
     function stop(): Void;
+
+    function addSound(sound: SoundHandle): Void;
+    function removeSound(sound: SoundHandle): Void;
 }
