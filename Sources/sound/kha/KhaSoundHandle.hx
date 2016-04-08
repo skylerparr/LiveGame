@@ -82,6 +82,7 @@ class KhaSoundHandle implements SoundHandle {
 
     public function init():Void {
         mappedSubscriber = objectCreator.createInstance(MappedSubscriber);
+        volume = 1;
     }
 
     public function dispose():Void {

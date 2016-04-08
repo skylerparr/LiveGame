@@ -38,6 +38,8 @@ class KhaSoundHandleTest {
         soundHandle = new KhaSoundHandle(sound);
         soundHandle.objectCreator = objectCreator;
         soundHandle.init();
+
+        Mockatoo.reset(sound);
     }
 
     @After
@@ -164,7 +166,7 @@ class KhaSoundHandleTest {
     }
 
     @Test
-    public function shouldNotSetVolumePassed1(): Void {
+    public function shouldNotSetVolumeAbove1(): Void {
         soundHandle.volume = 321.23;
         sound.set_volume(1).verify();
     }

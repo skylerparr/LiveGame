@@ -1,5 +1,7 @@
 package sound;
 
+import util.MappedSubscriber;
+import core.ObjectCreator;
 import sound.kha.mocks.MockSoundHandle;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
@@ -12,9 +14,11 @@ using mockatoo.Mockatoo;
 class SoundLayerContainerTest {
 
     private var soundLayer: SoundLayerContainer;
-    private var soundHandle: SoundHandle = mock(MockSoundHandle);
-    private var soundHandle1: SoundHandle = mock(MockSoundHandle);
-    private var soundHandle2: SoundHandle = mock(MockSoundHandle);
+    private var soundHandle: SoundHandle;
+    private var soundHandle1: SoundHandle;
+    private var soundHandle2: SoundHandle;
+    private var objectCreator: ObjectCreator;
+    private var subscriber: MappedSubscriber;
 
     public function new() {
 
@@ -26,8 +30,19 @@ class SoundLayerContainerTest {
         soundHandle1 = mock(MockSoundHandle);
         soundHandle2 = mock(MockSoundHandle);
 
+        objectCreator = mock(ObjectCreator);
+        subscriber = new MappedSubscriber();
+        subscriber.init();
+
+        objectCreator.createInstance(MappedSubscriber).returns(subscriber);
+
         soundLayer = new SoundLayerContainer();
+        soundLayer.objectCreator = objectCreator;
         soundLayer.init();
+
+        Mockatoo.reset(soundHandle);
+        Mockatoo.reset(soundHandle1);
+        Mockatoo.reset(soundHandle2);
     }
 
     @After
@@ -210,6 +225,82 @@ class SoundLayerContainerTest {
         soundHandle.resume().verify(0);
         soundHandle1.resume().verify(0);
         soundHandle2.resume().verify(0);
+    }
+
+    @Test
+    public function shouldSetTheVolumeOnAllSoundHandles(): Void {
+        addAllSounds();
+
+        soundLayer.volume= 0.8;
+
+        soundHandle.set_volume(0.8).verify();
+        soundHandle1.set_volume(0.8).verify();
+        soundHandle2.set_volume(0.8).verify();
+    }
+    
+    @Test
+    public function shouldNotBeAbleToSetTheVolumeAbove1(): Void {
+        addAllSounds();
+
+        soundLayer.volume= 15;
+
+        soundHandle.set_volume(1).verify();
+        soundHandle1.set_volume(1).verify();
+        soundHandle2.set_volume(1).verify();
+    }
+
+    @Test
+    public function shouldNotBeAbleToSetTheVolumeBelow0(): Void {
+        addAllSounds();
+
+        soundLayer.volume= -15;
+
+        soundHandle.set_volume(0).verify();
+        soundHandle1.set_volume(0).verify();
+        soundHandle2.set_volume(0).verify();
+    }
+
+    @Test
+    public function shouldSubscribeToVolumeChange(): Void {
+        addAllSounds();
+        var callbackCount: Int = 0;
+        soundLayer.subscribeToVolumeChange(function(sl: SoundLayer): Void {
+            callbackCount++;
+            Assert.areEqual(soundLayer, sl);
+        });
+
+        soundLayer.volume = 0.5;
+        Assert.areEqual(1, callbackCount);
+    }
+
+    @Test
+    public function shouldUnsubscribeFromVolumeChange(): Void {
+        addAllSounds();
+        var callbackCount: Int = 0;
+        var callback: SoundLayer->Void = function(sl: SoundLayer): Void {
+            callbackCount++;
+            Assert.areEqual(soundLayer, sl);
+        };
+
+        soundLayer.subscribeToVolumeChange(callback);
+        soundLayer.volume = 0.5;
+
+        soundLayer.unsubscribeFromVolumeChange(callback);
+        soundLayer.volume = 0.75;
+
+        Assert.areEqual(1, callbackCount);
+    }
+
+    @Test
+    public function shouldRemoveAllSounds(): Void {
+        addAllSounds();
+        soundLayer.play();
+        soundLayer.removeAll();
+        Assert.areEqual(0, soundLayer.allSounds.length);
+
+        soundHandle.pause().verify();
+        soundHandle1.pause().verify();
+        soundHandle2.pause().verify();
     }
 
     private inline function addAllSounds():Void {

@@ -1,4 +1,6 @@
 package sound;
+import util.MappedSubscriber;
+import core.ObjectCreator;
 class SoundLayerContainer implements SoundLayer {
 
     private inline static var STATE_INIT: Int = 0;
@@ -6,13 +8,26 @@ class SoundLayerContainer implements SoundLayer {
     private inline static var STATE_STOPPED: Int = 2;
     private inline static var STATE_PAUSED: Int = 3;
 
+    private inline static var VOLUME_CHANGE: String = "volumeChange";
+
     @:isVar
     public var volume(get, set):Float;
     public var allSounds(get, null):Array<SoundHandle>;
 
+    @inject
+    public var objectCreator: ObjectCreator;
+    public var subscriber: MappedSubscriber;
+    
     public var currentState: Int = STATE_INIT;
 
     public function set_volume(value:Float) {
+        if(value > 1) {
+            value = 1;
+        }
+        if(value < 0) {
+            value = 0;
+        }
+        setAllVolumes(value);
         return this.volume = value;
     }
 
@@ -24,11 +39,20 @@ class SoundLayerContainer implements SoundLayer {
         return allSounds;
     }
 
+    private inline function setAllVolumes(value: Float): Void {
+        for(sound in allSounds) {
+            sound.volume = value;
+        }
+        subscriber.notify(VOLUME_CHANGE, [this]);
+    }
+
     public function new() {
     }
 
     public function init():Void {
         allSounds = [];
+        subscriber = objectCreator.createInstance(MappedSubscriber);
+        volume = 1;
     }
 
     public function dispose():Void {
@@ -95,6 +119,20 @@ class SoundLayerContainer implements SoundLayer {
         if(currentState == STATE_PLAYING) {
             sound.pause();
         }
+    }
+
+    public function removeAll():Void {
+        while(allSounds.length > 0) {
+            removeSound(allSounds[0]);
+        }
+    }
+
+    public function subscribeToVolumeChange(callback:SoundLayer->Void):Void {
+        subscriber.subscribe(VOLUME_CHANGE, callback);
+    }
+
+    public function unsubscribeFromVolumeChange(callback:SoundLayer->Void):Void {
+        subscriber.unsubscribe(VOLUME_CHANGE, callback);
     }
 
 }

@@ -11,4 +11,8 @@ interface SoundLayer extends BaseObject {
 
     function addSound(sound: SoundHandle): Void;
     function removeSound(sound: SoundHandle): Void;
+    function removeAll(): Void;
+
+    function subscribeToVolumeChange(callback: SoundLayer->Void): Void;
+    function unsubscribeFromVolumeChange(callback: SoundLayer->Void): Void;
 }

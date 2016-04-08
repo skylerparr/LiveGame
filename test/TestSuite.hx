@@ -13,6 +13,7 @@ import geom.RectangleTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
 import sound.kha.KhaSoundHandleTest;
+import sound.SimpleSoundManagerTest;
 import sound.SoundLayerContainerTest;
 import util.MappedSubscriberTest;
 import world.two.GameWorld2DTest;
@@ -44,6 +45,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);
 		add(sound.kha.KhaSoundHandleTest);
+		add(sound.SimpleSoundManagerTest);
 		add(sound.SoundLayerContainerTest);
 		add(util.MappedSubscriberTest);
 		add(world.two.GameWorld2DTest);
