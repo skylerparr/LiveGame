@@ -156,6 +156,16 @@ class KhaMouseInputSourceTest {
         Assert.areEqual(10, pointerEvent.screenX);
         Assert.areEqual(20, pointerEvent.screenY);
     }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        mouseInput.dispose();
+
+        objectCreator.disposeInstance(pointerEvent).verify();
+        Assert.isNull(mouseInput.objectCreator);
+        Assert.isNull(mouseInput.gameInputTools);
+        Assert.isNull(mouseInput.pointerEvent);
+    }
 }
 
 class MockGameInputTools implements GameInputTools {

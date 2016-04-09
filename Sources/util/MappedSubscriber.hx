@@ -12,7 +12,7 @@ class MappedSubscriber implements Subscriber implements EventNotifier {
     }
 
     public function dispose():Void {
-
+        subscriptions = null;
     }
 
     public function subscribe(event:String, handler: Dynamic):Void {

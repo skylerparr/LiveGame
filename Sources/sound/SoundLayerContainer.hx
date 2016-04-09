@@ -56,6 +56,11 @@ class SoundLayerContainer implements SoundLayer {
     }
 
     public function dispose():Void {
+        removeAll();
+        objectCreator.disposeInstance(subscriber);
+        objectCreator = null;
+        subscriber = null;
+        allSounds = null;
     }
 
     public inline function isPlaying(): Bool {

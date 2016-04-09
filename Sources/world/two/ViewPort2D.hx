@@ -43,6 +43,10 @@ class ViewPort2D implements ViewPort {
     }
 
     public function dispose():Void {
+        dimension = null;
+        container = null;
+        notifier = null;
+        subscriber = null;
     }
 
     function get_container():DisplayNodeContainer {

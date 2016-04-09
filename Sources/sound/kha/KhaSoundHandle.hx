@@ -33,7 +33,7 @@ class KhaSoundHandle implements SoundHandle {
     public var sound: AudioChannel;
     public var mappedSubscriber: MappedSubscriber;
 
-    public var currentState: Int = STATE_INIT;
+    public var currentState: Int;
 
     public function new(sound: AudioChannel) {
         this.sound = sound;
@@ -81,11 +81,20 @@ class KhaSoundHandle implements SoundHandle {
     }
 
     public function init():Void {
+        currentState = STATE_INIT;
         mappedSubscriber = objectCreator.createInstance(MappedSubscriber);
         volume = 1;
     }
 
     public function dispose():Void {
+        mappedSubscriber.unsubscribeAll(EVENT_PLAY);
+        mappedSubscriber.unsubscribeAll(EVENT_FINISH);
+        mappedSubscriber.unsubscribeAll(EVENT_PAUSE);
+        mappedSubscriber.unsubscribeAll(EVENT_STOP);
+        objectCreator.disposeInstance(mappedSubscriber);
+        objectCreator = null;
+        mappedSubscriber = null;
+        sound = null;
     }
 
     public function play():Void {

@@ -114,4 +114,14 @@ class ViewPort2DTest {
         Assert.areEqual(-10, viewPort.container.x);
         Assert.areEqual(-20, viewPort.container.y);
     }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        viewPort.dispose();
+
+        Assert.isNull(viewPort.subscriber);
+        Assert.isNull(viewPort.dimension);
+        Assert.isNull(viewPort.notifier);
+        Assert.isNull(viewPort.container);
+    }
 }

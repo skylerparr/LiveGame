@@ -18,6 +18,8 @@ class TypeResolvedEntityFactory implements EntityFactory {
     }
 
     public function dispose():Void {
+        objectCreator = null;
+        entityMap = null;
     }
 
     public function mapTypeToType(typeA: Class<Dynamic>, typeB: Class<Dynamic>): Void {

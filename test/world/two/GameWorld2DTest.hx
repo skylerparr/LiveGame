@@ -370,7 +370,22 @@ class GameWorld2DTest {
 
     }
 
-    private function getGameObjectCount(): UInt {
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        gameWorld.dispose();
+
+        Assert.isNull(gameWorld.viewPort);
+        Assert.isNull(gameWorld.layerManger);
+        Assert.isNull(gameWorld.entityFactory);
+        Assert.isNull(gameWorld.point);
+        Assert.isNull(gameWorld.worldPoint);
+        Assert.isNull(gameWorld.gameObjectLayer);
+        Assert.isNull(gameWorld.objectToDisplayMap);
+        Assert.isNull(gameWorld.entityIndex);
+        Assert.isNull(gameWorld.gameObjects);
+    }
+
+    private inline function getGameObjectCount(): UInt {
         var objCount: Int = 0;
         for(i in gameWorld.gameObjects) {
             objCount++;

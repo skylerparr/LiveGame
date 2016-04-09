@@ -76,4 +76,12 @@ class TypeResolvedEntityFactoryTest {
 
         objectCreator.disposeInstance(display).verify();
     }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        entityFactory.dispose();
+
+        Assert.isNull(entityFactory.objectCreator);
+        Assert.isNull(entityFactory.entityMap);
+    }
 }

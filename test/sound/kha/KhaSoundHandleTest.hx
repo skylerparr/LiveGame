@@ -421,6 +421,33 @@ class KhaSoundHandleTest {
         Assert.areEqual(1, callbackCalledCount);
     }
 
+    @Test
+    public function shouldDisposeAllItems(): Void {
+        Mockatoo.reset(objectCreator);
+
+        subscriber = mock(MappedSubscriber);
+        objectCreator.createInstance(MappedSubscriber).returns(subscriber);
+
+        sound = mock(AudioChannel);
+
+        soundHandle = new KhaSoundHandle(sound);
+        soundHandle.objectCreator = objectCreator;
+        soundHandle.init();
+
+        Assert.areEqual(subscriber, soundHandle.mappedSubscriber);
+
+        soundHandle.dispose();
+
+        subscriber.unsubscribeAll("soundPlay").verify();
+        subscriber.unsubscribeAll("soundPause").verify();
+        subscriber.unsubscribeAll("soundStop").verify();
+        subscriber.unsubscribeAll("soundFinish").verify();
+        objectCreator.disposeInstance(subscriber).verify();
+        Assert.isNull(soundHandle.objectCreator);
+        Assert.isNull(soundHandle.sound);
+        Assert.isNull(soundHandle.mappedSubscriber);
+    }
+
     private function initializeWithNull():Void {
         soundHandle = new KhaSoundHandle(null);
         soundHandle.objectCreator = objectCreator;

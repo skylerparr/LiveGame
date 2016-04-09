@@ -303,6 +303,22 @@ class SoundLayerContainerTest {
         soundHandle2.pause().verify();
     }
 
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        addAllSounds();
+        soundLayer.play();
+        soundLayer.dispose();
+
+        soundHandle.pause().verify();
+        soundHandle1.pause().verify();
+        soundHandle2.pause().verify();
+
+        objectCreator.disposeInstance(subscriber).verify();
+        Assert.isNull(soundLayer.objectCreator);
+        Assert.isNull(soundLayer.subscriber);
+        Assert.isNull(soundLayer.allSounds);
+    }
+
     private inline function addAllSounds():Void {
         soundLayer.addSound(soundHandle);
         soundLayer.addSound(soundHandle1);

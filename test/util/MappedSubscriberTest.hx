@@ -179,4 +179,10 @@ class MappedSubscriberTest {
         Assert.isTrue(func3Called);
 
     }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        subscriber.dispose();
+        Assert.isNull(subscriber.subscriptions);
+    }
 }

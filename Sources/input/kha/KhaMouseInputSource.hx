@@ -8,7 +8,7 @@ class KhaMouseInputSource implements BaseObject {
     @inject
     public var gameInputTools: GameInputTools;
 
-    private var pointerEvent: PointerEvent;
+    public var pointerEvent: PointerEvent;
     private var leftMouseDown: Bool = false;
 
     private var mouseDownX: Int;
@@ -23,6 +23,10 @@ class KhaMouseInputSource implements BaseObject {
     }
 
     public function dispose():Void {
+        objectCreator.disposeInstance(pointerEvent);
+        objectCreator = null;
+        gameInputTools = null;
+        pointerEvent = null;
     }
 
     public function onMouseDown(button: Int, x: Int, y: Int):Void {

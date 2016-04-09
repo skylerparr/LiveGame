@@ -15,12 +15,12 @@ class GameWorld2D implements GameWorld {
     @inject
     public var entityFactory: EntityFactory;
 
-    private var point: Point;
-    private var worldPoint: WorldPoint2D;
+    public var point: Point;
+    public var worldPoint: WorldPoint2D;
 
-    private var gameObjectLayer: DisplayNodeContainer;
-    private var objectToDisplayMap: Map<WorldEntity, DisplayNode>;
-    private var entityIndex: Map<String, WorldEntity>;
+    public var gameObjectLayer: DisplayNodeContainer;
+    public var objectToDisplayMap: Map<WorldEntity, DisplayNode>;
+    public var entityIndex: Map<String, WorldEntity>;
 
     public function new() {
     }
@@ -69,6 +69,13 @@ class GameWorld2D implements GameWorld {
     public function dispose():Void {
         point = null;
         worldPoint = null;
+        viewPort = null;
+        layerManger = null;
+        entityFactory = null;
+        gameObjectLayer = null;
+        objectToDisplayMap = null;
+        entityIndex = null;
+        gameObjects = null;
     }
 
     public function addGameObject(worldEntity:WorldEntity, worldPt:WorldPoint):Void {
