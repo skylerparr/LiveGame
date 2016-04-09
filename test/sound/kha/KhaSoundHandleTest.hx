@@ -79,7 +79,7 @@ class KhaSoundHandleTest {
 
         sound.pause().verify();
     }
-    
+
     @Test
     public function shouldNotPauseSoundIfNotPlaying(): Void {
         soundHandle.pause();
@@ -240,7 +240,7 @@ class KhaSoundHandleTest {
 
         Assert.areEqual(1, callbackCalledCount);
     }
-    
+
     @Test
     public function shouldCallStopHandler(): Void {
         var callbackCalledCount: Int = 0;
@@ -253,7 +253,7 @@ class KhaSoundHandleTest {
 
         Assert.areEqual(1, callbackCalledCount);
     }
-    
+
     @Test
     public function shouldNotCallStopHandlerIfNotSubscribed(): Void {
         var callbackCalledCount: Int = 0;
@@ -361,7 +361,7 @@ class KhaSoundHandleTest {
 
         Assert.areEqual(0, callbackCalledCount);
     }
-    
+
     @Test
     public function shouldNotBeAbleToRestartIfStopped(): Void {
         var callbackCalledCount: Int = 0;

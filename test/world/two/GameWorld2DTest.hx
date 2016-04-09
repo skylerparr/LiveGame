@@ -180,12 +180,12 @@ class GameWorld2DTest {
     }
 
     @Test
-    public function shouldMoveNullEntity(): Void {
+    public function shouldNotMoveNullEntity(): Void {
         try {
             gameWorld.moveItemTo(null, wp);
             Assert.isTrue(true);
         } catch(e: Dynamic) {
-            Assert.fail("can move null entity");
+            Assert.fail("can't move null entity");
         }
     }
 
@@ -212,7 +212,7 @@ class GameWorld2DTest {
             gameWorld.moveItemTo(gameObject, null);
             Assert.isTrue(true);
         } catch(e: Dynamic) {
-            Assert.fail("can move null entity");
+            Assert.fail("can't move null entity");
         }
     }
 

@@ -108,8 +108,11 @@ class GameWorld2D implements GameWorld {
     }
 
     public function removeGameObject(gameObject:WorldEntity):Void {
+        if(gameObject == null) {
+            return;
+        }
         var display: DisplayNode = objectToDisplayMap.get(gameObject);
-        if(gameObject == null || display == null) {
+        if(display == null) {
             return;
         }
         entityFactory.disposeViewForEntity(gameObject, display);
