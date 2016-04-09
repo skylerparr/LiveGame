@@ -115,4 +115,11 @@ class SpriteAnimationTest {
         Assert.areEqual(2, animation.currentFrame);
     }
 
+    @Test
+    public function shouldDispseAllReferences(): Void {
+        animation.dispose();
+
+        Assert.isNull(animation.bitmap);
+        Assert.isNull(animation.frames);
+    }
 }

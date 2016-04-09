@@ -87,10 +87,6 @@ class KhaSoundHandle implements SoundHandle {
     }
 
     public function dispose():Void {
-        mappedSubscriber.unsubscribeAll(EVENT_PLAY);
-        mappedSubscriber.unsubscribeAll(EVENT_FINISH);
-        mappedSubscriber.unsubscribeAll(EVENT_PAUSE);
-        mappedSubscriber.unsubscribeAll(EVENT_STOP);
         objectCreator.disposeInstance(mappedSubscriber);
         objectCreator = null;
         mappedSubscriber = null;

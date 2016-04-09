@@ -13,7 +13,7 @@ class SpriteAnimation implements Animation {
 
     public var numFrames(get, null):UInt;
 
-    public var currentFrame: UInt = 0;
+    public var currentFrame: UInt;
 
     public function get_frameTime():UInt {
         return frameTime;
@@ -57,9 +57,12 @@ class SpriteAnimation implements Animation {
     }
 
     public function init():Void {
+        currentFrame = 0;
     }
 
     public function dispose():Void {
+        bitmap = null;
+        frames = null;
     }
 
     public function nextFrame():Void {

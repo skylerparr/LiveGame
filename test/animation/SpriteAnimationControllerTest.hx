@@ -180,5 +180,15 @@ class SpriteAnimationControllerTest {
         Assert.areEqual(1, called);
     }
 
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        controller.dispose();
 
+        animationManager.dequeueAnimationUpdate(controller);
+        objectCreator.disposeInstance(animationSubscriber).verify();
+        Assert.isNull(controller.objectCreator);
+        Assert.isNull(controller.animationManager);
+        Assert.isNull(controller.animation);
+        Assert.isNull(controller.animationSubscriber);
+    }
 }

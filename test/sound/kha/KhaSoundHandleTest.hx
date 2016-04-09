@@ -438,10 +438,6 @@ class KhaSoundHandleTest {
 
         soundHandle.dispose();
 
-        subscriber.unsubscribeAll("soundPlay").verify();
-        subscriber.unsubscribeAll("soundPause").verify();
-        subscriber.unsubscribeAll("soundStop").verify();
-        subscriber.unsubscribeAll("soundFinish").verify();
         objectCreator.disposeInstance(subscriber).verify();
         Assert.isNull(soundHandle.objectCreator);
         Assert.isNull(soundHandle.sound);

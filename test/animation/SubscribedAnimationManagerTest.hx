@@ -20,7 +20,7 @@ class SubscribedAnimationManagerTest {
     public function setup():Void {
         subscriber = mock(Subscriber);
 
-        animationManager = new TestableSubscribedAnimationManager("myEvent");
+        animationManager = new TestableSubscribedAnimationManager();
         animationManager.subscriber = subscriber;
     }
 
@@ -31,12 +31,14 @@ class SubscribedAnimationManagerTest {
     @Test
     public function shouldSubscribeToSubscriber(): Void {
         animationManager.init();
+        animationManager.eventName = "myEvent";
         subscriber.subscribe("myEvent", cast any).verify();
     }
 
     @Test
     public function shouldQueueAnimationToBeAnimated(): Void {
         animationManager.init();
+        animationManager.eventName = "myEvent";
         var animController: SpriteAnimationController = mock(SpriteAnimationController);
         animationManager.queueAnimationUpdate(animController);
 
@@ -50,6 +52,7 @@ class SubscribedAnimationManagerTest {
     @Test
     public function shouldRemoveAnimationFromAnimationQueue(): Void {
         animationManager.init();
+        animationManager.eventName = "myEvent";
         var animController: SpriteAnimationController = mock(SpriteAnimationController);
         animationManager.queueAnimationUpdate(animController);
         animationManager.dequeueAnimationUpdate(animController);
@@ -68,6 +71,7 @@ class SubscribedAnimationManagerTest {
             ourHandler = args[1];
         });
         animationManager.init();
+        animationManager.eventName = "myEvent";
 
         var animation: Animation = mock(Animation);
         var animController: SpriteAnimationController = mock(SpriteAnimationController);
@@ -85,6 +89,18 @@ class SubscribedAnimationManagerTest {
             setTimeAndCallHandler(ourHandler, time);
         }
         animation.nextFrame().verify();
+    }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        animationManager.init();
+        animationManager.eventName = "myEvent";
+        animationManager.dispose();
+
+        subscriber.unsubscribe("myEvent", cast any).verify();
+        Assert.isNull(animationManager.subscriber);
+        Assert.isNull(animationManager.animations);
+        Assert.isNull(animationManager.eventName);
     }
 
     private inline function setTimeAndCallHandler(ourHandler:Void -> Void, time: UInt):Void {

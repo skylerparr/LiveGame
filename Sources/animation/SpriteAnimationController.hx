@@ -22,7 +22,7 @@ class SpriteAnimationController implements AnimationController {
     private var running:Bool = false;
     private var paused: Bool = false;
 
-    private var animationSubscriber: MappedSubscriber;
+    public var animationSubscriber: MappedSubscriber;
 
     public function get_animation():Animation {
         return animation;
@@ -48,6 +48,12 @@ class SpriteAnimationController implements AnimationController {
     }
 
     public function dispose():Void {
+        animationManager.dequeueAnimationUpdate(this);
+        objectCreator.disposeInstance(animationSubscriber);
+        objectCreator = null;
+        animationManager = null;
+        animation = null;
+        animationSubscriber = null;
     }
 
     public function start():Void {

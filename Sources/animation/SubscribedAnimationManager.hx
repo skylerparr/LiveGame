@@ -7,18 +7,40 @@ class SubscribedAnimationManager implements AnimationManager {
 
     public var animations: Map<AnimationController, UInt>;
 
-    private var eventName: String;
+    @:isVar
+    public var eventName(get, set): String;
 
-    public function new(eventName: String) {
-        this.eventName = eventName;
+    public function get_eventName():String {
+        return eventName;
+    }
+
+    public function set_eventName(value:String) {
+        if(eventName != null) {
+            if(value == null) {
+                if(subscriber != null) {
+                    subscriber.unsubscribe(this.eventName, this.onEvent);
+                }
+                this.eventName = value;
+            }
+            return eventName;
+        }
+        this.eventName = value;
+        subscriber.subscribe(this.eventName, this.onEvent);
+        return eventName;
+    }
+
+    public function new() {
     }
 
     public function init():Void {
-        subscriber.subscribe(this.eventName, this.onEvent);
         animations = new Map<AnimationController, UInt>();
     }
 
     public function dispose():Void {
+        subscriber.unsubscribe(eventName, this.onEvent);
+        subscriber = null;
+        animations = null;
+        eventName = null;
     }
 
     public function onEvent():Void {
