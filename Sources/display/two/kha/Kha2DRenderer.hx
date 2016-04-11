@@ -14,17 +14,18 @@ class Kha2DRenderer implements Renderer {
     public static var fonts: Map<String, kha.Font>;
     #end
 
-    private var container: KhaSprite;
+    public var container: KhaSprite;
 
 
-    public function new(container: KhaSprite) {
-        this.container = container;
+    public function new() {
     }
 
     public function init():Void {
     }
 
     public function dispose():Void {
+        container = null;
+        graphics = null;
     }
 
     public function render():Void {

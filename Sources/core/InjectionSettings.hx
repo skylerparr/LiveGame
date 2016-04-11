@@ -7,7 +7,6 @@ import world.TypeResolvedEntityFactory;
 import units.EntityFactory;
 import world.two.GameWorld2D;
 import world.GameWorld;
-import animation.ThreadedAnimationManager;
 import animation.SpriteAnimationController;
 import animation.AnimationController;
 import constants.EventNames;
@@ -47,7 +46,8 @@ class InjectionSettings {
         injector.mapValue(kha.graphics2.Graphics, backbuffer.g2);
 
         var container: KhaSprite = objectFactory.createInstance(KhaSprite);
-        var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer, [container]);
+        var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer);
+        renderer.container = container;
         var layerManager: RenderableLayerManager = objectFactory.createInstance(RenderableLayerManager, [container]);
 
         injector.mapClass(BitmapNode, KhaBitmapNode);
@@ -89,9 +89,9 @@ class InjectionSettings {
         injector.mapValue(EventNotifier, subscribeNotifer);
 
         #if cpp
-        var animationManager: ThreadedAnimationManager = objectFactory.createInstance(ThreadedAnimationManager, [EventNames.ENTER_GAME_LOOP]);
+        var animationManager: animation.ThreadedAnimationManager = objectFactory.createInstance(animation.ThreadedAnimationManager);
         #else
-        var animationManager: SubscribedAnimationManager = objectFactory.createInstance(SubscribedAnimationManager, [EventNames.ENTER_GAME_LOOP]);
+        var animationManager: SubscribedAnimationManager = objectFactory.createInstance(SubscribedAnimationManager);
         #end
         injector.mapValue(AnimationManager, animationManager);
 

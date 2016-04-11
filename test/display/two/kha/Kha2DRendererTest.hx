@@ -21,8 +21,9 @@ class Kha2DRendererTest {
     public function setup():Void {
         container = new KhaSprite();
         container.init();
-        khaRenderer = new Kha2DRenderer(container);
+        khaRenderer = new Kha2DRenderer();
         khaRenderer.init();
+        khaRenderer.container = container;
         graphics = mock(TestableGraphics);
         fonts = new Map<String, MockKhaFont>();
         fonts.set("sample", mock(MockKhaFont));
@@ -180,6 +181,14 @@ class Kha2DRendererTest {
 
         graphics.drawSubImage(cast any, 126, 87, 0, 0, 0, 0).verify();
         graphics.drawString(null, 128, 89).verify();
+    }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        khaRenderer.dispose();
+
+        Assert.isNull(khaRenderer.graphics);
+        Assert.isNull(khaRenderer.container);
     }
 
     private inline function createTextField(): KhaTextFieldNode {

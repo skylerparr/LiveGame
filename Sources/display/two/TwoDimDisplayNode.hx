@@ -141,6 +141,11 @@ class TwoDimDisplayNode implements DisplayNode {
 
     public function dispose():Void {
         name = null;
+        if(parent != null) {
+            parent.removeChild(this);
+        }
+        parent = null;
+        _private_parent = null;
     }
 
 }

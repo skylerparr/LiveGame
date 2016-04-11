@@ -123,4 +123,12 @@ class RenderableLayerManagerTest {
         Assert.areEqual(bottomContainer, container.getChildAt(0));
         Assert.areEqual(top, container.getChildAt(1));
     }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        layerManager.dispose();
+
+        Assert.isNull(layerManager.layerMap);
+        Assert.isNull(layerManager.topContainer);
+    }
 }

@@ -1,8 +1,8 @@
 package display.layer;
 class RenderableLayerManager implements LayerManager {
 
-    private var layerMap: Map<String, DisplayNodeContainer>;
-    private var topContainer(get, null): DisplayNodeContainer;
+    public var layerMap: Map<String, DisplayNodeContainer>;
+    public var topContainer(get, null): DisplayNodeContainer;
 
     private function get_topContainer():DisplayNodeContainer {
         return topContainer;
@@ -17,6 +17,8 @@ class RenderableLayerManager implements LayerManager {
     }
 
     public function dispose():Void {
+        layerMap = null;
+        topContainer = null;
     }
 
     public function addLayerByName(layerName:String, container:DisplayNodeContainer):Void {

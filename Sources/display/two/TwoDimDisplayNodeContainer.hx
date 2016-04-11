@@ -25,6 +25,7 @@ class TwoDimDisplayNodeContainer extends TwoDimDisplayNode implements DisplayNod
 
     override public function dispose():Void {
         super.dispose();
+        children = null;
     }
 
     public function addChild(node:DisplayNode):DisplayNode {

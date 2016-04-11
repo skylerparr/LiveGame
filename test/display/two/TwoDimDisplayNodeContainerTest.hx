@@ -151,4 +151,24 @@ class TwoDimDisplayNodeContainerTest {
         Assert.areEqual(1, container2.numChildren);
         Assert.areEqual(1, container.numChildren);
     }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        var retNode: DisplayNode = container.addChild(node);
+
+        node.dispose();
+
+        Assert.isNull(node.name);
+        Assert.isNull(node.parent);
+        Assert.isNull(node._private_parent);
+
+        Assert.areEqual(0, container.children.length);
+
+        container.dispose();
+
+        Assert.isNull(container.children);
+        Assert.isNull(container.name);
+        Assert.isNull(container.parent);
+        Assert.isNull(container._private_parent);
+    }
 }

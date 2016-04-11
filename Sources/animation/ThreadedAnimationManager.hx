@@ -4,8 +4,8 @@ class ThreadedAnimationManager extends SubscribedAnimationManager {
 
     private var running: Bool = false;
 
-    public function new(eventName: String) {
-        super(eventName);
+    public function new() {
+        super();
     }
 
     override public function init():Void {
