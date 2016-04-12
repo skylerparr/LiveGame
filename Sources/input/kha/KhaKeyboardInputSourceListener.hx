@@ -19,6 +19,10 @@ class KhaKeyboardInputSourceListener implements BaseObject {
     }
 
     public function dispose():Void {
+        objectCreator.disposeInstance(keyEvent);
+        objectCreator = null;
+        gameInputTools = null;
+        keyEvent = null;
     }
 
     public function onKeyDown(key: #if test input.kha.MockKeyboardKey #else kha.Key #end, char: String):Void {
