@@ -25,10 +25,6 @@ class GameWorld2DTest {
     private var wp: WorldPoint2D;
     private var point: Point;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         viewPort = mock(MockViewPort);
@@ -385,6 +381,7 @@ class GameWorld2DTest {
         Assert.isNull(gameWorld.gameObjects);
     }
 
+    @IgnoreCover
     private inline function getGameObjectCount(): UInt {
         var objCount: Int = 0;
         for(i in gameWorld.gameObjects) {

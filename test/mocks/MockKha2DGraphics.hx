@@ -1,4 +1,4 @@
-package display.two.kha;
+package mocks;
 
 interface MockKha2DGraphics {
     var fontSize(get, set): UInt;

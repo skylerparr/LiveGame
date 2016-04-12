@@ -1,6 +1,6 @@
 package input.kha;
 
-import input.kha.KhaMouseInputSourceTest.MockGameInputTools;
+import mocks.MockGameInputTools;
 import core.ObjectCreator;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
@@ -17,10 +17,6 @@ class KhaKeyboardInputSourceListenerTest {
     private var gameInputTools: MockGameInputTools;
     private var currentKeyboardTool: KeyboardTool;
     private var keyEvent: KeyEvent;
-
-    public function new() {
-
-    }
 
     @Before
     public function setup():Void {

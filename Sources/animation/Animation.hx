@@ -1,5 +1,4 @@
 package animation;
-import animation.spec.TexturePackerJSONArrayFrameSpec.Frame;
 import display.BitmapNode;
 import core.BaseObject;
 interface Animation extends BaseObject {

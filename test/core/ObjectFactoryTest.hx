@@ -12,10 +12,6 @@ class ObjectFactoryTest {
     private var objectFactory: ObjectFactory;
     private var injector: Injector;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         injector = mock(Injector);
@@ -98,12 +94,14 @@ class ObjectFactoryTest {
     }
 }
 
+@IgnoreCover
 class Sample {
     public function new() {
 
     }
 }
 
+@IgnoreCover
 class SampleWithArgs {
 
     public var arg1: String;
@@ -115,6 +113,7 @@ class SampleWithArgs {
     }
 }
 
+@IgnoreCover
 class SampleBase implements BaseObject {
     public var initialized: Bool = false;
 
@@ -131,6 +130,7 @@ class SampleBase implements BaseObject {
     }
 }
 
+@IgnoreCover
 class AnyException {
     public function new() {
 

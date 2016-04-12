@@ -10,10 +10,6 @@ class TexturePackerJSONArrayFrameSpecTest {
 
     private var texturePacker: TexturePackerJSONArrayFrameSpec;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
     }
@@ -44,6 +40,7 @@ class TexturePackerJSONArrayFrameSpecTest {
     }
 }
 
+@IgnoreCover
 class JSONArray {
 
     public static inline var dataString: String = "{\"frames\": [

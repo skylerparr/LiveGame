@@ -19,10 +19,6 @@ class TypeResolvedEntityFactoryTest {
     private var entityFactory: TypeResolvedEntityFactory;
     private var objectCreator: ObjectCreator;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         objectCreator = mock(ObjectCreator);

@@ -9,10 +9,6 @@ class RectangleTest {
 
     private var rectangle: Rectangle;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         rectangle = new Rectangle(10, 20, 50, 60);

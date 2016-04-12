@@ -1,5 +1,7 @@
 package input.kha;
 
+import mocks.MockPointingTool;
+import mocks.MockGameInputTools;
 import core.ObjectCreator;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
@@ -13,17 +15,13 @@ class KhaMouseInputSourceTest {
     private var gameTools: MockGameInputTools;
     private var objectCreator: ObjectCreator;
     private var pointerEvent: PointerEvent;
-    private var currentTool: PointingTool;
-
-    public function new() {
-
-    }
+    private var currentTool: MockPointingTool;
 
     @Before
     public function setup():Void {
         gameTools = mock(MockGameInputTools);
         objectCreator = mock(ObjectCreator);
-        currentTool = mock(PointingTool);
+        currentTool = mock(MockPointingTool);
 
         mouseInput = new KhaMouseInputSource();
         mouseInput.objectCreator = objectCreator;
@@ -168,82 +166,3 @@ class KhaMouseInputSourceTest {
     }
 }
 
-class MockGameInputTools implements GameInputTools {
-
-    public var currentTool(get, null):PointingTool;
-    public var keyboardTool(get, null):KeyboardTool;
-
-    public function get_currentTool():PointingTool {
-        return currentTool;
-    }
-
-    public function get_keyboardTool():KeyboardTool {
-        return keyboardTool;
-    }
-
-    public function new() {
-    }
-}
-
-class MockPointingTool implements PointingTool {
-
-    public function init():Void {
-    }
-
-    public function dispose():Void {
-    }
-
-    public function onToolDeactivated(tool:PointingTool):Void {
-    }
-
-    public function onPointerDown(e:PointerEvent):Void {
-    }
-
-    public function onPointerMove(e:PointerEvent):Void {
-    }
-
-    public function onPointerUp(e:PointerEvent):Void {
-    }
-
-    public function onPointerClick(e:PointerEvent):Void {
-    }
-
-    public function onPointerRightClick(e:PointerEvent):Void {
-    }
-
-    public function onPointerRightDown(e:PointerEvent):Void {
-    }
-
-    public function onPointerRightUp(e:PointerEvent):Void {
-    }
-
-    public function onPointerDoubleClick(e:PointerEvent):Void {
-    }
-
-    public function onScroll(e:PointerEvent):Void {
-    }
-
-    public function onPointerMiddleDown(e:PointerEvent):Void {
-    }
-
-    public function onPointerMiddleUp(e:PointerEvent):Void {
-    }
-
-    public function onPointerMiddleClick(event:PointerEvent):Void {
-    }
-
-    public function activate(args:Array<Dynamic>):Void {
-    }
-
-    public function deactivate():Void {
-    }
-
-    public var name(get, null):String;
-
-    public function get_name():String {
-        return name;
-    }
-
-    public function new() {
-    }
-}

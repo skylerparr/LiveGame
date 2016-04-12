@@ -18,9 +18,6 @@ class SimpleSoundManagerTest {
     private var soundLayer1: MockSoundLayer;
     private var soundLayer2: MockSoundLayer;
 
-    public function new() {
-
-    }
 
     @Before
     public function setup():Void {

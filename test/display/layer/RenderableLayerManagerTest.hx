@@ -13,10 +13,6 @@ class RenderableLayerManagerTest {
     private var bottomContainer: DisplayNodeContainer;
     private var container: DisplayNodeContainer;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         container = new TwoDimDisplayNodeContainer();

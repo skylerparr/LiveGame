@@ -48,7 +48,7 @@ class SubscribedAnimationManager implements AnimationManager {
         for(animationController in animations.keys()) {
             var animation: Animation = animationController.animation;
             var prevTime: UInt = animations.get(animationController);
-            var animationFrameTime: UInt = animation.frameTime + prevTime;
+            var animationFrameTime: Float = animation.frameTime + prevTime;
             if(animationFrameTime <= currentTime) {
                 animation.nextFrame();
                 animations.set(animationController, currentTime);

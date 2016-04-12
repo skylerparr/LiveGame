@@ -1,4 +1,4 @@
-package display.two.kha;
+package mocks;
 
 interface MockKhaColor {
 

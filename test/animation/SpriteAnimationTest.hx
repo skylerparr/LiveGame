@@ -16,10 +16,6 @@ class SpriteAnimationTest {
 
     private var bitmap: KhaBitmapNode;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         var frameData = {frames: [
@@ -47,6 +43,9 @@ class SpriteAnimationTest {
 
     @After
     public function tearDown():Void {
+        frames = null;
+        bitmap = null;
+        animation = null;
     }
 
     @Test

@@ -1,5 +1,6 @@
 package animation;
 
+import mocks.MockAnimation;
 import util.Subscriber;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
@@ -11,10 +12,6 @@ class SubscribedAnimationManagerTest {
 
     private var animationManager: TestableSubscribedAnimationManager;
     private var subscriber: Subscriber;
-
-    public function new() {
-
-    }
 
     @Before
     public function setup():Void {
@@ -73,7 +70,7 @@ class SubscribedAnimationManagerTest {
         animationManager.init();
         animationManager.eventName = "myEvent";
 
-        var animation: Animation = mock(Animation);
+        var animation: MockAnimation = mock(MockAnimation);
         var animController: SpriteAnimationController = mock(SpriteAnimationController);
         animation.frameTime.returns(80);
         animController.animation.returns(animation);
@@ -103,6 +100,7 @@ class SubscribedAnimationManagerTest {
         Assert.isNull(animationManager.eventName);
     }
 
+    @IgnoreCover
     private inline function setTimeAndCallHandler(ourHandler:Void -> Void, time: UInt):Void {
         animationManager.currentTime = time;
         ourHandler();

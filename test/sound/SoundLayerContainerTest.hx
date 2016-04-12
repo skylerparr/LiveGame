@@ -14,15 +14,11 @@ using mockatoo.Mockatoo;
 class SoundLayerContainerTest {
 
     private var soundLayer: SoundLayerContainer;
-    private var soundHandle: SoundHandle;
-    private var soundHandle1: SoundHandle;
-    private var soundHandle2: SoundHandle;
+    private var soundHandle: MockSoundHandle;
+    private var soundHandle1: MockSoundHandle;
+    private var soundHandle2: MockSoundHandle;
     private var objectCreator: ObjectCreator;
     private var subscriber: MappedSubscriber;
-
-    public function new() {
-
-    }
 
     @Before
     public function setup():Void {
@@ -319,6 +315,7 @@ class SoundLayerContainerTest {
         Assert.isNull(soundLayer.allSounds);
     }
 
+    @IgnoreCover
     private inline function addAllSounds():Void {
         soundLayer.addSound(soundHandle);
         soundLayer.addSound(soundHandle1);

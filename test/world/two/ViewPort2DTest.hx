@@ -19,10 +19,6 @@ class ViewPort2DTest {
     private var subscriber: Subscriber;
     private var container: DisplayNodeContainer;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         container = new TwoDimDisplayNodeContainer();

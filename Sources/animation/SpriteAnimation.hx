@@ -1,6 +1,5 @@
 package animation;
 import display.BitmapNode;
-import animation.spec.TexturePackerJSONArrayFrameSpec;
 class SpriteAnimation implements Animation {
 
     @:isVar

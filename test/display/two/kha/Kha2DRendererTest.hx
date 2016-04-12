@@ -1,21 +1,16 @@
 package display.two.kha;
 
-import massive.munit.util.Timer;
+import mocks.TestableGraphics;
+import mocks.MockKhaFont;
 import massive.munit.Assert;
-import massive.munit.async.AsyncFactory;
 import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
-
 class Kha2DRendererTest {
 
     private var khaRenderer: Kha2DRenderer;
     private var graphics: TestableGraphics;
     private var container: KhaSprite;
     private var fonts: Map<String, MockKhaFont>;
-
-    public function new() {
-
-    }
 
     @Before
     public function setup():Void {
@@ -191,6 +186,7 @@ class Kha2DRendererTest {
         Assert.isNull(khaRenderer.container);
     }
 
+    @IgnoreCover
     private inline function createTextField(): KhaTextFieldNode {
         var textField: KhaTextFieldNode = mock(KhaTextFieldNode);
         textField.fontName.returns("sample");
@@ -198,54 +194,5 @@ class Kha2DRendererTest {
     }
 }
 
-class MockColor implements MockKhaColor {
 
-    public function new() {
-    }
-}
-
-class TestableGraphics implements MockKha2DGraphics {
-
-    @:isVar
-    public var fontSize(get, set):UInt;
-
-    @:isVar
-    public var color(get, set):MockKhaColor;
-
-    @:isVar
-    public var font(get, set):MockKhaFont;
-
-    public function new() {
-    }
-
-    public function get_fontSize():UInt {
-        return fontSize;
-    }
-
-    public function set_fontSize(value:UInt) {
-        return this.fontSize = value;
-    }
-
-    public function set_color(value:MockKhaColor) {
-        return this.color = value;
-    }
-
-    public function get_color():MockKhaColor {
-        return color;
-    }
-
-    public function get_font():MockKhaFont {
-        return font;
-    }
-
-    public function set_font(value:MockKhaFont) {
-        return this.font = value;
-    }
-
-    public function drawSubImage(image:Dynamic, x:Float, y:Float, sx:Float, sy:Float, sw:Float, sh:Float):Void {
-    }
-
-    public function drawString(text:String, x:Float, y:Float):Void {
-    }
-}
 

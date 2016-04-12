@@ -10,10 +10,6 @@ class UniqueCollectionTest {
 
     private var collection: UniqueCollection<Dynamic>;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         collection = new UniqueCollection<Dynamic>();

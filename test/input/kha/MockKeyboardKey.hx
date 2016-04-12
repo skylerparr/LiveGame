@@ -1,5 +1,6 @@
 package input.kha;
 
+@IgnoreCover
 enum MockKeyboardKey {
     BACKSPACE;
     TAB;

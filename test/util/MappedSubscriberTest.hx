@@ -9,10 +9,6 @@ class MappedSubscriberTest {
 
     private var subscriber: MappedSubscriber;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         subscriber = new MappedSubscriber();
@@ -26,7 +22,7 @@ class MappedSubscriberTest {
 
     @Test
     public function shouldSubscribeToAnEvent(): Void {
-        var func: Void->Void = function(): Void {}
+        var func: Void->Void = emptyFunction;
 
         subscriber.subscribe("foo", func);
 
@@ -35,9 +31,9 @@ class MappedSubscriberTest {
 
     @Test
     public function shouldSubscribeMultipleTimesToSameEvent(): Void {
-        var func: Void->Void = function(): Void {}
-        var func2: Void->Void = function(): Void {}
-        var func3: Void->Void = function(): Void {}
+        var func: Void->Void = emptyFunction;
+        var func2: Void->Void = emptyFunction;
+        var func3: Void->Void = emptyFunction;
 
         subscriber.subscribe("foo", func);
         subscriber.subscribe("foo", func2);
@@ -50,9 +46,9 @@ class MappedSubscriberTest {
 
     @Test
     public function shouldUnsubscribeFromEvent(): Void {
-        var func: Void->Void = function(): Void {}
-        var func2: Void->Void = function(): Void {}
-        var func3: Void->Void = function(): Void {}
+        var func: Void->Void = emptyFunction;
+        var func2: Void->Void = emptyFunction;
+        var func3: Void->Void = emptyFunction;
 
         subscriber.subscribe("foo", func);
         subscriber.subscribe("foo", func2);
@@ -68,9 +64,9 @@ class MappedSubscriberTest {
 
     @Test
     public function shouldRemoveKeyIfNoHandlersExist(): Void {
-        var func: Void->Void = function(): Void {}
-        var func2: Void->Void = function(): Void {}
-        var func3: Void->Void = function(): Void {}
+        var func: Void->Void = emptyFunction;
+        var func2: Void->Void = emptyFunction;
+        var func3: Void->Void = emptyFunction;
 
         subscriber.subscribe("foo", func);
         subscriber.subscribe("foo", func2);
@@ -105,7 +101,7 @@ class MappedSubscriberTest {
 
     @Test
     public function shouldNotAddNullEventNames(): Void {
-        var func: Void->Void = function(): Void {}
+        var func: Void->Void = emptyFunction;
         subscriber.subscribe(null, func);
 
         for(subs in subscriber.subscriptions.keys()) {
@@ -126,7 +122,7 @@ class MappedSubscriberTest {
 
     @Test
     public function shouldNotErrorIfUnsubscribingWithNullEvent(): Void {
-        subscriber.unsubscribe(null, function(): Void {});
+        subscriber.unsubscribe(null, emptyFunction);
         Assert.isTrue(true);
     }
 
@@ -184,5 +180,10 @@ class MappedSubscriberTest {
     public function shouldDisposeAllReferences(): Void {
         subscriber.dispose();
         Assert.isNull(subscriber.subscriptions);
+    }
+
+    @IgnoreCover
+    public function emptyFunction():Void {
+
     }
 }

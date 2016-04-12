@@ -4,9 +4,9 @@ class Kha2DRenderer implements Renderer {
 
     #if test
     @inject
-    public var graphics: MockKha2DGraphics;
+    public var graphics: mocks.MockKha2DGraphics;
 
-    public static var fonts: Map<String, MockKhaFont>;
+    public static var fonts: Map<String, mocks.MockKhaFont>;
     #else
     @inject
     public var graphics: kha.graphics2.Graphics;
@@ -57,12 +57,12 @@ class Kha2DRenderer implements Renderer {
     }
 
     #if test
-    private inline function getColorFromValue(value: UInt): display.two.kha.Kha2DRendererTest.MockColor {
-        return new display.two.kha.Kha2DRendererTest.MockColor();
+    private inline function getColorFromValue(value: UInt): mocks.MockColor {
+        return new mocks.MockColor();
     }
 
-    private inline function getWhite():display.two.kha.Kha2DRendererTest.MockColor {
-        return new display.two.kha.Kha2DRendererTest.MockColor();
+    private inline function getWhite():mocks.MockColor {
+        return new mocks.MockColor();
     }
     #else
     private inline function getColorFromValue(value: UInt): kha.Color {

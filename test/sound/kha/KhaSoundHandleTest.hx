@@ -23,10 +23,6 @@ class KhaSoundHandleTest {
     private var objectCreator: ObjectCreator;
     private var subscriber: MappedSubscriber;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         objectCreator = mock(ObjectCreator);
@@ -444,6 +440,7 @@ class KhaSoundHandleTest {
         Assert.isNull(soundHandle.mappedSubscriber);
     }
 
+    @IgnoreCover
     private function initializeWithNull():Void {
         soundHandle = new KhaSoundHandle(null);
         soundHandle.objectCreator = objectCreator;

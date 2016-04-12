@@ -1,5 +1,6 @@
 package animation;
 
+import mocks.MockAnimation;
 import util.MappedSubscriber;
 import core.ObjectCreator;
 import constants.EventNames;
@@ -13,20 +14,16 @@ using mockatoo.Mockatoo;
 class SpriteAnimationControllerTest {
 
     private var controller: SpriteAnimationController;
-    private var animation: Animation;
+    private var animation: MockAnimation;
     private var animationManager: AnimationManager;
     private var objectCreator: ObjectCreator;
     private var animationSubscriber: MappedSubscriber;
-
-    public function new() {
-
-    }
 
     @Before
     public function setup():Void {
         objectCreator = mock(ObjectCreator);
         animationManager = mock(AnimationManager);
-        animation = mock(Animation);
+        animation = mock(MockAnimation);
         animationSubscriber = new MappedSubscriber();
         animationSubscriber.init();
 

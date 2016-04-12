@@ -13,10 +13,6 @@ class TwoDimDisplayNodeContainerTest {
     var container: TwoDimDisplayNodeContainer;
     var node: TwoDimDisplayNode;
 
-    public function new() {
-
-    }
-
     @Before
     public function setup():Void {
         container = new TwoDimDisplayNodeContainer();
