@@ -13,6 +13,12 @@ class SimpleSoundManager implements SoundManager {
     public var masterVolume(get, set):Float;
 
     public function set_masterVolume(value:Float) {
+        for(layer in layerVolumeMap.keys()) {
+            layer.unsubscribeFromVolumeChange(onVolumeChanged);
+            var currentVolume: Float = layerVolumeMap.get(layer);
+            layer.volume = currentVolume * value;
+            layer.subscribeToVolumeChange(onVolumeChanged);
+        }
         return this.masterVolume = value;
     }
 
@@ -35,6 +41,12 @@ class SimpleSoundManager implements SoundManager {
     }
 
     public function dispose():Void {
+        pauseAll();
+        for(layer in allLayers) {
+            layer.unsubscribeFromVolumeChange(onVolumeChanged);
+        }
+        allLayers = null;
+        layerVolumeMap = null;
     }
 
     public function playAll():Void {

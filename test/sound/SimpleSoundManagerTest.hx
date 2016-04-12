@@ -147,6 +147,34 @@ class SimpleSoundManagerTest {
 
     @Test
     public function shouldSetTheVolumeAsAPercentageOfTheLayers(): Void {
+        soundManager.addSoundLayer("sfx", soundLayer);
+        soundManager.addSoundLayer("music", soundLayer1);
+        soundManager.addSoundLayer("ambient", soundLayer2);
 
+        soundManager.masterVolume = 0.5;
+
+        soundLayer.set_volume(0.5).verify();
+        soundLayer1.set_volume(0.375).verify();
+        soundLayer2.set_volume(0.25).verify();
+    }
+
+    @Test
+    public function shouldDisposeAllReferences(): Void {
+        soundManager.addSoundLayer("sfx", soundLayer);
+        soundManager.addSoundLayer("music", soundLayer1);
+        soundManager.addSoundLayer("ambient", soundLayer2);
+
+        soundManager.dispose();
+
+        soundLayer.pause().verify();
+        soundLayer1.pause().verify();
+        soundLayer2.pause().verify();
+
+        soundLayer.unsubscribeFromVolumeChange(cast any).verify();
+        soundLayer1.unsubscribeFromVolumeChange(cast any).verify();
+        soundLayer2.unsubscribeFromVolumeChange(cast any).verify();
+
+        Assert.isNull(soundManager.allLayers);
+        Assert.isNull(soundManager.layerVolumeMap);
     }
 }
