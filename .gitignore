@@ -6,3 +6,4 @@ report
 .DS_Store
 *.xcf
 tools/frame_generator/frame_generator.n
+.temp
