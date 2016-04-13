@@ -9,9 +9,21 @@ class KhaAssetsAssetLoader implements AssetLoader {
     public function dispose():Void {
     }
 
-    public function loadImage(imageName:String, onComplete: ImageAsset->Void, onFail: String->Void = null):Void {
+    public function loadImage(imageName:String, onComplete: Resource->Void):Void {
     }
 
-    public function loadText(name:String, onComplete: String->Void, onFail: String->Void = null):Void {
+    public function loadText(name:String, onComplete: Resource->Void):Void {
+    }
+
+    public function loadSound(name:String, onComplete:):Void {
+    }
+
+    public function cancelLoadImage(name:String):Void {
+    }
+
+    public function cancelLoadSound(name:String):Void {
+    }
+
+    public function cancelLoadText(name:String):Void {
     }
 }
