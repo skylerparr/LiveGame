@@ -5,6 +5,7 @@ import animation.SpriteAnimationControllerTest;
 import animation.SpriteAnimationTest;
 import animation.SubscribedAnimationManagerTest;
 import assets.AssetLoaderAssetLocatorTest;
+import assets.kha.KhaAssetsAssetLoaderTest;
 import collection.UniqueCollectionTest;
 import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
@@ -38,6 +39,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(animation.SpriteAnimationTest);
 		add(animation.SubscribedAnimationManagerTest);
 		add(assets.AssetLoaderAssetLocatorTest);
+		add(assets.kha.KhaAssetsAssetLoaderTest);
 		add(collection.UniqueCollectionTest);
 		add(core.ObjectFactoryTest);
 		add(display.layer.RenderableLayerManagerTest);

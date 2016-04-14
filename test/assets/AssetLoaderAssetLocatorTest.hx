@@ -505,6 +505,7 @@ class AssetLoaderAssetLocatorTest {
         Assert.isTrue(true);
     }
 
+    @IgnoreCover
     private function mockImage():Void {
         assetLoader.loadImage("foo", cast any).calls(function(args: Array<Dynamic>): Void {
             args[1]({status: ResourceStatus.OK, data: imageAsset});
