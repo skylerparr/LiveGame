@@ -124,4 +124,48 @@ class KhaAssetsAssetLoaderTest {
 
         Assert.areEqual(0, cbCount);
     }
+
+    @Test
+    public function shouldCancelLoadingOfImage(): Void {
+        var cb: Dynamic->Void = null;
+        assets.loadImage("foo", cast any).calls(function(args): Void {
+            cb = args[1];
+        });
+
+        var cbCount: Int = 0;
+        assetLoader.loadImage("foo", function(resource: Resource): Void {
+            cbCount++;
+        });
+
+        Assert.areEqual(0, cbCount);
+        assets.loadImage("foo", cast any).verify();
+
+        assetLoader.cancelLoadImage("foo");
+
+        cb(data);
+
+        Assert.areEqual(0, cbCount);
+    }
+
+    @Test
+    public function shouldCancelLoadingOfSound(): Void {
+        var cb: Dynamic->Void = null;
+        assets.loadSound("foo", cast any).calls(function(args): Void {
+            cb = args[1];
+        });
+
+        var cbCount: Int = 0;
+        assetLoader.loadSound("foo", function(resource: Resource): Void {
+            cbCount++;
+        });
+
+        Assert.areEqual(0, cbCount);
+        assets.loadSound("foo", cast any).verify();
+
+        assetLoader.cancelLoadSound("foo");
+
+        cb(data);
+
+        Assert.areEqual(0, cbCount);
+    }
 }

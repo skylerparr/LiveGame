@@ -57,9 +57,11 @@ class KhaAssetsAssetLoader implements AssetLoader {
     }
 
     public function cancelLoadImage(name:String):Void {
+        currentlyLoadingMap.remove(name);
     }
 
     public function cancelLoadSound(name:String):Void {
+        currentlyLoadingMap.remove(name);
     }
 
     public function cancelLoadText(name:String):Void {
