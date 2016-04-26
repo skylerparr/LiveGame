@@ -1,6 +1,4 @@
 package assets;
-import assets.kha.KhaSoundAsset;
-import constants.Poses;
 import util.MappedSubscriber;
 import core.BaseObject;
 import core.ObjectCreator;

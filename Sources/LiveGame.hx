@@ -93,8 +93,7 @@ class LiveGame {
     }
 
     private function onMusicLoaded(soundAsset: SoundAsset):Void {
-        trace(soundAsset);
-//        soundAsset.soundData.play();
+        audioChannel = Audio.play(soundAsset.data, true);
     }
 
     @:async

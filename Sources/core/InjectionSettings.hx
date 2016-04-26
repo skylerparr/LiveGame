@@ -1,4 +1,10 @@
 package core;
+import assets.SoundAsset;
+import assets.kha.KhaSoundAsset;
+import assets.kha.KhaImageAsset;
+import assets.ImageAsset;
+import assets.kha.KhaTextAsset;
+import assets.TextAsset;
 import assets.AssetLoaderAssetLocator;
 import assets.AssetLocator;
 import assets.kha.KhaAssetsAssetLoader;
@@ -62,6 +68,10 @@ class InjectionSettings {
         var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer);
         renderer.container = container;
         var layerManager: RenderableLayerManager = objectFactory.createInstance(RenderableLayerManager, [container]);
+
+        injector.mapClass(TextAsset, KhaTextAsset);
+        injector.mapClass(ImageAsset, KhaImageAsset);
+        injector.mapClass(SoundAsset, KhaSoundAsset);
 
         injector.mapClass(BitmapNode, KhaBitmapNode);
         injector.mapClass(DisplayNodeContainer, KhaSprite);

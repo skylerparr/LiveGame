@@ -1,4 +1,6 @@
 package gameentities;
+import assets.ImageAsset;
+import assets.AssetLocator;
 import constants.Poses;
 import animation.Frame;
 import display.two.kha.KhaSprite;
@@ -14,6 +16,8 @@ import animation.AnimationController;
 class NecroDisplay extends KhaSprite {
     @inject
     public var objectCreator: ObjectCreator;
+    @inject
+    public var assetLocator: AssetLocator;
 
     public var animation: Animation;
 
@@ -50,11 +54,13 @@ class NecroDisplay extends KhaSprite {
 
     @:async
     private function createDisplay():Void {
-        imagePoses.set(Poses.IDLE, @await Assets.loadImage("necro_idle"));
-        imagePoses.set(Poses.RUN, @await Assets.loadImage("necro_run"));
+        var asset: ImageAsset = @await assetLocator.getAssetByName("necro_idle");
+        imagePoses.set(Poses.IDLE, asset.data);
+        asset = @await assetLocator.getAssetByName("necro_run");
+        imagePoses.set(Poses.RUN, asset.data);
 
-        directionPoseMap.set(Poses.IDLE, @await createFrames("_necro_idle_json"));
-        directionPoseMap.set(Poses.RUN, @await createFrames("_necro_run_json"));
+        directionPoseMap.set(Poses.IDLE, @await createFrames("_necro_idle"));
+        directionPoseMap.set(Poses.RUN, @await createFrames("_necro_run"));
 
         var idle: Array<TexturePackerJSONArrayFrameSpec> = directionPoseMap.get(Poses.IDLE);
         totalDirections = idle.length;
@@ -97,7 +103,7 @@ class NecroDisplay extends KhaSprite {
             if(i < 10) {
                 poseIndex = "0" + poseIndex;
             }
-            var jsonString = @await Assets.loadBlob("_" + poseIndex + key);
+            var jsonString = @await assetLocator.getDataAssetByName("_" + poseIndex + key + "_json");
             var pose = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
             retVal.push(pose);
         }

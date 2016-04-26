@@ -1,7 +1,7 @@
 package gameentities;
-import kha.Assets;
+import assets.ImageAsset;
+import assets.AssetLocator;
 import core.ObjectCreator;
-import kha.Image;
 import animation.spec.TexturePackerJSONArrayFrameSpec;
 import display.two.kha.KhaSprite;
 import display.BitmapNode;
@@ -13,9 +13,11 @@ import haxe.Json;
 class WizardDisplay extends KhaSprite {
     @inject
     public var objectCreator: ObjectCreator;
+    @inject
+    public var assetLocator: AssetLocator;
 
     private var animation: Animation;
-    private var image: Image;
+    private var image: ImageAsset;
     private var frames: TexturePackerJSONArrayFrameSpec;
     private var animationController: AnimationController;
 
@@ -32,13 +34,13 @@ class WizardDisplay extends KhaSprite {
 
     @:async
     private function createWizard():Void {
-        image = @await Assets.loadImage("wizard");
+        image = @await assetLocator.getDataAssetByName("wizard");
 
         var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);
-        wizard.imageData = image;
+        wizard.imageData = image.data;
         addChild(wizard);
 
-        var jsonString = @await Assets.loadBlob("wizard_frames_json");
+        var jsonString = @await assetLocator.getDataAssetByName("wizard_frames_json");
         frames = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
 
         animation = objectCreator.createInstance(Animation);
