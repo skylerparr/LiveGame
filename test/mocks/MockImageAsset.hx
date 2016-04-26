@@ -15,9 +15,6 @@ class MockImageAsset implements ImageAsset {
     @:isVar
     public var height(get, set):UInt;
 
-    @:isVar
-    public var imageData(get, set):Dynamic;
-
     public function get_width():UInt {
         return width;
     }
@@ -34,13 +31,17 @@ class MockImageAsset implements ImageAsset {
         return height;
     }
 
-    public function get_imageData():Dynamic {
-        return imageData;
+    @:isVar
+    public var data(get, set):Dynamic;
+
+    public function get_data():Dynamic {
+        return data;
     }
 
-    public function set_imageData(value:Dynamic) {
-        return this.imageData = value;
+    public function set_data(value:Dynamic) {
+        return this.data = value;
     }
+
 
     public function new() {
     }

@@ -75,9 +75,10 @@ class KhaAssetsAssetLoader implements AssetLoader {
         return mockKhaAssets;
     }
     #else
+    public var khaAssets: KhaAssets = new KhaAssets();
 
-    public inline function getAssets():kha.Assets {
-        return kha.Assets;
+    public inline function getAssets():KhaAssets {
+        return khaAssets;
     }
     #end
 }
@@ -86,3 +87,23 @@ typedef LoadDef = {
     key: String,
     callback: Resource->Void
 }
+
+#if !test
+class KhaAssets {
+
+    public function new() {
+    }
+
+    public function loadImage(name: String, complete: Dynamic->Void): Void {
+        kha.Assets.loadImage(name, complete);
+    }
+
+    public function loadSound(name: String, complete: Dynamic->Void): Void {
+        kha.Assets.loadSound(name, complete);
+    }
+
+    public function loadBlob(name:String, complete:Dynamic -> Void):Void {
+        kha.Assets.loadBlob(name, complete);
+    }
+}
+#end

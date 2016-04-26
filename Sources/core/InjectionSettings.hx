@@ -1,4 +1,10 @@
 package core;
+import assets.AssetLoaderAssetLocator;
+import assets.AssetLocator;
+import assets.kha.KhaAssetsAssetLoader;
+import assets.AssetLoader;
+import error.TraceErrorManager;
+import error.ErrorManager;
 import gameentities.NecroDisplay;
 import gameentities.NecroGameObject;
 import gameentities.WizardDisplay;
@@ -44,6 +50,13 @@ class InjectionSettings {
         var objectFactory: ObjectFactory = new ObjectFactory();
         injector.mapValue(ObjectCreator, objectFactory);
         injector.mapValue(kha.graphics2.Graphics, backbuffer.g2);
+
+        injector.mapSingletonOf(ErrorManager, TraceErrorManager);
+        var assetLoader: AssetLoader = objectFactory.createInstance(KhaAssetsAssetLoader);
+        injector.mapValue(AssetLoader, assetLoader);
+
+        var assetLocator: AssetLocator = objectFactory.createInstance(AssetLoaderAssetLocator);
+        injector.mapValue(AssetLocator, assetLocator);
 
         var container: KhaSprite = objectFactory.createInstance(KhaSprite);
         var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer);

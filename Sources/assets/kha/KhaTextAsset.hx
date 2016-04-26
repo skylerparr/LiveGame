@@ -1,7 +1,5 @@
-package mocks;
-
-import assets.SoundAsset;
-class MockSoundAsset implements SoundAsset {
+package assets.kha;
+class KhaTextAsset implements TextAsset {
 
     @:isVar
     public var data(get, set):Dynamic;
@@ -21,6 +19,6 @@ class MockSoundAsset implements SoundAsset {
     }
 
     public function dispose():Void {
+        data = null;
     }
-
 }

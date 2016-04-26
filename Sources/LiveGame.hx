@@ -1,4 +1,6 @@
 package;
+import assets.SoundAsset;
+import assets.AssetLocator;
 import kha.audio1.AudioChannel;
 import kha.audio1.Audio;
 import kha.Sound;
@@ -27,6 +29,8 @@ class LiveGame {
     public var notifier: EventNotifier;
     @inject
     public var viewPort: ViewPort;
+    @inject
+    public var assetLocator: AssetLocator;
 
     private var initialized: Bool = false;
 
@@ -44,13 +48,7 @@ class LiveGame {
     public function new() {
         backbuffer = Image.createRenderTarget(800, 600);
 
-        Assets.loadSound("song_1", onSongLoaded);
-
         Mouse.get().notify(onDown, onUp, onMove, null);
-    }
-
-    private function onSongLoaded(sound):Void {
-        audioChannel = Audio.play(sound, true);
     }
 
     private function onDown(x:Int, y:Int, z:Int):Void {
@@ -84,8 +82,19 @@ class LiveGame {
             var settings = new InjectionSettings(backbuffer, fonts);
             settings.injector.injectInto(this);
             Scheduler.addTimeTask(this.update, 0, 1 / 60);
+
+            loadMusic();
         });
 
+    }
+
+    private function loadMusic():Void {
+        assetLocator.getSoundAssetByName("song_1", onMusicLoaded);
+    }
+
+    private function onMusicLoaded(soundAsset: SoundAsset):Void {
+        trace(soundAsset);
+//        soundAsset.soundData.play();
     }
 
     @:async

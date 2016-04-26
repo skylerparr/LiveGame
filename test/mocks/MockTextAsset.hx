@@ -1,7 +1,7 @@
 package mocks;
 
-import assets.SoundAsset;
-class MockSoundAsset implements SoundAsset {
+import assets.TextAsset;
+class MockTextAsset implements TextAsset {
 
     @:isVar
     public var data(get, set):Dynamic;

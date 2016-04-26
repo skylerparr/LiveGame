@@ -1,7 +1,5 @@
-package mocks;
-
-import assets.SoundAsset;
-class MockSoundAsset implements SoundAsset {
+package assets.kha;
+class KhaSoundAsset implements SoundAsset {
 
     @:isVar
     public var data(get, set):Dynamic;
@@ -15,6 +13,7 @@ class MockSoundAsset implements SoundAsset {
     }
 
     public function new() {
+
     }
 
     public function init():Void {

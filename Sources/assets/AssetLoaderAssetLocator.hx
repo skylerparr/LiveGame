@@ -1,4 +1,5 @@
 package assets;
+import assets.kha.KhaSoundAsset;
 import constants.Poses;
 import util.MappedSubscriber;
 import core.BaseObject;
@@ -55,7 +56,7 @@ class AssetLoaderAssetLocator implements AssetLocator {
         if(loadedMap.exists(name)) {
             var resourceCount: ResourceCount = loadedMap.get(name);
             resourceCount.count++;
-            onComplete(resourceCount.resource.data);
+            onComplete(resourceCount.resource);
             return;
         }
         if(currentlyBeingLoaded != null) {
@@ -71,8 +72,7 @@ class AssetLoaderAssetLocator implements AssetLocator {
     @:async
     private function loadImage(name:String):ImageAsset {
         var resource: Resource = @await assetLoader.loadImage(name);
-        maintainAssetState(name, resource);
-        return result(name, resource);
+        return cast manageResult(name, resource, ImageAsset);
     }
 
     public function getSoundAssetByName(name:String, onComplete:SoundAsset -> Void):Void {
@@ -82,11 +82,10 @@ class AssetLoaderAssetLocator implements AssetLocator {
     @:async
     private function loadSound(name:String):SoundAsset {
         var resource: Resource = @await assetLoader.loadSound(name);
-        maintainAssetState(name, resource);
-        return result(name, resource);
+        return cast manageResult(name, resource, SoundAsset);
     }
 
-    private inline function result(name: String, resource: Resource): Dynamic {
+    private function result(name: String, resource: Resource): Dynamic {
         switch(resource.status) {
             case ResourceStatus.OK:
                 return resource.data;
@@ -103,7 +102,7 @@ class AssetLoaderAssetLocator implements AssetLocator {
         var bitmapNode: BitmapNode = objectCreator.createInstance(BitmapNode);
         loadImage(name, function(imageAsset: ImageAsset): Void {
             if(imageAsset != null) {
-                bitmapNode.imageData = imageAsset.imageData;
+                bitmapNode.imageData = imageAsset.data;
             }
             if(onComplete != null) {
                 onComplete(imageAsset);
@@ -119,11 +118,28 @@ class AssetLoaderAssetLocator implements AssetLocator {
     @:async
     private function loadText(name:String):String {
         var resource: Resource = @await assetLoader.loadText(name);
-        maintainAssetState(name, resource);
-        return result(name, resource);
+        var resourceAsset: ResourceAsset = manageResult(name, resource, TextAsset);
+        if(resourceAsset == null) {
+            return null;
+        }
+        return resourceAsset.data;
     }
 
-    private inline function maintainAssetState(name, resource): Void {
+    private inline function manageResult(name: String, resource: Resource, type: Class<ResourceAsset>): ResourceAsset {
+        var data: Dynamic = result(name, resource);
+        if(objectCreator == null) {
+            return null;
+        }
+        if(data == null) {
+            return null;
+        }
+        var resourceAsset:ResourceAsset = objectCreator.createInstance(type);
+        resourceAsset.data = data;
+        maintainAssetState(name, resourceAsset);
+        return resourceAsset;
+    }
+
+    private inline function maintainAssetState(name: String, resource: BaseObject): Void {
         if(loadedMap != null) {
             loadedMap.set(name, {count: 1, resource: resource});
             if(currentlyBeingLoaded != null) {
@@ -140,9 +156,7 @@ class AssetLoaderAssetLocator implements AssetLocator {
             var resourceCount: ResourceCount = loadedMap.get(name);
             resourceCount.count--;
             if(resourceCount.count == 0) {
-                if(Std.is(resourceCount.resource.data, BaseObject)) {
-                    resourceCount.resource.data.dispose();
-                }
+                resourceCount.resource.dispose();
                 loadedMap.remove(name);
             }
         }
@@ -162,5 +176,5 @@ class AssetLoaderAssetLocator implements AssetLocator {
 
 typedef ResourceCount = {
     count: Int,
-    resource: Resource
+    resource: BaseObject
 }

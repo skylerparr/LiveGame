@@ -1,5 +1,7 @@
 package assets;
 
+import mocks.MockTextAsset;
+import assets.kha.KhaTextAsset;
 import util.MappedSubscriber;
 import util.MappedSubscriber;
 import mocks.MockBitmapNode;
@@ -22,6 +24,7 @@ class AssetLoaderAssetLocatorTest {
     private var assetLocator: AssetLoaderAssetLocator;
     private var imageAsset: MockImageAsset;
     private var soundAsset: MockSoundAsset;
+    private var textAsset: MockTextAsset;
     private var assetLoader: AssetLoader;
     private var errorManager: ErrorManager;
     private var objectCreator: ObjectCreator;
@@ -37,6 +40,7 @@ class AssetLoaderAssetLocatorTest {
         imageAsset = mock(MockImageAsset);
 
         soundAsset = mock(MockSoundAsset);
+        textAsset = new MockTextAsset();
         errorManager = mock(ErrorManager);
         objectCreator = mock(ObjectCreator);
         bitmapNode = mock(MockBitmapNode);
@@ -48,6 +52,9 @@ class AssetLoaderAssetLocatorTest {
         subscriber.unsubscribe(cast any, cast any).callsRealMethod();
         subscriber.init();
         objectCreator.createInstance(MappedSubscriber).returns(subscriber);
+        objectCreator.createInstance(SoundAsset).returns(soundAsset);
+        objectCreator.createInstance(ImageAsset).returns(imageAsset);
+        objectCreator.createInstance(TextAsset).returns(textAsset);
 
         assetLocator = new AssetLoaderAssetLocator();
         assetLocator.assetLoader = assetLoader;
@@ -92,7 +99,7 @@ class AssetLoaderAssetLocatorTest {
     @Test
     public function shouldGetSoundAssetByName(): Void {
         assetLoader.loadSound("foo", cast any).calls(function(args: Array<Dynamic>): Void {
-            args[1]({status: ResourceStatus.OK, data: soundAsset});
+            args[1]({status: ResourceStatus.OK, data: {}});
         });
         var cbCalled: Bool = false;
         assetLocator.getSoundAssetByName("foo", function(asset: SoundAsset): Void {
@@ -122,7 +129,7 @@ class AssetLoaderAssetLocatorTest {
 
     @Test
     public function shouldLoadImageAssetLazilyAndCallsCallback(): Void {
-        imageAsset.get_imageData().returns(imageData);
+        imageAsset.data.returns(imageData);
 
         var loadedImageCallback: Resource->Void = null;
         assetLoader.loadImage("foo", cast any).calls(function(args: Array<Dynamic>): Void {
@@ -132,7 +139,7 @@ class AssetLoaderAssetLocatorTest {
         var cbCalled: Bool = false;
         objectCreator.createInstance(BitmapNode).returns(bitmapNode);
         var returnNode: BitmapNode = assetLocator.getLazyAsset("foo", function(asset: ImageAsset): Void {
-            Assert.areEqual(imageData, asset.imageData);
+            Assert.areEqual(imageData, asset.data);
             Assert.areEqual(imageAsset, asset);
             cbCalled = true;
         });
@@ -149,7 +156,7 @@ class AssetLoaderAssetLocatorTest {
 
     @Test
     public function shouldNotAssignImageDataIfAssetLoadFails(): Void {
-        imageAsset.get_imageData().returns(null);
+        imageAsset.data.returns(null);
 
         var loadedImageCallback: Resource->Void = null;
         assetLoader.loadImage("foo", cast any).calls(function(args: Array<Dynamic>): Void {
@@ -175,7 +182,7 @@ class AssetLoaderAssetLocatorTest {
 
     @Test
     public function shouldNotCallOnCompleteIfCallbackIsNull(): Void {
-        imageAsset.get_imageData().returns(imageData);
+        imageAsset.data.returns(imageData);
 
         var loadedImageCallback: Resource->Void = null;
         assetLoader.loadImage("foo", cast any).calls(function(args: Array<Dynamic>): Void {
@@ -243,7 +250,7 @@ class AssetLoaderAssetLocatorTest {
     @Test
     public function shouldOnlyLoadSameSoundAssetOnce(): Void {
         assetLoader.loadSound("foo", cast any).calls(function(args: Array<Dynamic>): Void {
-            args[1]({status: ResourceStatus.OK, data: soundAsset});
+            args[1]({status: ResourceStatus.OK, data: {}});
         });
 
         var cbCount: Int = 0;
@@ -298,7 +305,7 @@ class AssetLoaderAssetLocatorTest {
     @Test
     public function shouldDisposeSoundAssetIfHasBeenFullyDisposed(): Void {
         assetLoader.loadSound("foo", cast any).calls(function(args: Array<Dynamic>): Void {
-            args[1]({status: ResourceStatus.OK, data: soundAsset});
+            args[1]({status: ResourceStatus.OK, data: {}});
         });
         var cbCount: Int = 0;
         assetLocator.getSoundAssetByName("foo", function(asset: SoundAsset): Void {
@@ -508,7 +515,7 @@ class AssetLoaderAssetLocatorTest {
     @IgnoreCover
     private function mockImage():Void {
         assetLoader.loadImage("foo", cast any).calls(function(args: Array<Dynamic>): Void {
-            args[1]({status: ResourceStatus.OK, data: imageAsset});
+            args[1]({status: ResourceStatus.OK, data: {}});
         });
     }
 }
