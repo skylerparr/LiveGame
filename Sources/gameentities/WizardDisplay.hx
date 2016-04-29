@@ -34,7 +34,7 @@ class WizardDisplay extends KhaSprite {
 
     @:async
     private function createWizard():Void {
-        image = @await assetLocator.getDataAssetByName("wizard");
+        image = @await assetLocator.getAssetByName("wizard");
 
         var wizard: BitmapNode = objectCreator.createInstance(BitmapNode);
         wizard.imageData = image.data;
