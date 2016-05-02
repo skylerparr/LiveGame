@@ -1,7 +1,7 @@
 package io;
 interface OutputStream {
     function writeBoolean( value:Bool ):Void;
-    function writeByte( value:Int ):Void;
+    function writeUnsignedByte( value:Int ):Void;
     function writeDouble( value:Float ):Void;
     function writeFloat( value:Float ):Void;
     function writeInt( value:Int ):Void;

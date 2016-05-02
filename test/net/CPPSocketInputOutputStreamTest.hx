@@ -1,5 +1,7 @@
 package net;
 
+import haxe.io.Bytes;
+import haxe.io.Output;
 import io.InputOutputStream;
 import error.ErrorManager;
 import util.MappedSubscriber;
@@ -15,6 +17,7 @@ class CPPSocketInputOutputStreamTest {
     private var objectCreator: ObjectCreator;
     private var subscriber: MappedSubscriber;
     private var socket: TCPSocket;
+    private var output: Output;
     private var socketStream: CPPSocketInputOutputStream;
     private var errorManager: ErrorManager;
 
@@ -25,6 +28,8 @@ class CPPSocketInputOutputStreamTest {
         objectCreator = mock(ObjectCreator);
         objectCreator.createInstance(MappedSubscriber).returns(subscriber);
         socket = mock(TCPSocket);
+        output = mock(Output);
+        socket.output.returns(output);
         errorManager = mock(ErrorManager);
 
         socketStream = new CPPSocketInputOutputStream();
@@ -46,9 +51,10 @@ class CPPSocketInputOutputStreamTest {
             Assert.areEqual(socketStream, stream);
         });
 
-        socketStream.connect("localhost", 1337);
+        connectToSocket();
 
         Assert.isTrue(cbCalled);
+        Assert.isTrue(socketStream.connected);
         socket.connect(cast any, 1337).verify();
     }
 
@@ -60,9 +66,74 @@ class CPPSocketInputOutputStreamTest {
         });
         socket.connect(cast any, 1337).throws(new Error("foo"));
 
-        socketStream.connect("localhost", 1337);
+        connectToSocket();
         Assert.isFalse(cbCalled);
         errorManager.logError(cast any).verify();
+    }
+
+    @Test
+    public function shouldNotWriteBooleanToSocketThatIsNotConnected(): Void {
+        socketStream.writeBoolean(true);
+        output.write(cast any).verify(0);
+    }
+
+    @Test
+    public function shouldWriteBooleanTrueToSocket(): Void {
+        connectToSocket();
+        output.write(cast any).calls(function(args: Array<Dynamic>): Void {
+            Assert.areEqual(1, args[0].get(0));
+        });
+        socketStream.writeBoolean(true);
+        output.write(cast any).verify();
+    }
+
+    @Test
+    public function shouldWriteBooleanFalseToSocket(): Void {
+        connectToSocket();
+        output.write(cast any).calls(function(args): Void {
+            Assert.areEqual(0, args[0].get(0));
+        });
+        socketStream.writeBoolean(false);
+        output.write(cast any).verify();
+    }
+
+    @Test
+    public function shouldWriteSignedIntToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeInt(8392);
+        output.writeInt16(8392).verify();
+    }
+
+    @Test
+    public function shouldWriteByteToConnectedSocket(): Void {
+        connectToSocket();
+        output.write(cast any).calls(function(args): Void {
+            Assert.areEqual(127, args[0].get(0));
+        });
+        socketStream.writeUnsignedByte(127);
+        output.write(cast any).verify();
+    }
+
+    @Test
+    public function shouldHandleByteOverflow(): Void {
+        connectToSocket();
+        output.write(cast any).calls(function(args): Void {
+            Assert.areEqual(99, args[0].get(0));
+        });
+        socketStream.writeUnsignedByte(355);
+        output.write(cast any).verify();
+    }
+
+    @Test
+    public function shouldWriteShortToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeShort(1024);
+        output.writeInt8(1024).verify();
+    }
+
+    @IgnoreCover
+    private function connectToSocket():Void {
+        socketStream.connect("localhost", 1337);
     }
 
 }

@@ -1,4 +1,7 @@
 package net;
+import haxe.io.Bytes;
+import haxe.io.Output;
+import haxe.io.Input;
 import sys.net.Host;
 import util.MappedSubscriber;
 import error.ErrorManager;
@@ -37,12 +40,16 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     public var connected(default, null): Bool;
 
     private var subscriber: MappedSubscriber;
+    private var input: Input;
+    private var output: Output;
 
     public function new() {
     }
 
     public function init():Void {
         subscriber = objectCreator.createInstance(MappedSubscriber);
+        input = socket.input;
+        output = socket.output;
     }
 
     public function dispose():Void {
@@ -52,6 +59,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         try {
             socket.connect(new Host(hostname), port);
             subscriber.notify(CONNECTED, [this]);
+            connected = true;
         } catch(e: Dynamic) {
             errorManager.logError(e);
         }
@@ -85,9 +93,24 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeBoolean(value:Bool):Void {
+        if(connected) {
+            var bytes:Bytes = Bytes.alloc(1);
+            if(value) {
+                bytes.set(0, 1);
+                output.write(bytes);
+            } else {
+                bytes.set(0, 0);
+                output.write(bytes);
+            }
+        }
     }
 
-    public function writeByte(value:Int):Void {
+    public function writeUnsignedByte(value:Int):Void {
+        if(connected) {
+            var bytes = Bytes.alloc(1);
+            bytes.set(0, value);
+            output.write(bytes);
+        }
     }
 
     public function writeDouble(value:Float):Void {
@@ -97,6 +120,9 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeInt(value:Int):Void {
+        if(connected) {
+            output.writeInt16(value);
+        }
     }
 
     public function writeMultiByte(value:String, charSet:String):Void {
@@ -106,6 +132,9 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeShort(value:Int):Void {
+        if(connected) {
+            output.writeInt8(value);
+        }
     }
 
     public function writeUTF(value:String):Void {
