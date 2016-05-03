@@ -58,15 +58,17 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     public function connect(hostname: String, port: UInt): Void {
         try {
             socket.connect(new Host(hostname), port);
-            subscriber.notify(CONNECTED, [this]);
             connected = true;
+            subscriber.notify(CONNECTED, [this]);
         } catch(e: Dynamic) {
             errorManager.logError(e);
         }
     }
 
     public function close(): Void {
-
+        if(connected) {
+            socket.close();
+        }
     }
 
     public function subscribeToConnected(callback:InputOutputStream->Void):Void {
@@ -114,9 +116,15 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeDouble(value:Float):Void {
+        if(connected) {
+            output.writeDouble(value);
+        }
     }
 
     public function writeFloat(value:Float):Void {
+        if(connected) {
+            output.writeFloat(value);
+        }
     }
 
     public function writeInt(value:Int):Void {
@@ -126,9 +134,11 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeMultiByte(value:String, charSet:String):Void {
+        throw "Is not implemented";
     }
 
     public function writeObject(object:Dynamic):Void {
+        throw "Is not implemented";
     }
 
     public function writeShort(value:Int):Void {
@@ -138,15 +148,23 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeUTF(value:String):Void {
+        throw "Is not implemented";
     }
 
     public function writeUTFBytes(value:String):Void {
+        if(connected) {
+            output.writeString(value);
+        }
     }
 
     public function writeUnsignedInt(value:Int):Void {
+        if(connected) {
+            output.writeUInt16(value);
+        }
     }
 
     public function writeBytes(bytes:InputOutputStream, offset: Int = 0, length: Int = 0):Void {
+        throw "Is not implemented";
     }
 
     public function readBoolean():Bool {

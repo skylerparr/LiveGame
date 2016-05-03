@@ -59,6 +59,20 @@ class CPPSocketInputOutputStreamTest {
     }
 
     @Test
+    public function shouldCloseFromSocket(): Void {
+        connectToSocket();
+        socketStream.close();
+
+        socket.close().verify();
+    }
+
+    @Test
+    public function shouldNotCloseSocketThatIsNotConnected(): Void {
+        socketStream.close();
+        socket.close().verify(0);
+    }
+
+    @Test
     public function shouldNotCallConnectedCallbackIfConnectFails(): Void {
         var cbCalled: Bool = false;
         socketStream.subscribeToConnected(function(stream: InputOutputStream): Void {
@@ -129,6 +143,34 @@ class CPPSocketInputOutputStreamTest {
         connectToSocket();
         socketStream.writeShort(1024);
         output.writeInt8(1024).verify();
+    }
+
+    @Test
+    public function shouldWriteUnsignedIntToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeUnsignedInt(490832);
+        output.writeUInt16(490832).verify();
+    }
+    
+    @Test
+    public function shouldWriteFloatToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeFloat(843.935);
+        output.writeFloat(843.935).verify();
+    }
+    
+    @Test
+    public function shouldWriteDOubleToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeDouble(878645432.546968456);
+        output.writeDouble(878645432.546968456).verify();
+    }
+
+    @Test
+    public function shouldWriteUTFBytesToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeUTFBytes("foo bar baz cat");
+        output.writeString("foo bar baz cat").verify();
     }
 
     @IgnoreCover

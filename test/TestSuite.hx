@@ -14,6 +14,7 @@ import display.two.TwoDimDisplayNodeContainerTest;
 import geom.RectangleTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
+import integration.net.CPPSocketInputOutputStreamIntegrationTest;
 import net.CPPSocketInputOutputStreamTest;
 import sound.kha.KhaSoundHandleTest;
 import sound.SimpleSoundManagerTest;
@@ -49,6 +50,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(geom.RectangleTest);
 		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);
+		add(integration.net.CPPSocketInputOutputStreamIntegrationTest);
 		add(net.CPPSocketInputOutputStreamTest);
 		add(sound.kha.KhaSoundHandleTest);
 		add(sound.SimpleSoundManagerTest);
