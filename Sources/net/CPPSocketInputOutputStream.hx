@@ -129,7 +129,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
 
     public function writeInt(value:Int):Void {
         if(connected) {
-            output.writeInt16(value);
+            output.writeInt32(value);
         }
     }
 

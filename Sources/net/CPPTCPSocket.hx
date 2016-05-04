@@ -12,6 +12,7 @@ class CPPTCPSocket implements TCPSocket {
         socket = new Socket();
         input = socket.input;
         output = socket.output;
+        output.bigEndian = true;
     }
 
     public function connect(host:Host, port:Int):Void {

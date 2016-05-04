@@ -115,7 +115,7 @@ class CPPSocketInputOutputStreamTest {
     public function shouldWriteSignedIntToConnectedSocket(): Void {
         connectToSocket();
         socketStream.writeInt(8392);
-        output.writeInt16(8392).verify();
+        output.writeInt32(8392).verify();
     }
 
     @Test

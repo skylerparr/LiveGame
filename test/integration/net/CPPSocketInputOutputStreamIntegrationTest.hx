@@ -51,21 +51,37 @@ class CPPSocketInputOutputStreamIntegrationTest {
 
     @Test
     public function shouldSendBoolean(): Void {
-        var bytes = Bytes.alloc(4);
-        bytes.set(0, 11);
-        socket.socket.output.write(bytes);
-//        socket.socket.write("sendBoolean");
+        prependTestType("boolean");
         stream.writeBoolean(false);
         stream.writeBoolean(true);
     }
 
     @Test
     public function shouldWriteUnsignedByteToSocket(): Void {
+        prependTestType("unsignedByte");
+        stream.writeUnsignedByte(255);
+        stream.writeUnsignedByte(256);
+        stream.writeUnsignedByte(-50);
+    }
+
+    @Test
+    public function shouldWriteIntegerToSocket(): Void {
+        prependTestType("integer");
+        stream.writeInt(0);
+        stream.writeInt(39482);
+        stream.writeInt(2147483647);
+        stream.writeInt(-50);
     }
 
     @IgnoreCover
     public function socketConnected(stream: InputOutputStream): Void {
         Assert.isTrue(cast(stream, CPPSocketInputOutputStream).connected);
+    }
+
+    @IgnoreCover
+    public function prependTestType(testName: String): Void {
+        socket.socket.output.writeInt32(testName.length);
+        socket.socket.write(testName);
     }
 #end
 }
