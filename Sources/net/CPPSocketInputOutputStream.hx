@@ -122,9 +122,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeFloat(value:Float):Void {
-        if(connected) {
-            output.writeFloat(value);
-        }
+        writeDouble(value);
     }
 
     public function writeInt(value:Int):Void {
@@ -142,8 +140,12 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeShort(value:Int):Void {
+        throw "Is not implemented";
+    }
+
+    public function writeUnsignedShort(value:Int):Void {
         if(connected) {
-            output.writeInt8(value);
+            output.writeUInt16(value);
         }
     }
 
@@ -157,10 +159,8 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         }
     }
 
-    public function writeUnsignedInt(value:Int):Void {
-        if(connected) {
-            output.writeUInt16(value);
-        }
+    public function writeUnsignedInt(value:UInt):Void {
+        throw "Is not implemented";
     }
 
     public function writeBytes(bytes:InputOutputStream, offset: Int = 0, length: Int = 0):Void {

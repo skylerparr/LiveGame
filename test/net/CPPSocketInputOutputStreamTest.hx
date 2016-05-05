@@ -141,22 +141,15 @@ class CPPSocketInputOutputStreamTest {
     @Test
     public function shouldWriteShortToConnectedSocket(): Void {
         connectToSocket();
-        socketStream.writeShort(1024);
-        output.writeInt8(1024).verify();
+        socketStream.writeUnsignedShort(1024);
+        output.writeUInt16(1024).verify();
     }
 
-    @Test
-    public function shouldWriteUnsignedIntToConnectedSocket(): Void {
-        connectToSocket();
-        socketStream.writeUnsignedInt(490832);
-        output.writeUInt16(490832).verify();
-    }
-    
     @Test
     public function shouldWriteFloatToConnectedSocket(): Void {
         connectToSocket();
         socketStream.writeFloat(843.935);
-        output.writeFloat(843.935).verify();
+        output.writeDouble(843.935).verify();
     }
     
     @Test

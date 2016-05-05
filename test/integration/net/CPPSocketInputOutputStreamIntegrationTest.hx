@@ -1,15 +1,12 @@
 package integration.net;
 
-import haxe.io.Bytes;
 import error.ErrorManager;
 import core.ObjectCreator;
 import util.MappedSubscriber;
 import io.InputOutputStream;
 import net.CPPSocketInputOutputStream;
 import net.CPPTCPSocket;
-import massive.munit.util.Timer;
 import massive.munit.Assert;
-import massive.munit.async.AsyncFactory;
 import mockatoo.Mockatoo;
 import mockatoo.Mockatoo.*;
 
@@ -71,6 +68,31 @@ class CPPSocketInputOutputStreamIntegrationTest {
         stream.writeInt(39482);
         stream.writeInt(2147483647);
         stream.writeInt(-50);
+    }
+
+    @Test
+    public function shouldWriteFloatToSocket(): Void {
+        prependTestType("float");
+        stream.writeFloat(0.0);
+        stream.writeFloat(0.432);
+        stream.writeFloat(124.432);
+        stream.writeFloat(-34534.3245);
+    }
+
+    @Test
+    public function shouldWriteDoubleToSocket(): Void {
+        prependTestType("double");
+        stream.writeDouble(0.0);
+        stream.writeDouble(0.432);
+        stream.writeDouble(13453453424.432);
+        stream.writeDouble(-345334544.3245);
+    }
+
+    @Test
+    public function shouldWriteUnsignedShortToSocket(): Void {
+        prependTestType("unsignedShort");
+        stream.writeUnsignedShort(438);
+        stream.writeUnsignedShort(0);
     }
 
     @IgnoreCover
