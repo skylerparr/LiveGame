@@ -1,5 +1,6 @@
 package net;
 
+import haxe.io.Input;
 import haxe.io.Bytes;
 import haxe.io.Output;
 import io.InputOutputStream;
@@ -18,6 +19,7 @@ class CPPSocketInputOutputStreamTest {
     private var subscriber: MappedSubscriber;
     private var socket: TCPSocket;
     private var output: Output;
+    private var input: Input;
     private var socketStream: CPPSocketInputOutputStream;
     private var errorManager: ErrorManager;
 
@@ -29,7 +31,9 @@ class CPPSocketInputOutputStreamTest {
         objectCreator.createInstance(MappedSubscriber).returns(subscriber);
         socket = mock(TCPSocket);
         output = mock(Output);
+        input = mock(Input);
         socket.output.returns(output);
+        socket.input.returns(input);
         errorManager = mock(ErrorManager);
 
         socketStream = new CPPSocketInputOutputStream();
@@ -164,6 +168,109 @@ class CPPSocketInputOutputStreamTest {
         connectToSocket();
         socketStream.writeUTFBytes("foo bar baz cat");
         output.writeString("foo bar baz cat").verify();
+    }
+
+    @Test
+    public function shouldReadBooleanFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(3);
+        var i: Int = 0;
+        bytes.set(i++, 1);
+        bytes.set(i++, 0);
+        bytes.set(i++, 1);
+        input.readAll().returns(bytes);
+        socketStream.update();
+        Assert.areEqual(3, socketStream.bytesAvailable);
+        Assert.isTrue(socketStream.readBoolean());
+        Assert.isFalse(socketStream.readBoolean());
+
+        input.reset();
+        bytes = Bytes.alloc(2);
+        var i: Int = 0;
+        bytes.set(i++, 0);
+        bytes.set(i++, 1);
+        input.readAll().returns(bytes);
+        socketStream.update();
+
+        Assert.areEqual(3, socketStream.bytesAvailable);
+        Assert.isTrue(socketStream.readBoolean());
+        Assert.isFalse(socketStream.readBoolean());
+        Assert.isTrue(socketStream.readBoolean());
+    }
+
+    @Test
+    public function shouldNotReadDataFromSocketThatIsNotConnected(): Void {
+        try {
+            socketStream.readBoolean();
+            Assert.fail("socket must be connected");
+        } catch(e: Dynamic) {
+            Assert.isTrue(true);
+        }
+    }
+
+    @Test
+    public function shouldReadByteFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(1);
+        var i: Int = 0;
+        bytes.set(i++, 32);
+        input.readAll().returns(bytes);
+
+        socketStream.update();
+        Assert.areEqual(1, socketStream.bytesAvailable);
+        Assert.areEqual(32, socketStream.readByte());
+    }
+
+    @Test
+    public function shouldReadDoubleFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(8);
+        var i: Int = 0;
+        bytes.setDouble(i++, 302984023958.02394832);
+        input.readAll().returns(bytes);
+
+        socketStream.update();
+        Assert.areEqual(8, socketStream.bytesAvailable);
+        Assert.areEqual(302984023958.02394832, socketStream.readDouble());
+    }
+
+    @Test
+    public function shouldReadFloatFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(4);
+        var i: Int = 0;
+        bytes.setFloat(i++, -329.239);
+        input.readAll().returns(bytes);
+
+        socketStream.update();
+        Assert.areEqual(4, socketStream.bytesAvailable);
+        Assert.areEqual(-329.239, Std.int(socketStream.readFloat() * 1000) / 1000);
+    }
+
+    @Test
+    public function shouldReadIntFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(4);
+        var i: Int = 0;
+        bytes.setInt32(i++, 342);
+        input.readAll().returns(bytes);
+
+        socketStream.update();
+        Assert.areEqual(4, socketStream.bytesAvailable);
+        Assert.areEqual(342, socketStream.readInt());
+    }
+
+    @Test
+    public function shouldReadUnsignedShortFromConnectSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(2);
+        var i: Int = 0;
+        bytes.setUInt16(i++, 128);
+        input.readAll().returns(bytes);
+
+        socketStream.update();
+        Assert.areEqual(2, socketStream.bytesAvailable);
+        Assert.areEqual(128, socketStream.readUnsignedShort());
     }
 
     @IgnoreCover

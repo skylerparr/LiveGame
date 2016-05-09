@@ -1,4 +1,5 @@
 package net;
+import haxe.io.BytesInput;
 import haxe.io.Bytes;
 import haxe.io.Output;
 import haxe.io.Input;
@@ -22,18 +23,20 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     public var position(get, set):Int;
 
     public function set_position(value:Int) {
-        return this.position = value;
+        return value;
     }
 
     public function get_position():Int {
-        return position;
+        if(bufferInput == null) {
+            return 0;
+        }
+        return bufferInput.position;
     }
 
-    @:isVar
     public var bytesAvailable(get, null):Int;
 
     public function get_bytesAvailable():Int {
-        return bytesAvailable;
+        return bufferInput.length - position;
     }
 
     @:isVar
@@ -42,14 +45,17 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     private var subscriber: MappedSubscriber;
     private var input: Input;
     private var output: Output;
+    private var buffer: Bytes;
+    private var bufferInput: BytesInput;
 
     public function new() {
     }
 
     public function init():Void {
         subscriber = objectCreator.createInstance(MappedSubscriber);
-        input = socket.input;
         output = socket.output;
+        input = socket.input;
+        position = 0;
     }
 
     public function dispose():Void {
@@ -91,7 +97,24 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function update(): Void {
-
+        position = 0;
+        var bytes = input.readAll();
+        var tmpBufLen: UInt = 0;
+        if(buffer != null) {
+            var tmpBuffer: Bytes = Bytes.alloc(bytesAvailable + bytes.length);
+            for(i in 0...tmpBuffer.length) {
+                tmpBuffer.set(i, buffer.get(i));
+            }
+            tmpBufLen = tmpBuffer.length;
+            buffer = tmpBuffer;
+        } else {
+            buffer = Bytes.alloc(bytes.length);
+        }
+        for(i in 0...bytes.length) {
+            var val = bytes.get(i);
+            buffer.set(i + tmpBufLen, val);
+        }
+        bufferInput = new BytesInput(buffer, 0, buffer.length);
     }
 
     public function writeBoolean(value:Bool):Void {
@@ -167,27 +190,38 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         throw "Is not implemented";
     }
 
+    public inline function checkConnected():Void {
+        if(!connected) {
+            throw "Socket is not connected";
+        }
+    }
+
     public function readBoolean():Bool {
-        return false;
+        checkConnected();
+        return bufferInput.readByte() == 1;
     }
 
     public function readByte():Int {
-        return 0;
+        checkConnected();
+        return bufferInput.readByte();
     }
 
     public function readBytes(bytes:InputOutputStream, offset: Int = 0, length: Int = 0):Void {
     }
 
     public function readDouble():Float {
-        return 0;
+        checkConnected();
+        return bufferInput.readDouble();
     }
 
     public function readFloat():Float {
-        return 0;
+        checkConnected();
+        return bufferInput.readFloat();
     }
 
     public function readInt():Int {
-        return 0;
+        checkConnected();
+        return bufferInput.readInt32();
     }
 
     public function readMultiByte(length:Int, charSet:String):String {
@@ -195,27 +229,33 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function readShort():Int {
+        throw "not implemented";
         return 0;
     }
 
     public function readUTF():String {
+        throw "not implemented";
         return null;
     }
 
     public function readUTFBytes(length:Int):String {
+        throw "not implemented";
         return null;
     }
 
     public function readUnsignedByte():Int {
+        throw "not implemented";
         return 0;
     }
 
     public function readUnsignedInt():Int {
+        throw "not implemented";
         return 0;
     }
 
     public function readUnsignedShort():Int {
-        return 0;
+        checkConnected();
+        return bufferInput.readUInt16();
     }
 
     public function send(data:String):Void {
