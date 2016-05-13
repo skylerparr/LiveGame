@@ -1,4 +1,5 @@
 package net;
+import sys.net.Socket;
 import haxe.io.BytesInput;
 import haxe.io.Bytes;
 import haxe.io.Output;
@@ -36,6 +37,9 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     public var bytesAvailable(get, null):Int;
 
     public function get_bytesAvailable():Int {
+        if(bufferInput == null) {
+            return 0;
+        }
         return bufferInput.length - position;
     }
 
@@ -64,10 +68,13 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     public function connect(hostname: String, port: UInt): Void {
         try {
             socket.connect(new Host(hostname), port);
-            connected = true;
-            subscriber.notify(CONNECTED, [this]);
         } catch(e: Dynamic) {
-            errorManager.logError(e);
+            if(e == "Blocking") {
+                connected = true;
+                subscriber.notify(CONNECTED, [this]);
+            } else {
+                errorManager.logError(e);
+            }
         }
     }
 
@@ -97,22 +104,27 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function update(): Void {
+        if(!waitForRead()) {
+            return;
+        }
         position = 0;
-        var bytes = input.readAll();
+        var readBuffer = Bytes.alloc(64);
+        var lengthReady: Int = input.readBytes(readBuffer, 0, readBuffer.length);
         var tmpBufLen: UInt = 0;
         if(buffer != null) {
-            var tmpBuffer: Bytes = Bytes.alloc(bytesAvailable + bytes.length);
+            var tmpBuffer: Bytes = Bytes.alloc(bytesAvailable + lengthReady);
             for(i in 0...tmpBuffer.length) {
                 tmpBuffer.set(i, buffer.get(i));
             }
             tmpBufLen = tmpBuffer.length;
             buffer = tmpBuffer;
         } else {
-            buffer = Bytes.alloc(bytes.length);
+            buffer = Bytes.alloc(lengthReady);
         }
-        for(i in 0...bytes.length) {
-            var val = bytes.get(i);
-            buffer.set(i + tmpBufLen, val);
+        var posOffset = bytesAvailable;
+        for(i in 0...lengthReady) {
+            var val = readBuffer.get(i);
+            buffer.set(i + posOffset, val);
         }
         bufferInput = new BytesInput(buffer, 0, buffer.length);
     }
@@ -239,8 +251,8 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function readUTFBytes(length:Int):String {
-        throw "not implemented";
-        return null;
+        checkConnected();
+        return bufferInput.readString(length);
     }
 
     public function readUnsignedByte():Int {
@@ -262,5 +274,14 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function clear():Void {
+    }
+
+    public function waitForRead(): Bool {
+        var ourSocket: Socket = cast(socket, CPPTCPSocket).socket;
+        var r = Socket.select([ourSocket],null,null,0);
+        if( r.read[0] == ourSocket ) {
+            return true;
+        }
+        return false;
     }
 }

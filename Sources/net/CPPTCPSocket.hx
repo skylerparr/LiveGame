@@ -13,6 +13,8 @@ class CPPTCPSocket implements TCPSocket {
         input = socket.input;
         output = socket.output;
         output.bigEndian = true;
+        socket.setBlocking(false);
+        socket.setFastSend(true);
     }
 
     public function connect(host:Host, port:Int):Void {

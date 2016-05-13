@@ -36,7 +36,7 @@ class CPPSocketInputOutputStreamTest {
         socket.input.returns(input);
         errorManager = mock(ErrorManager);
 
-        socketStream = new CPPSocketInputOutputStream();
+        socketStream = new TestableCPPSocketInputOutputStream();
         socketStream.objectCreator = objectCreator;
         socketStream.socket = socket;
         socketStream.errorManager = errorManager;
@@ -155,7 +155,7 @@ class CPPSocketInputOutputStreamTest {
         socketStream.writeFloat(843.935);
         output.writeDouble(843.935).verify();
     }
-    
+
     @Test
     public function shouldWriteDOubleToConnectedSocket(): Void {
         connectToSocket();
@@ -178,7 +178,7 @@ class CPPSocketInputOutputStreamTest {
         bytes.set(i++, 1);
         bytes.set(i++, 0);
         bytes.set(i++, 1);
-        input.readAll().returns(bytes);
+        mockBytes(bytes);
         socketStream.update();
         Assert.areEqual(3, socketStream.bytesAvailable);
         Assert.isTrue(socketStream.readBoolean());
@@ -189,7 +189,7 @@ class CPPSocketInputOutputStreamTest {
         var i: Int = 0;
         bytes.set(i++, 0);
         bytes.set(i++, 1);
-        input.readAll().returns(bytes);
+        mockBytes(bytes);
         socketStream.update();
 
         Assert.areEqual(3, socketStream.bytesAvailable);
@@ -214,7 +214,7 @@ class CPPSocketInputOutputStreamTest {
         var bytes = Bytes.alloc(1);
         var i: Int = 0;
         bytes.set(i++, 32);
-        input.readAll().returns(bytes);
+        mockBytes(bytes);
 
         socketStream.update();
         Assert.areEqual(1, socketStream.bytesAvailable);
@@ -227,7 +227,7 @@ class CPPSocketInputOutputStreamTest {
         var bytes = Bytes.alloc(8);
         var i: Int = 0;
         bytes.setDouble(i++, 302984023958.02394832);
-        input.readAll().returns(bytes);
+        mockBytes(bytes);
 
         socketStream.update();
         Assert.areEqual(8, socketStream.bytesAvailable);
@@ -240,7 +240,7 @@ class CPPSocketInputOutputStreamTest {
         var bytes = Bytes.alloc(4);
         var i: Int = 0;
         bytes.setFloat(i++, -329.239);
-        input.readAll().returns(bytes);
+        mockBytes(bytes);
 
         socketStream.update();
         Assert.areEqual(4, socketStream.bytesAvailable);
@@ -253,7 +253,7 @@ class CPPSocketInputOutputStreamTest {
         var bytes = Bytes.alloc(4);
         var i: Int = 0;
         bytes.setInt32(i++, 342);
-        input.readAll().returns(bytes);
+        mockBytes(bytes);
 
         socketStream.update();
         Assert.areEqual(4, socketStream.bytesAvailable);
@@ -261,23 +261,44 @@ class CPPSocketInputOutputStreamTest {
     }
 
     @Test
-    public function shouldReadUnsignedShortFromConnectSocket(): Void {
+    public function shouldReadUnsignedShortFromConnectedSocket(): Void {
         connectToSocket();
         var bytes = Bytes.alloc(2);
         var i: Int = 0;
         bytes.setUInt16(i++, 128);
-        input.readAll().returns(bytes);
+        mockBytes(bytes);
 
         socketStream.update();
         Assert.areEqual(2, socketStream.bytesAvailable);
         Assert.areEqual(128, socketStream.readUnsignedShort());
     }
 
+    @Test
+    public function shouldReadUTFBytesFromConnectedSocket(): Void {
+        var string: String = "hello foo bar";
+        connectToSocket();
+        var bytes = Bytes.ofString(string);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(string.length, socketStream.bytesAvailable);
+        Assert.areEqual(string, socketStream.readUTFBytes(socketStream.bytesAvailable));
+    }
+
     @IgnoreCover
     private function connectToSocket():Void {
+        socket.connect(cast any, 1337).throws("Blocking");
         socketStream.connect("localhost", 1337);
     }
 
+    @IgnoreCover
+    private function mockBytes(bytes: Bytes):Void {
+        input.readBytes(cast any, cast any, cast any).calls(function(args): Int {
+            var readBytes: Bytes = args[0];
+            readBytes.blit(0, bytes, 0, bytes.length);
+            return bytes.length;
+        });
+    }
 }
 
 class Error {
