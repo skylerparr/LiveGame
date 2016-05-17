@@ -122,10 +122,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
             buffer = Bytes.alloc(lengthReady);
         }
         var posOffset = bytesAvailable;
-        for(i in 0...lengthReady) {
-            var val = readBuffer.get(i);
-            buffer.set(i + posOffset, val);
-        }
+        buffer.blit(posOffset, readBuffer, 0, lengthReady);
         bufferInput = new BytesInput(buffer, 0, buffer.length);
     }
 
@@ -214,8 +211,8 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function readByte():Int {
-        checkConnected();
-        return bufferInput.readByte();
+        throw "not implemented";
+        return 0;
     }
 
     public function readBytes(bytes:InputOutputStream, offset: Int = 0, length: Int = 0):Void {
@@ -256,8 +253,8 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function readUnsignedByte():Int {
-        throw "not implemented";
-        return 0;
+        checkConnected();
+        return bufferInput.readByte();
     }
 
     public function readUnsignedInt():Int {

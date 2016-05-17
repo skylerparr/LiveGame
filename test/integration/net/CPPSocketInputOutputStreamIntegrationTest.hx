@@ -1,5 +1,7 @@
 package integration.net;
 
+import haxe.io.BytesInput;
+import haxe.io.BytesBuffer;
 import haxe.io.Bytes;
 import error.ErrorManager;
 import core.ObjectCreator;
@@ -123,15 +125,75 @@ class CPPSocketInputOutputStreamIntegrationTest {
     }
 
     @Test
-    public function shouldReadByteFromSocket(): Void {
+    public function shouldReadUnsignedByteFromSocket(): Void {
         prependTestType("readByte");
-//        while(stream.bytesAvailable != 3) {
-//            stream.update();
-//        }
-//        Assert.areEqual(3, stream.bytesAvailable);
-//        Assert.areEqual(15, stream.readByte());
-//        Assert.areEqual(-54, stream.readByte());
-//        Assert.areEqual(0, stream.readByte());
+        while(stream.bytesAvailable != 3) {
+            stream.update();
+        }
+        Assert.areEqual(3, stream.bytesAvailable);
+        Assert.areEqual(15, stream.readUnsignedByte());
+        Assert.areEqual(255, stream.readUnsignedByte());
+        Assert.areEqual(0, stream.readUnsignedByte());
+
+        stream.writeBoolean(true);
+    }
+
+    @Test
+    public function shouldReadUnsignedShortFromSocket(): Void {
+        prependTestType("readUnsignedShort");
+
+        while(stream.bytesAvailable != 6) {
+            stream.update();
+        }
+        Assert.areEqual(6, stream.bytesAvailable);
+        Assert.areEqual(5421, stream.readUnsignedShort());
+        Assert.areEqual(65535, stream.readUnsignedShort());
+        Assert.areEqual(0, stream.readUnsignedShort());
+
+        stream.writeBoolean(true);
+    }
+
+    @Test
+    public function shouldReadIntFromSocket(): Void {
+        prependTestType("readInt");
+
+        while(stream.bytesAvailable < 16) {
+            stream.update();
+        }
+        Assert.areEqual(16, stream.bytesAvailable);
+        Assert.areEqual(5421, stream.readInt());
+        Assert.areEqual(65535, stream.readInt());
+        Assert.areEqual(-65535, stream.readInt());
+        Assert.areEqual(0, stream.readInt());
+
+        stream.writeBoolean(true);
+    }
+
+    @Test
+    public function shoudReadDoubleFromSocket(): Void {
+        prependTestType("readDouble");
+
+        while(stream.bytesAvailable < 32) {
+            stream.update();
+        }
+        Assert.areEqual(32, stream.bytesAvailable);
+        Assert.areEqual(5421.3256, stream.readDouble());
+        Assert.areEqual(65535.5499, stream.readDouble());
+        Assert.areEqual(-65535.515878, stream.readDouble());
+        Assert.areEqual(0, stream.readDouble());
+
+        stream.writeBoolean(true);
+    }
+
+    @Test
+    public function shouldReadUTFBytesFromSocket(): Void {
+        prependTestType("readUTFBytes");
+
+        while(stream.bytesAvailable < 11) {
+            stream.update();
+        }
+        Assert.areEqual(11, stream.bytesAvailable);
+        Assert.areEqual("hello world", stream.readUTFBytes(11));
 
         stream.writeBoolean(true);
     }

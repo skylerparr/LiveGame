@@ -209,7 +209,7 @@ class CPPSocketInputOutputStreamTest {
     }
 
     @Test
-    public function shouldReadByteFromConnectedSocket(): Void {
+    public function shouldUnsignedReadByteFromConnectedSocket(): Void {
         connectToSocket();
         var bytes = Bytes.alloc(1);
         var i: Int = 0;
@@ -218,7 +218,7 @@ class CPPSocketInputOutputStreamTest {
 
         socketStream.update();
         Assert.areEqual(1, socketStream.bytesAvailable);
-        Assert.areEqual(32, socketStream.readByte());
+        Assert.areEqual(32, socketStream.readUnsignedByte());
     }
 
     @Test
