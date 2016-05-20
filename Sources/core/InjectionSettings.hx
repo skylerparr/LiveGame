@@ -1,4 +1,9 @@
 package core;
+import net.TCPSocketConnector;
+import io.InputOutputStream;
+import net.CPPSocketInputOutputStream;
+import net.CPPTCPSocket;
+import net.TCPSocket;
 import assets.SoundAsset;
 import assets.kha.KhaSoundAsset;
 import assets.kha.KhaImageAsset;
@@ -134,6 +139,11 @@ class InjectionSettings {
 
         var fps: Fps = objectFactory.createInstance(Fps);
         injector.mapValue(Fps, fps);
+
+        injector.mapSingletonOf(TCPSocket, CPPTCPSocket);
+        var socketIOStream: CPPSocketInputOutputStream = objectFactory.createInstance(CPPSocketInputOutputStream);
+        injector.mapValue(InputOutputStream, socketIOStream);
+        injector.mapValue(TCPSocketConnector, socketIOStream);
 
         objectFactory.createInstance(Playground);
     }

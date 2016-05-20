@@ -1,4 +1,6 @@
 package scenes.playground;
+import io.InputOutputStream;
+import net.TCPSocketConnector;
 import input.kha.KhaKeyboardInputSourceListener;
 import input.KeyboardInputSourceListener;
 import constants.Poses;
@@ -37,6 +39,8 @@ class Playground implements BaseObject {
     public var gameWorld: GameWorld;
     @inject
     public var subscriber: Subscriber;
+    @inject
+    public var tcpSocketConnector: TCPSocketConnector;
 
     private var lastUnit: NecroGameObject;
     private var rise: Float = 0;
@@ -54,6 +58,13 @@ class Playground implements BaseObject {
         subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onGameLoop);
 
         objectCreator.createInstance(KhaKeyboardInputSourceListener);
+
+        tcpSocketConnector.subscribeToConnected(onConnected);
+        tcpSocketConnector.connect("localhost", 1337);
+    }
+
+    private function onConnected(stream:InputOutputStream):Void {
+        trace("socket connected");
     }
 
     private function onGameLoop():Void {

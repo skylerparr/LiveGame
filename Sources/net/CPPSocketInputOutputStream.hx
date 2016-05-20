@@ -12,7 +12,8 @@ import core.ObjectCreator;
 class CPPSocketInputOutputStream implements TCPSocketConnector implements InputOutputStream {
 
     private static inline var CONNECTED: String = "connected";
-    
+    private static inline var CLOSED: String = "closed";
+
     @inject
     public var socket: TCPSocket;
     @inject
@@ -81,6 +82,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     public function close(): Void {
         if(connected) {
             socket.close();
+            subscriber.notify(CLOSED, [this]);
         }
     }
 
@@ -89,9 +91,11 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function unsubscribeToConnected(callback:InputOutputStream->Void):Void {
+        subscriber.unsubscribe(CONNECTED, callback);
     }
 
     public function subscribeToClosed(callback:InputOutputStream->Void):Void {
+        subscriber.subscribe(CLOSED, callback);
     }
 
     public function unsubscribeToClosed(callback:InputOutputStream->Void):Void {
