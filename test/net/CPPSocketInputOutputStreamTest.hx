@@ -100,11 +100,71 @@ class CPPSocketInputOutputStreamTest {
     }
 
     @Test
+    public function shouldUnsubscribeFromSocketClosed(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToClosed(callback);
+
+        connectToSocket();
+        socketStream.close();
+
+        socketStream.unsubscribeToClosed(callback);
+        connectToSocket();
+        socketStream.close();
+        Assert.areEqual(1, cbCount);
+    }
+
+    @Test
     public function shouldCloseFromSocket(): Void {
         connectToSocket();
         socketStream.close();
 
         socket.close().verify();
+        Assert.isFalse(socketStream.connected);
+    }
+
+    @Test
+    public function shouldClearBufferOnClose(): Void {
+        connectToSocket();
+        mockSampleData();
+        Assert.areEqual(3, socketStream.bytesAvailable);
+
+        socketStream.close();
+        Assert.areEqual(0, socketStream.bytesAvailable);
+    }
+
+    @Test
+    public function shouldSubscribeToDataReceived(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToDataReceived(callback);
+        connectToSocket();
+        mockSampleData();
+        Assert.areEqual(1, cbCount);
+    }
+
+    @Test
+    public function shouldUnsubscribeFromDataReceived(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToDataReceived(callback);
+        connectToSocket();
+        mockSampleData();
+        Assert.areEqual(1, cbCount);
+
+        input.reset();
+        socketStream.unsubscribeDataReceived(callback);
+        mockSampleData();
+        Assert.areEqual(1, cbCount);
     }
 
     @Test
@@ -210,19 +270,13 @@ class CPPSocketInputOutputStreamTest {
     @Test
     public function shouldReadBooleanFromConnectedSocket(): Void {
         connectToSocket();
-        var bytes = Bytes.alloc(3);
-        var i: Int = 0;
-        bytes.set(i++, 1);
-        bytes.set(i++, 0);
-        bytes.set(i++, 1);
-        mockBytes(bytes);
-        socketStream.update();
+        mockSampleData();
         Assert.areEqual(3, socketStream.bytesAvailable);
         Assert.isTrue(socketStream.readBoolean());
         Assert.isFalse(socketStream.readBoolean());
 
         input.reset();
-        bytes = Bytes.alloc(2);
+        var bytes = Bytes.alloc(2);
         var i: Int = 0;
         bytes.set(i++, 0);
         bytes.set(i++, 1);
@@ -320,6 +374,39 @@ class CPPSocketInputOutputStreamTest {
         socketStream.update();
         Assert.areEqual(string.length, socketStream.bytesAvailable);
         Assert.areEqual(string, socketStream.readUTFBytes(socketStream.bytesAvailable));
+    }
+
+    @Test
+    public function shouldDisposeSocketStream(): Void {
+        connectToSocket();
+        socketStream.subscribeToConnected(function(io): Void {});
+        socketStream.subscribeToClosed(function(io): Void {});
+        socketStream.subscribeToDataReceived(function(io): Void {});
+        mockSampleData();
+
+        socketStream.dispose();
+
+        objectCreator.disposeInstance(subscriber);
+        Assert.isNull(socketStream.subscriber);
+        Assert.isNull(socketStream.input);
+        Assert.isNull(socketStream.output);
+        Assert.isNull(socketStream.buffer);
+        Assert.isNull(socketStream.bufferInput);
+        Assert.isNull(socketStream.socket);
+        Assert.isNull(socketStream.errorManager);
+        Assert.isNull(socketStream.objectCreator);
+        Assert.isFalse(socketStream.connected);
+    }
+
+    @IgnoreCover
+    private inline function mockSampleData():Void {
+        var bytes = Bytes.alloc(3);
+        var i: Int = 0;
+        bytes.set(i++, 1);
+        bytes.set(i++, 0);
+        bytes.set(i++, 1);
+        mockBytes(bytes);
+        socketStream.update();
     }
 
     @IgnoreCover

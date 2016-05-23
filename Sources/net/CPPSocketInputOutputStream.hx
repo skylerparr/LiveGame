@@ -13,6 +13,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
 
     private static inline var CONNECTED: String = "connected";
     private static inline var CLOSED: String = "closed";
+    private static inline var DATA: String = "data";
 
     @inject
     public var socket: TCPSocket;
@@ -47,11 +48,11 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     @:isVar
     public var connected(default, null): Bool;
 
-    private var subscriber: MappedSubscriber;
-    private var input: Input;
-    private var output: Output;
-    private var buffer: Bytes;
-    private var bufferInput: BytesInput;
+    public var subscriber: MappedSubscriber;
+    public var input: Input;
+    public var output: Output;
+    public var buffer: Bytes;
+    public var bufferInput: BytesInput;
 
     public function new() {
     }
@@ -64,6 +65,14 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function dispose():Void {
+        close();
+        objectCreator.disposeInstance(subscriber);
+        subscriber = null;
+        input = null;
+        output = null;
+        socket = null;
+        errorManager = null;
+        objectCreator = null;
     }
 
     public function connect(hostname: String, port: UInt): Void {
@@ -82,8 +91,15 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     public function close(): Void {
         if(connected) {
             socket.close();
+            clearBuffer();
             subscriber.notify(CLOSED, [this]);
         }
+    }
+
+    private inline function clearBuffer(): Void {
+        bufferInput = null;
+        buffer = null;
+        connected = false;
     }
 
     public function subscribeToConnected(callback:InputOutputStream->Void):Void {
@@ -99,12 +115,15 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function unsubscribeToClosed(callback:InputOutputStream->Void):Void {
+        subscriber.unsubscribe(CLOSED, callback);
     }
 
     public function subscribeToDataReceived(callback:InputOutputStream->Void):Void {
+        subscriber.subscribe(DATA, callback);
     }
 
     public function unsubscribeDataReceived(callback:InputOutputStream->Void):Void {
+        subscriber.unsubscribe(DATA, callback);
     }
 
     public function update(): Void {
@@ -128,6 +147,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         var posOffset = bytesAvailable;
         buffer.blit(posOffset, readBuffer, 0, lengthReady);
         bufferInput = new BytesInput(buffer, 0, buffer.length);
+        subscriber.notify(DATA, [this]);
     }
 
     public function writeBoolean(value:Bool):Void {
