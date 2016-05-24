@@ -8,7 +8,7 @@ import mocks.MockBitmapNode;
 import core.ObjectCreator;
 import display.BitmapNode;
 import mocks.MockSoundAsset;
-import error.ErrorManager;
+import error.Logger;
 import assets.Resource.ResourceStatus;
 import mocks.MockImageAsset;
 import massive.munit.util.Timer;
@@ -26,7 +26,7 @@ class AssetLoaderAssetLocatorTest {
     private var soundAsset: MockSoundAsset;
     private var textAsset: MockTextAsset;
     private var assetLoader: AssetLoader;
-    private var errorManager: ErrorManager;
+    private var errorManager: Logger;
     private var objectCreator: ObjectCreator;
     private var bitmapNode: MockBitmapNode;
     private var imageData: Dynamic;
@@ -41,7 +41,7 @@ class AssetLoaderAssetLocatorTest {
 
         soundAsset = mock(MockSoundAsset);
         textAsset = new MockTextAsset();
-        errorManager = mock(ErrorManager);
+        errorManager = mock(Logger);
         objectCreator = mock(ObjectCreator);
         bitmapNode = mock(MockBitmapNode);
 

@@ -3,7 +3,7 @@ package integration.net;
 import haxe.io.BytesInput;
 import haxe.io.BytesBuffer;
 import haxe.io.Bytes;
-import error.ErrorManager;
+import error.Logger;
 import core.ObjectCreator;
 import util.MappedSubscriber;
 import io.InputOutputStream;
@@ -23,7 +23,7 @@ class CPPSocketInputOutputStreamIntegrationTest {
 
     private var objectCreator: ObjectCreator;
     private var subscriber: MappedSubscriber;
-    private var errorManager: ErrorManager;
+    private var errorManager: Logger;
 
 
     @BeforeClass
@@ -33,7 +33,7 @@ class CPPSocketInputOutputStreamIntegrationTest {
         subscriber.init();
         objectCreator = mock(ObjectCreator);
         objectCreator.createInstance(MappedSubscriber).returns(subscriber);
-        errorManager = mock(ErrorManager);
+        errorManager = mock(Logger);
 
         stream = new CPPSocketInputOutputStream();
         stream.socket = socket;

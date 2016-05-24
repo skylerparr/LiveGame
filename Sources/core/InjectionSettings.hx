@@ -14,8 +14,8 @@ import assets.AssetLoaderAssetLocator;
 import assets.AssetLocator;
 import assets.kha.KhaAssetsAssetLoader;
 import assets.AssetLoader;
-import error.TraceErrorManager;
-import error.ErrorManager;
+import error.TraceLogger;
+import error.Logger;
 import gameentities.NecroDisplay;
 import gameentities.NecroGameObject;
 import gameentities.WizardDisplay;
@@ -62,7 +62,7 @@ class InjectionSettings {
         injector.mapValue(ObjectCreator, objectFactory);
         injector.mapValue(kha.graphics2.Graphics, backbuffer.g2);
 
-        injector.mapSingletonOf(ErrorManager, TraceErrorManager);
+        injector.mapSingletonOf(Logger, TraceLogger);
         var assetLoader: AssetLoader = objectFactory.createInstance(KhaAssetsAssetLoader);
         injector.mapValue(AssetLoader, assetLoader);
 

@@ -6,7 +6,7 @@ import haxe.io.Output;
 import haxe.io.Input;
 import sys.net.Host;
 import util.MappedSubscriber;
-import error.ErrorManager;
+import error.Logger;
 import io.InputOutputStream;
 import core.ObjectCreator;
 class CPPSocketInputOutputStream implements TCPSocketConnector implements InputOutputStream {
@@ -18,7 +18,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     @inject
     public var socket: TCPSocket;
     @inject
-    public var errorManager: ErrorManager;
+    public var errorManager: Logger;
     @inject
     public var objectCreator: ObjectCreator;
     

@@ -4,7 +4,7 @@ import haxe.io.Input;
 import haxe.io.Bytes;
 import haxe.io.Output;
 import io.InputOutputStream;
-import error.ErrorManager;
+import error.Logger;
 import util.MappedSubscriber;
 import core.ObjectCreator;
 import massive.munit.Assert;
@@ -21,7 +21,7 @@ class CPPSocketInputOutputStreamTest {
     private var output: Output;
     private var input: Input;
     private var socketStream: CPPSocketInputOutputStream;
-    private var errorManager: ErrorManager;
+    private var errorManager: Logger;
 
     @Before
     public function setup():Void {
@@ -34,7 +34,7 @@ class CPPSocketInputOutputStreamTest {
         input = mock(Input);
         socket.output.returns(output);
         socket.input.returns(input);
-        errorManager = mock(ErrorManager);
+        errorManager = mock(Logger);
 
         socketStream = new TestableCPPSocketInputOutputStream();
         socketStream.objectCreator = objectCreator;

@@ -3,7 +3,7 @@ import util.MappedSubscriber;
 import core.BaseObject;
 import core.ObjectCreator;
 import assets.Resource.ResourceStatus;
-import error.ErrorManager;
+import error.Logger;
 import assets.ImageAsset;
 import display.BitmapNode;
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
@@ -13,7 +13,7 @@ class AssetLoaderAssetLocator implements AssetLocator {
     @inject
     public var assetLoader: AssetLoader;
     @inject
-    public var errorManager: ErrorManager;
+    public var errorManager: Logger;
     @inject
     public var objectCreator: ObjectCreator;
 
