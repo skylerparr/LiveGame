@@ -1,4 +1,5 @@
 package handler;
+import error.Logger;
 import handler.IOHandler;
 import constants.SettingKeys;
 import core.ApplicationSettings;
@@ -15,6 +16,8 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     public var parser: StreamParser;
     @inject
     public var strategyMap: StrategyMap;
+    @inject
+    public var logger: Logger;
 
     @:isVar
     public var connecting(get, null): Bool;
@@ -57,10 +60,20 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
         connector.close();
     }
 
-    public function subscribeToConnected(callback:Void->Void):Void {
+    public function subscribeToConnected(callback:InputOutputStream->Void):Void {
+        connector.subscribeToConnected(callback);
     }
 
-    public function subscribeToClose(callback:Void->Void):Void {
+    public function subscribeToClose(callback:InputOutputStream->Void):Void {
+        connector.subscribeToClosed(callback);
+    }
+
+    public function unsubscribeToConnected(callback:InputOutputStream->Void):Void {
+        connector.unsubscribeToConnected(callback);
+    }
+
+    public function unsubscribeToClose(callback:InputOutputStream->Void):Void {
+        connector.unsubscribeToClosed(callback);
     }
 
     private function onSocketConnected(stream:InputOutputStream):Void {
@@ -73,7 +86,18 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
 
     private function onDataReceived(stream:InputOutputStream):Void {
         var handler: IOHandler = parser.getHandler(stream);
+        if(handler == null) {
+            logger.logFatal("Handler not found. This is very bad.");
+            return;
+        }
+        if(handler.totalBytes > stream.bytesAvailable) {
+            return;
+        }
+
         var action: StrategyAction = strategyMap.locate(handler);
         action.execute(handler);
+
+        onDataReceived(stream);
     }
+
 }
