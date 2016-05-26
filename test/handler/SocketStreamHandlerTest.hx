@@ -21,7 +21,7 @@ class SocketStreamHandlerTest {
     private var streamHandler: SocketStreamHandler;
     private var connector: TCPSocketConnector;
     private var applicationSettings: ApplicationSettings;
-    private var parser: StreamParser;
+    private var handlerLookup: HandlerLookup;
     private var stream: InputOutputStream;
     private var strategyMap: StrategyMap;
     private var logger: Logger;
@@ -30,7 +30,7 @@ class SocketStreamHandlerTest {
     @Before
     public function setup():Void {
         stream = mock(MockInputOutputStream);
-        parser = mock(StreamParser);
+        handlerLookup = mock(HandlerLookup);
         connector = mock(TCPSocketConnector);
         applicationSettings = mock(ApplicationSettings);
         strategyMap = mock(StrategyMap);
@@ -42,7 +42,7 @@ class SocketStreamHandlerTest {
         streamHandler = new SocketStreamHandler();
         streamHandler.connector = connector;
         streamHandler.settings = applicationSettings;
-        streamHandler.parser = parser;
+        streamHandler.handlerLookup = handlerLookup;
         streamHandler.strategyMap = strategyMap;
         streamHandler.logger = logger;
         streamHandler.init();
@@ -91,25 +91,11 @@ class SocketStreamHandlerTest {
     }
 
     @Test
-    public function shouldReturnAIOHandlerFromParserAndPassToStrategyMapAndExecuteStrategy(): Void {
+    public function shouldReturnAIOHandlerFromHandlerLookupAndPassToStrategyMapAndExecuteStrategy(): Void {
         var actionHandler: StrategyActionHandler = setupAction();
 
-        parser.reset();
-        parser.getHandler(cast any).calls(function(args): IOHandler {
-            actionHandler.handler.reset();
-            stream.reset();
-
-            cbCount++;
-            if(cbCount == 1) {
-                actionHandler.handler.totalBytes.returns(16);
-                stream.bytesAvailable.returns(16);
-            }
-            else if(cbCount == 2) {
-                actionHandler.handler.totalBytes.returns(16);
-                stream.bytesAvailable.returns(0);
-            }
-            return actionHandler.handler;
-        });
+        handlerLookup.reset();
+        handlerLookup.getHandler(stream).calls(mockHandlerData(actionHandler));
 
         actionHandler.onDataCb(stream);
         actionHandler.action.execute(actionHandler.handler).verify();
@@ -131,24 +117,8 @@ class SocketStreamHandlerTest {
 
         var cbCount: Int = 0;
 
-        parser.reset();
-        parser.getHandler(cast any).calls(function(args): IOHandler {
-            actionHandler.handler.reset();
-            stream.reset();
-
-            cbCount++;
-            if(cbCount == 1) {
-                actionHandler.handler.totalBytes.returns(16);
-                stream.bytesAvailable.returns(32);
-            } else if(cbCount == 2) {
-                actionHandler.handler.totalBytes.returns(16);
-                stream.bytesAvailable.returns(20);
-            } else if(cbCount == 3) {
-                actionHandler.handler.totalBytes.returns(16);
-                stream.bytesAvailable.returns(4);
-            }
-            return actionHandler.handler;
-        });
+        handlerLookup.reset();
+        handlerLookup.getHandler(cast any).calls(mockMultipleHandlers(actionHandler));
 
         actionHandler.onDataCb(stream);
         actionHandler.action.execute(actionHandler.handler).verify(2);
@@ -157,14 +127,47 @@ class SocketStreamHandlerTest {
     @Test
     public function shouldNotCrashIfHandlerIsNull(): Void {
         var actionHandler: StrategyActionHandler = setupAction();
-        parser.reset();
-        parser.getHandler(cast any).calls(function(args): IOHandler {
+        handlerLookup.reset();
+        handlerLookup.getHandler(cast any).calls(function(args): IOHandler {
             return null;
         });
 
         actionHandler.onDataCb(stream);
         actionHandler.action.execute(actionHandler.handler).verify(0);
-        logger.logFatal(cast any).verify();
+    }
+
+    @Test
+    public function shouldPopulateHandlerWithData(): Void {
+        var actionHandler: StrategyActionHandler = setupAction();
+
+        handlerLookup.reset();
+        handlerLookup.getHandler(cast any).calls(mockHandlerData(actionHandler));
+
+        actionHandler.onDataCb(stream);
+        actionHandler.handler.read(stream).verify();
+    }
+
+    @Test
+    public function shouldNotRereadHandlerLookupIfHandlerAlreadyFound(): Void {
+        var actionHandler: StrategyActionHandler = setupAction();
+        actionHandler.handler.totalBytes.returns(16);
+        stream.bytesAvailable.returns(8);
+
+        actionHandler.onDataCb(stream);
+        actionHandler.action.execute(actionHandler.handler).verify(0);
+        Assert.isNotNull(streamHandler.handler);
+
+        stream.reset();
+        var available: Int = 16;
+        stream.bytesAvailable.calls(function(): Int {
+            var retVal: Int = available;
+            available = 0;
+            return retVal;
+        });
+        actionHandler.onDataCb(stream);
+
+        actionHandler.action.execute(actionHandler.handler).verify();
+        handlerLookup.getHandler(stream).verify(2);
     }
 
     @Test
@@ -242,6 +245,25 @@ class SocketStreamHandlerTest {
         Assert.isNull(closedCb);
     }
 
+    @Test
+    public function shouldDispose(): Void {
+        streamHandler.dispose();
+
+        Assert.isFalse(streamHandler.connecting);
+        Assert.isNull(streamHandler.connector);
+        Assert.isNull(streamHandler.settings);
+        Assert.isNull(streamHandler.handlerLookup);
+        Assert.isNull(streamHandler.strategyMap);
+        Assert.isNull(streamHandler.logger);
+        Assert.isNull(streamHandler.handler);
+
+        connector.unsubscribeToConnected(cast any).verify();
+        connector.unsubscribeToClosed(cast any).verify();
+        connector.unsubscribeDataReceived(cast any).verify();
+
+        connector.close().verify();
+    }
+
     @IgnoreCover
     private function setupAction():StrategyActionHandler {
         var dataReceivedCb: InputOutputStream->Void = null;
@@ -251,7 +273,7 @@ class SocketStreamHandlerTest {
         var handler: IOHandler = mock(MockIOHandler);
         var action: StrategyAction = mock(StrategyAction);
 
-        parser.getHandler(stream).returns(handler);
+        handlerLookup.getHandler(stream).returns(handler);
         strategyMap.locate(handler).returns(action);
 
         streamHandler.start();
@@ -262,6 +284,45 @@ class SocketStreamHandlerTest {
     @IgnoreCover
     private function onConnected(ioStream: InputOutputStream):Void {
         cbCount++;
+    }
+
+    @IgnoreCover
+    public function mockHandlerData(actionHandler:StrategyActionHandler):Dynamic {
+        return function(args): IOHandler {
+            stream.reset();
+
+            cbCount++;
+            if(cbCount == 1) {
+                actionHandler.handler.totalBytes.returns(16);
+                stream.bytesAvailable.returns(16);
+            }
+            else if(cbCount == 2) {
+                actionHandler.handler.totalBytes.returns(16);
+                stream.bytesAvailable.returns(0);
+            }
+            return actionHandler.handler;
+        }
+    }
+
+    @IgnoreCover
+    public function mockMultipleHandlers(actionHandler: StrategyActionHandler): Dynamic {
+        return function(args): IOHandler {
+            actionHandler.handler.reset();
+            stream.reset();
+
+            cbCount++;
+            if(cbCount == 1) {
+                actionHandler.handler.totalBytes.returns(16);
+                stream.bytesAvailable.returns(32);
+            } else if(cbCount == 2) {
+                actionHandler.handler.totalBytes.returns(16);
+                stream.bytesAvailable.returns(20);
+            } else if(cbCount == 3) {
+                actionHandler.handler.totalBytes.returns(16);
+                stream.bytesAvailable.returns(4);
+            }
+            return actionHandler.handler;
+        }
     }
 }
 

@@ -13,7 +13,7 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     @inject
     public var settings: ApplicationSettings;
     @inject
-    public var parser: StreamParser;
+    public var handlerLookup: HandlerLookup;
     @inject
     public var strategyMap: StrategyMap;
     @inject
@@ -26,6 +26,12 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
         return connecting;
     }
 
+    public var handler(get, null): IOHandler;
+
+    private function get_handler():IOHandler {
+        return handler;
+    }
+
     public function new() {
     }
 
@@ -33,6 +39,13 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     }
 
     public function dispose():Void {
+        end();
+        connector = null;
+        settings = null;
+        handlerLookup = null;
+        strategyMap = null;
+        logger = null;
+        handler = null;
     }
 
     public function start():Void {
@@ -85,18 +98,18 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     }
 
     private function onDataReceived(stream:InputOutputStream):Void {
-        var handler: IOHandler = parser.getHandler(stream);
         if(handler == null) {
-            logger.logFatal("Handler not found. This is very bad.");
+            handler = handlerLookup.getHandler(stream);
+        }
+        if(handler == null || handler.totalBytes > stream.bytesAvailable) {
             return;
         }
-        if(handler.totalBytes > stream.bytesAvailable) {
-            return;
-        }
+        handler.read(stream);
 
         var action: StrategyAction = strategyMap.locate(handler);
         action.execute(handler);
 
+        handler = null;
         onDataReceived(stream);
     }
 

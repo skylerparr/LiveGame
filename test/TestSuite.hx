@@ -12,6 +12,7 @@ import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
 import geom.RectangleTest;
+import handler.MapHandlerLookupTest;
 import handler.SocketStreamHandlerTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
@@ -49,6 +50,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
 		add(geom.RectangleTest);
+		add(handler.MapHandlerLookupTest);
 		add(handler.SocketStreamHandlerTest);
 		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);

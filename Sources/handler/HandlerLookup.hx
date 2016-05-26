@@ -1,5 +1,5 @@
 package handler;
 import io.InputOutputStream;
-interface StreamParser {
+interface HandlerLookup {
     function getHandler(stream: InputOutputStream): IOHandler;
 }
