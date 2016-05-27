@@ -1,0 +1,3 @@
+package vo;
+interface PlayerVO {
+}

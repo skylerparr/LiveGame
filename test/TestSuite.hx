@@ -17,6 +17,7 @@ import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
 import integration.net.CPPSocketInputOutputStreamIntegrationTest;
 import lookup.MapHandlerLookupTest;
+import lookup.ReflectStrategyMapTest;
 import net.CPPSocketInputOutputStreamTest;
 import sound.kha.KhaSoundHandleTest;
 import sound.SimpleSoundManagerTest;
@@ -55,6 +56,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(input.kha.KhaMouseInputSourceTest);
 		add(integration.net.CPPSocketInputOutputStreamIntegrationTest);
 		add(lookup.MapHandlerLookupTest);
+		add(lookup.ReflectStrategyMapTest);
 		add(net.CPPSocketInputOutputStreamTest);
 		add(sound.kha.KhaSoundHandleTest);
 		add(sound.SimpleSoundManagerTest);

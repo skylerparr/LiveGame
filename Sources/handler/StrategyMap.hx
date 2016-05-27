@@ -1,4 +1,5 @@
 package handler;
-interface StrategyMap {
+import core.BaseObject;
+interface StrategyMap extends BaseObject {
     function locate(handler: IOHandler): StrategyAction;
 }
