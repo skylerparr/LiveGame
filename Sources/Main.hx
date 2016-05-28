@@ -1,6 +1,5 @@
 package;
 
-import kha.Scheduler;
 import kha.System;
 
 class Main {
