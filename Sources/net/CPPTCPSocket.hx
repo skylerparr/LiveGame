@@ -6,12 +6,15 @@ class CPPTCPSocket implements TCPSocket {
 
     public var output(default, null):haxe.io.Output;
 
-    private var socket: Socket;
+    public var socket(default, null): Socket;
 
     public function new() {
         socket = new Socket();
         input = socket.input;
         output = socket.output;
+        output.bigEndian = true;
+        socket.setBlocking(false);
+        socket.setFastSend(true);
     }
 
     public function connect(host:Host, port:Int):Void {

@@ -1,9 +1,10 @@
 package net;
 
+import haxe.io.Input;
 import haxe.io.Bytes;
 import haxe.io.Output;
 import io.InputOutputStream;
-import error.ErrorManager;
+import error.Logger;
 import util.MappedSubscriber;
 import core.ObjectCreator;
 import massive.munit.Assert;
@@ -18,8 +19,9 @@ class CPPSocketInputOutputStreamTest {
     private var subscriber: MappedSubscriber;
     private var socket: TCPSocket;
     private var output: Output;
+    private var input: Input;
     private var socketStream: CPPSocketInputOutputStream;
-    private var errorManager: ErrorManager;
+    private var errorManager: Logger;
 
     @Before
     public function setup():Void {
@@ -29,10 +31,12 @@ class CPPSocketInputOutputStreamTest {
         objectCreator.createInstance(MappedSubscriber).returns(subscriber);
         socket = mock(TCPSocket);
         output = mock(Output);
+        input = mock(Input);
         socket.output.returns(output);
-        errorManager = mock(ErrorManager);
+        socket.input.returns(input);
+        errorManager = mock(Logger);
 
-        socketStream = new CPPSocketInputOutputStream();
+        socketStream = new TestableCPPSocketInputOutputStream();
         socketStream.objectCreator = objectCreator;
         socketStream.socket = socket;
         socketStream.errorManager = errorManager;
@@ -44,7 +48,7 @@ class CPPSocketInputOutputStreamTest {
     }
 
     @Test
-    public function shouldSubscribeToSocketConnected(): Void {
+    public function shouldSubscribeFromSocketConnected(): Void {
         var cbCalled: Bool = false;
         socketStream.subscribeToConnected(function(stream: InputOutputStream): Void {
             cbCalled = true;
@@ -56,6 +60,117 @@ class CPPSocketInputOutputStreamTest {
         Assert.isTrue(cbCalled);
         Assert.isTrue(socketStream.connected);
         socket.connect(cast any, 1337).verify();
+    }
+
+    @Test
+    public function shouldUnsubscribeToSocketConnected(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToConnected(callback);
+
+        connectToSocket();
+
+        socket.connect(cast any, 1337).verify();
+
+        socketStream.unsubscribeToConnected(callback);
+        connectToSocket();
+
+        Assert.areEqual(1, cbCount);
+    }
+
+    @Test
+    public function shouldSubscribeToSocketClosed(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToClosed(callback);
+
+        connectToSocket();
+
+        socket.connect(cast any, 1337).verify();
+
+        socketStream.close();
+
+        Assert.areEqual(1, cbCount);
+    }
+
+    @Test
+    public function shouldUnsubscribeFromSocketClosed(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToClosed(callback);
+
+        connectToSocket();
+        socketStream.close();
+
+        socketStream.unsubscribeToClosed(callback);
+        connectToSocket();
+        socketStream.close();
+        Assert.areEqual(1, cbCount);
+    }
+
+    @Test
+    public function shouldCloseFromSocket(): Void {
+        connectToSocket();
+        socketStream.close();
+
+        socket.close().verify();
+        Assert.isFalse(socketStream.connected);
+    }
+
+    @Test
+    public function shouldClearBufferOnClose(): Void {
+        connectToSocket();
+        mockSampleData();
+        Assert.areEqual(3, socketStream.bytesAvailable);
+
+        socketStream.close();
+        Assert.areEqual(0, socketStream.bytesAvailable);
+    }
+
+    @Test
+    public function shouldSubscribeToDataReceived(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToDataReceived(callback);
+        connectToSocket();
+        mockSampleData();
+        Assert.areEqual(1, cbCount);
+    }
+
+    @Test
+    public function shouldUnsubscribeFromDataReceived(): Void {
+        var cbCount: Int = 0;
+        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
+            cbCount++;
+            Assert.areEqual(socketStream, stream);
+        }
+        socketStream.subscribeToDataReceived(callback);
+        connectToSocket();
+        mockSampleData();
+        Assert.areEqual(1, cbCount);
+
+        input.reset();
+        socketStream.unsubscribeDataReceived(callback);
+        mockSampleData();
+        Assert.areEqual(1, cbCount);
+    }
+
+    @Test
+    public function shouldNotCloseSocketThatIsNotConnected(): Void {
+        socketStream.close();
+        socket.close().verify(0);
     }
 
     @Test
@@ -101,7 +216,7 @@ class CPPSocketInputOutputStreamTest {
     public function shouldWriteSignedIntToConnectedSocket(): Void {
         connectToSocket();
         socketStream.writeInt(8392);
-        output.writeInt16(8392).verify();
+        output.writeInt32(8392).verify();
     }
 
     @Test
@@ -127,15 +242,187 @@ class CPPSocketInputOutputStreamTest {
     @Test
     public function shouldWriteShortToConnectedSocket(): Void {
         connectToSocket();
-        socketStream.writeShort(1024);
-        output.writeInt8(1024).verify();
+        socketStream.writeUnsignedShort(1024);
+        output.writeUInt16(1024).verify();
+    }
+
+    @Test
+    public function shouldWriteFloatToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeFloat(843.935);
+        output.writeDouble(843.935).verify();
+    }
+
+    @Test
+    public function shouldWriteDOubleToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeDouble(878645432.546968456);
+        output.writeDouble(878645432.546968456).verify();
+    }
+
+    @Test
+    public function shouldWriteUTFBytesToConnectedSocket(): Void {
+        connectToSocket();
+        socketStream.writeUTFBytes("foo bar baz cat");
+        output.writeString("foo bar baz cat").verify();
+    }
+
+    @Test
+    public function shouldReadBooleanFromConnectedSocket(): Void {
+        connectToSocket();
+        mockSampleData();
+        Assert.areEqual(3, socketStream.bytesAvailable);
+        Assert.isTrue(socketStream.readBoolean());
+        Assert.isFalse(socketStream.readBoolean());
+
+        input.reset();
+        var bytes = Bytes.alloc(2);
+        var i: Int = 0;
+        bytes.set(i++, 0);
+        bytes.set(i++, 1);
+        mockBytes(bytes);
+        socketStream.update();
+
+        Assert.areEqual(3, socketStream.bytesAvailable);
+        Assert.isTrue(socketStream.readBoolean());
+        Assert.isFalse(socketStream.readBoolean());
+        Assert.isTrue(socketStream.readBoolean());
+    }
+
+    @Test
+    public function shouldNotReadDataFromSocketThatIsNotConnected(): Void {
+        try {
+            socketStream.readBoolean();
+            Assert.fail("socket must be connected");
+        } catch(e: Dynamic) {
+            Assert.isTrue(true);
+        }
+    }
+
+    @Test
+    public function shouldUnsignedReadByteFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(1);
+        var i: Int = 0;
+        bytes.set(i++, 32);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(1, socketStream.bytesAvailable);
+        Assert.areEqual(32, socketStream.readUnsignedByte());
+    }
+
+    @Test
+    public function shouldReadDoubleFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(8);
+        var i: Int = 0;
+        bytes.setDouble(i++, 302984023958.02394832);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(8, socketStream.bytesAvailable);
+        Assert.areEqual(302984023958.02394832, socketStream.readDouble());
+    }
+
+    @Test
+    public function shouldReadFloatFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(4);
+        var i: Int = 0;
+        bytes.setFloat(i++, -329.239);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(4, socketStream.bytesAvailable);
+        Assert.areEqual(-329.239, Std.int(socketStream.readFloat() * 1000) / 1000);
+    }
+
+    @Test
+    public function shouldReadIntFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(4);
+        var i: Int = 0;
+        bytes.setInt32(i++, 342);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(4, socketStream.bytesAvailable);
+        Assert.areEqual(342, socketStream.readInt());
+    }
+
+    @Test
+    public function shouldReadUnsignedShortFromConnectedSocket(): Void {
+        connectToSocket();
+        var bytes = Bytes.alloc(2);
+        var i: Int = 0;
+        bytes.setUInt16(i++, 128);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(2, socketStream.bytesAvailable);
+        Assert.areEqual(128, socketStream.readUnsignedShort());
+    }
+
+    @Test
+    public function shouldReadUTFBytesFromConnectedSocket(): Void {
+        var string: String = "hello foo bar";
+        connectToSocket();
+        var bytes = Bytes.ofString(string);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(string.length, socketStream.bytesAvailable);
+        Assert.areEqual(string, socketStream.readUTFBytes(socketStream.bytesAvailable));
+    }
+
+    @Test
+    public function shouldDisposeSocketStream(): Void {
+        connectToSocket();
+        socketStream.subscribeToConnected(function(io): Void {});
+        socketStream.subscribeToClosed(function(io): Void {});
+        socketStream.subscribeToDataReceived(function(io): Void {});
+        mockSampleData();
+
+        socketStream.dispose();
+
+        objectCreator.disposeInstance(subscriber);
+        Assert.isNull(socketStream.subscriber);
+        Assert.isNull(socketStream.input);
+        Assert.isNull(socketStream.output);
+        Assert.isNull(socketStream.buffer);
+        Assert.isNull(socketStream.bufferInput);
+        Assert.isNull(socketStream.socket);
+        Assert.isNull(socketStream.errorManager);
+        Assert.isNull(socketStream.objectCreator);
+        Assert.isFalse(socketStream.connected);
+    }
+
+    @IgnoreCover
+    private inline function mockSampleData():Void {
+        var bytes = Bytes.alloc(3);
+        var i: Int = 0;
+        bytes.set(i++, 1);
+        bytes.set(i++, 0);
+        bytes.set(i++, 1);
+        mockBytes(bytes);
+        socketStream.update();
     }
 
     @IgnoreCover
     private function connectToSocket():Void {
+        socket.connect(cast any, 1337).throws("Blocking");
         socketStream.connect("localhost", 1337);
     }
 
+    @IgnoreCover
+    private function mockBytes(bytes: Bytes):Void {
+        input.readBytes(cast any, cast any, cast any).calls(function(args): Int {
+            var readBytes: Bytes = args[0];
+            readBytes.blit(0, bytes, 0, bytes.length);
+            return bytes.length;
+        });
+    }
 }
 
 class Error {
