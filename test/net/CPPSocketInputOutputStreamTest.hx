@@ -22,6 +22,7 @@ class CPPSocketInputOutputStreamTest {
     private var input: Input;
     private var socketStream: CPPSocketInputOutputStream;
     private var errorManager: Logger;
+    private var cbCount: Int;
 
     @Before
     public function setup():Void {
@@ -45,37 +46,29 @@ class CPPSocketInputOutputStreamTest {
 
     @After
     public function tearDown():Void {
+        cbCount = 0;
     }
 
     @Test
     public function shouldSubscribeFromSocketConnected(): Void {
-        var cbCalled: Bool = false;
-        socketStream.subscribeToConnected(function(stream: InputOutputStream): Void {
-            cbCalled = true;
-            Assert.areEqual(socketStream, stream);
-        });
+        socketStream.subscribeToConnected(subscriptionCallback);
 
         connectToSocket();
 
-        Assert.isTrue(cbCalled);
+        Assert.areEqual(1, cbCount);
         Assert.isTrue(socketStream.connected);
         socket.connect(cast any, 1337).verify();
     }
 
     @Test
     public function shouldUnsubscribeToSocketConnected(): Void {
-        var cbCount: Int = 0;
-        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
-            cbCount++;
-            Assert.areEqual(socketStream, stream);
-        }
-        socketStream.subscribeToConnected(callback);
+        socketStream.subscribeToConnected(subscriptionCallback);
 
         connectToSocket();
 
         socket.connect(cast any, 1337).verify();
 
-        socketStream.unsubscribeToConnected(callback);
+        socketStream.unsubscribeToConnected(subscriptionCallback);
         connectToSocket();
 
         Assert.areEqual(1, cbCount);
@@ -83,12 +76,7 @@ class CPPSocketInputOutputStreamTest {
 
     @Test
     public function shouldSubscribeToSocketClosed(): Void {
-        var cbCount: Int = 0;
-        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
-            cbCount++;
-            Assert.areEqual(socketStream, stream);
-        }
-        socketStream.subscribeToClosed(callback);
+        socketStream.subscribeToClosed(subscriptionCallback);
 
         connectToSocket();
 
@@ -101,17 +89,12 @@ class CPPSocketInputOutputStreamTest {
 
     @Test
     public function shouldUnsubscribeFromSocketClosed(): Void {
-        var cbCount: Int = 0;
-        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
-            cbCount++;
-            Assert.areEqual(socketStream, stream);
-        }
-        socketStream.subscribeToClosed(callback);
+        socketStream.subscribeToClosed(subscriptionCallback);
 
         connectToSocket();
         socketStream.close();
 
-        socketStream.unsubscribeToClosed(callback);
+        socketStream.unsubscribeToClosed(subscriptionCallback);
         connectToSocket();
         socketStream.close();
         Assert.areEqual(1, cbCount);
@@ -138,12 +121,7 @@ class CPPSocketInputOutputStreamTest {
 
     @Test
     public function shouldSubscribeToDataReceived(): Void {
-        var cbCount: Int = 0;
-        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
-            cbCount++;
-            Assert.areEqual(socketStream, stream);
-        }
-        socketStream.subscribeToDataReceived(callback);
+        socketStream.subscribeToDataReceived(subscriptionCallback);
         connectToSocket();
         mockSampleData();
         Assert.areEqual(1, cbCount);
@@ -151,18 +129,13 @@ class CPPSocketInputOutputStreamTest {
 
     @Test
     public function shouldUnsubscribeFromDataReceived(): Void {
-        var cbCount: Int = 0;
-        var callback: InputOutputStream->Void = function(stream: InputOutputStream): Void {
-            cbCount++;
-            Assert.areEqual(socketStream, stream);
-        }
-        socketStream.subscribeToDataReceived(callback);
+        socketStream.subscribeToDataReceived(subscriptionCallback);
         connectToSocket();
         mockSampleData();
         Assert.areEqual(1, cbCount);
 
         input.reset();
-        socketStream.unsubscribeDataReceived(callback);
+        socketStream.unsubscribeDataReceived(subscriptionCallback);
         mockSampleData();
         Assert.areEqual(1, cbCount);
     }
@@ -175,14 +148,11 @@ class CPPSocketInputOutputStreamTest {
 
     @Test
     public function shouldNotCallConnectedCallbackIfConnectFails(): Void {
-        var cbCalled: Bool = false;
-        socketStream.subscribeToConnected(function(stream: InputOutputStream): Void {
-            cbCalled = true;
-        });
+        socketStream.subscribeToConnected(subscriptionCallback);
         socket.connect(cast any, 1337).throws(new Error("foo"));
 
         connectToSocket();
-        Assert.isFalse(cbCalled);
+        Assert.areEqual(0, cbCount);
         errorManager.logError(cast any).verify();
     }
 
@@ -379,9 +349,9 @@ class CPPSocketInputOutputStreamTest {
     @Test
     public function shouldDisposeSocketStream(): Void {
         connectToSocket();
-        socketStream.subscribeToConnected(function(io): Void {});
-        socketStream.subscribeToClosed(function(io): Void {});
-        socketStream.subscribeToDataReceived(function(io): Void {});
+        socketStream.subscribeToConnected(subscriptionCallback);
+        socketStream.subscribeToClosed(subscriptionCallback);
+        socketStream.subscribeToDataReceived(subscriptionCallback);
         mockSampleData();
 
         socketStream.dispose();
@@ -422,6 +392,12 @@ class CPPSocketInputOutputStreamTest {
             readBytes.blit(0, bytes, 0, bytes.length);
             return bytes.length;
         });
+    }
+
+    @IgnoreCover
+    private function subscriptionCallback(stream: InputOutputStream):Void {
+        cbCount++;
+        Assert.areEqual(socketStream, stream);
     }
 }
 
