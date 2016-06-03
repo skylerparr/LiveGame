@@ -1,5 +1,10 @@
 package handler.actions;
+import error.Logger;
 class UnitCreatedAction implements StrategyAction {
+
+    @inject
+    public var logger: Logger;
+
     public function new() {
     }
 
@@ -10,5 +15,6 @@ class UnitCreatedAction implements StrategyAction {
     }
 
     public function execute(handler:IOHandler):Void {
+        logger.logDebug("unit created");
     }
 }

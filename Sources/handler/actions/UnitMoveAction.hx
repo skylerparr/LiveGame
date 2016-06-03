@@ -1,5 +1,9 @@
 package handler.actions;
+import error.Logger;
 class UnitMoveAction implements StrategyAction {
+    @inject
+    public var logger: Logger;
+
     public function new() {
     }
 
@@ -10,5 +14,6 @@ class UnitMoveAction implements StrategyAction {
     }
 
     public function execute(handler:IOHandler):Void {
+        logger.logDebug("unit move");
     }
 }

@@ -22,14 +22,14 @@ class UnitMove implements IOHandler {
         return ByteValues.INT +
             ByteValues.INT +
             ByteValues.INT +
-            ByteValues.FLOAT;
+            ByteValues.DOUBLE;
     }
 
     public function read(stream:InputOutputStream):Void {
         unitId = stream.readInt();
         posX = stream.readInt();
         posY = stream.readInt();
-        rotation = stream.readFloat();
+        rotation = stream.readDouble();
     }
 
     public function write(stream:InputOutputStream):Void {
