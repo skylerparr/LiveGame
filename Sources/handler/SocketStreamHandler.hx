@@ -1,4 +1,5 @@
 package handler;
+import handler.output.PlayerConnect;
 import error.Logger;
 import handler.IOHandler;
 import constants.SettingKeys;
@@ -31,6 +32,8 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     private function get_handler():IOHandler {
         return handler;
     }
+
+    private var stream: InputOutputStream;
 
     public function new() {
     }
@@ -90,11 +93,14 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     }
 
     private function onSocketConnected(stream:InputOutputStream):Void {
-
+        this.stream = stream;
     }
 
     private function onSocketClosed(stream:InputOutputStream):Void {
+    }
 
+    public function send(handler:IOHandler):Void {
+        handler.write(stream);
     }
 
     private function onDataReceived(stream:InputOutputStream):Void {

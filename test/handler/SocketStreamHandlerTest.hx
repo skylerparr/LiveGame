@@ -246,6 +246,23 @@ class SocketStreamHandlerTest {
     }
 
     @Test
+    public function shouldSendDataAction(): Void {
+        var connectedCallback: InputOutputStream->Void = null;
+        connector.subscribeToConnected(cast any).calls(function(args): Void {
+            if(connectedCallback == null) {
+                connectedCallback = args[0];
+            }
+        });
+        streamHandler.start();
+        connectedCallback(stream);
+
+        var handler:IOHandler = mock(MockIOHandler);
+        streamHandler.send(handler);
+
+        handler.write(stream).verify();
+    }
+
+    @Test
     public function shouldDispose(): Void {
         streamHandler.dispose();
 

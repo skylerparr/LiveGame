@@ -59,9 +59,6 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
 
     public function init():Void {
         subscriber = objectCreator.createInstance(MappedSubscriber);
-        output = socket.output;
-        input = socket.input;
-        position = 0;
     }
 
     public function dispose():Void {
@@ -76,7 +73,13 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function connect(hostname: String, port: UInt): Void {
+        if(connected) {
+            return;
+        }
         try {
+            output = socket.output;
+            input = socket.input;
+            position = 0;
             socket.connect(new Host(hostname), port);
         } catch(e: Dynamic) {
             if(e == "Blocking") {
@@ -132,7 +135,14 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         }
         position = 0;
         var readBuffer = Bytes.alloc(64);
-        var lengthReady: Int = input.readBytes(readBuffer, 0, readBuffer.length);
+        var lengthReady: Int = 0;
+        try {
+            lengthReady = input.readBytes(readBuffer, 0, readBuffer.length);
+        } catch(e: Dynamic) {
+            if(e == "Eof") {
+                close();
+            }
+        }
         var tmpBufLen: UInt = 0;
         if(buffer != null) {
             var tmpBuffer: Bytes = Bytes.alloc(bytesAvailable + lengthReady);
@@ -188,15 +198,15 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeMultiByte(value:String, charSet:String):Void {
-        throw "Is not implemented";
+        throw "write multibyte Is not implemented";
     }
 
     public function writeObject(object:Dynamic):Void {
-        throw "Is not implemented";
+        throw "write object Is not implemented";
     }
 
     public function writeShort(value:Int):Void {
-        throw "Is not implemented";
+        throw "write short Is not implemented";
     }
 
     public function writeUnsignedShort(value:Int):Void {
@@ -206,7 +216,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeUTF(value:String):Void {
-        throw "Is not implemented";
+        throw "write utf Is not implemented";
     }
 
     public function writeUTFBytes(value:String):Void {
@@ -216,7 +226,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function writeUnsignedInt(value:UInt):Void {
-        throw "Is not implemented";
+        throw "write unsigned int Is not implemented";
     }
 
     public function writeBytes(bytes:InputOutputStream, offset: Int = 0, length: Int = 0):Void {
@@ -235,7 +245,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function readByte():Int {
-        throw "not implemented";
+        throw "read byte not implemented";
         return 0;
     }
 
@@ -262,12 +272,12 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function readShort():Int {
-        throw "not implemented";
+        throw "read short not implemented";
         return 0;
     }
 
     public function readUTF():String {
-        throw "not implemented";
+        throw "read utf not implemented";
         return null;
     }
 
@@ -282,7 +292,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
     }
 
     public function readUnsignedInt():Int {
-        throw "not implemented";
+        throw "read unsigned int not implemented";
         return 0;
     }
 

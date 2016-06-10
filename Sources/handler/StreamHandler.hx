@@ -4,6 +4,8 @@ interface StreamHandler {
     function start(): Void;
     function end(): Void;
 
+    function send(handler: IOHandler): Void;
+
     function subscribeToConnected(callback: InputOutputStream->Void): Void;
     function subscribeToClose(callback: InputOutputStream->Void): Void;
     function unsubscribeToConnected(callback: InputOutputStream->Void): Void;

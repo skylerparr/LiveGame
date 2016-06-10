@@ -20,7 +20,7 @@ class PlayerConnected implements IOHandler {
     }
 
     public function read(stream:InputOutputStream):Void {
-        playerId = stream.readUnsignedInt();
+        playerId = stream.readInt();
     }
 
     public function write(stream:InputOutputStream):Void {

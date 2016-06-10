@@ -1,4 +1,6 @@
 package scenes.playground;
+import handler.output.PlayerConnect;
+import handler.StreamHandler;
 import io.InputOutputStream;
 import net.TCPSocketConnector;
 import input.kha.KhaKeyboardInputSourceListener;
@@ -40,7 +42,7 @@ class Playground implements BaseObject {
     @inject
     public var subscriber: Subscriber;
     @inject
-    public var tcpSocketConnector: TCPSocketConnector;
+    public var streamHandler: StreamHandler;
 
     private var lastUnit: NecroGameObject;
     private var rise: Float = 0;
@@ -58,13 +60,6 @@ class Playground implements BaseObject {
         subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onGameLoop);
 
         objectCreator.createInstance(KhaKeyboardInputSourceListener);
-
-        tcpSocketConnector.subscribeToConnected(onConnected);
-        tcpSocketConnector.connect("localhost", 1337);
-    }
-
-    private function onConnected(stream:InputOutputStream):Void {
-        trace("socket connected");
     }
 
     private function onGameLoop():Void {
@@ -97,11 +92,16 @@ class Playground implements BaseObject {
     }
 
     private function onDown(button:Int, x:Int, y:Int):Void {
+
         if(button == 0) {
+            streamHandler.end();
+            streamHandler.start();
             if(lastUnit == null) {
                 createWizard(x, y);
             }
         } else {
+            var playerConnect = new PlayerConnect();
+            streamHandler.send(playerConnect);
             if(lastUnit == null) {
                 return;
             }

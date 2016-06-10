@@ -9,6 +9,10 @@ class CPPTCPSocket implements TCPSocket {
     public var socket(default, null): Socket;
 
     public function new() {
+        init();
+    }
+
+    private function init():Void {
         socket = new Socket();
         input = socket.input;
         output = socket.output;
@@ -23,6 +27,8 @@ class CPPTCPSocket implements TCPSocket {
 
     public function close():Void {
         socket.close();
+
+        init();
     }
 
 }

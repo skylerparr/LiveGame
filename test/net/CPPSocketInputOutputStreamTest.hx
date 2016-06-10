@@ -368,6 +368,37 @@ class CPPSocketInputOutputStreamTest {
         Assert.isFalse(socketStream.connected);
     }
 
+    @Test
+    public function shouldNotTryToConnectMoreThanOnce(): Void {
+        connectToSocket();
+        connectToSocket();
+        connectToSocket();
+
+        socket.connect(cast any, 1337).verify();
+    }
+
+    @Test
+    public function shouldBeAbleToReconnectedIfSocketIsClosed(): Void {
+        connectToSocket();
+
+        socketStream.close();
+
+        connectToSocket();
+
+        socket.connect(cast any, 1337).verify(2);
+    }
+
+    @Test
+    public function shouldCloseSocketIfStreamReturnEof(): Void {
+        connectToSocket();
+
+        input.readBytes(cast any, cast any, cast any).throws("Eof");
+
+        socketStream.update();
+
+        socket.close().verify();
+    }
+
     @IgnoreCover
     private inline function mockSampleData():Void {
         var bytes = Bytes.alloc(3);

@@ -32,7 +32,7 @@ class MapHandlerLookupTest {
     @Test
     public function shouldLookupPlayerConnectedFromLookup(): Void {
         stream.bytesAvailable.returns(1);
-        stream.readByte().returns(1);
+        stream.readUnsignedByte().returns(1);
         var handler: IOHandler = lookup.getHandler(stream);
 
         Assert.areEqual(PlayerConnected, Type.getClass(handler));
@@ -41,7 +41,7 @@ class MapHandlerLookupTest {
     @Test
     public function shouldLookupUnitCreatedFromLookup(): Void {
         stream.bytesAvailable.returns(1);
-        stream.readByte().returns(2);
+        stream.readUnsignedByte().returns(2);
         var handler: IOHandler = lookup.getHandler(stream);
 
         Assert.areEqual(UnitCreated, Type.getClass(handler));
@@ -50,7 +50,7 @@ class MapHandlerLookupTest {
     @Test
     public function shouldLookupUnitMoveFromLookup(): Void {
         stream.bytesAvailable.returns(1);
-        stream.readByte().returns(3);
+        stream.readUnsignedByte().returns(3);
         var handler: IOHandler = lookup.getHandler(stream);
 
         Assert.areEqual(UnitMove, Type.getClass(handler));
@@ -58,7 +58,7 @@ class MapHandlerLookupTest {
 
     @Test
     public function shouldReturnNullIfBytesAvailableIsZero(): Void {
-        stream.readByte().throws("EOF");
+        stream.readUnsignedByte().throws("EOF");
         var handler: IOHandler = lookup.getHandler(stream);
 
         Assert.isNull(handler);

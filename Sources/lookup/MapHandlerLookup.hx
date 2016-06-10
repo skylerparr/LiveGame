@@ -29,6 +29,6 @@ class MapHandlerLookup implements HandlerLookup {
         if(stream.bytesAvailable == 0) {
             return null;
         }
-        return map.get(stream.readByte());
+        return map.get(stream.readUnsignedByte());
     }
 }

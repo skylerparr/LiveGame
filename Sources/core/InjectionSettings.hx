@@ -1,4 +1,10 @@
 package core;
+import handler.SocketStreamHandler;
+import lookup.MapHandlerLookup;
+import handler.HandlerLookup;
+import lookup.ReflectStrategyMap;
+import handler.StrategyMap;
+import handler.StreamHandler;
 import net.TCPSocketConnector;
 import io.InputOutputStream;
 import net.CPPSocketInputOutputStream;
@@ -142,8 +148,18 @@ class InjectionSettings {
 
         injector.mapSingletonOf(TCPSocket, CPPTCPSocket);
         var socketIOStream: CPPSocketInputOutputStream = objectFactory.createInstance(CPPSocketInputOutputStream);
+
+        subscribeNotifer.subscribe(EventNames.ENTER_GAME_LOOP, function(): Void {
+            socketIOStream.update();
+        });
+
         injector.mapValue(InputOutputStream, socketIOStream);
         injector.mapValue(TCPSocketConnector, socketIOStream);
+
+        injector.mapValue(ApplicationSettings, objectFactory.createInstance(MapApplicationSettings));
+        injector.mapValue(StrategyMap, objectFactory.createInstance(ReflectStrategyMap));
+        injector.mapValue(HandlerLookup, objectFactory.createInstance(MapHandlerLookup));
+        injector.mapValue(StreamHandler, objectFactory.createInstance(SocketStreamHandler));
 
         objectFactory.createInstance(Playground);
     }
