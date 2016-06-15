@@ -6,10 +6,7 @@ import world.WorldPoint;
 import world.GameObject;
 class WizardGameObject implements GameObject {
 
-    private static var genId: UInt = 0;
-
     public function new() {
-        id = "" + genId++;
     }
 
     public function init():Void {

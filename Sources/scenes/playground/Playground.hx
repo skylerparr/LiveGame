@@ -96,26 +96,27 @@ class Playground implements BaseObject {
         if(button == 0) {
             streamHandler.end();
             streamHandler.start();
-            if(lastUnit == null) {
-                createWizard(x, y);
-            }
+
+//            if(lastUnit == null) {
+//                createWizard(x, y);
+//            }
         } else {
             var playerConnect = new PlayerConnect();
             streamHandler.send(playerConnect);
-            if(lastUnit == null) {
-                return;
-            }
-            targetLocation = gameWorld.screenToWorld(new Point(x, y));
-
-            lastUnit.lookAt = targetLocation;
-
-            var velocity: Float = 40 * 1 / 60;
-            var angle: Float = MathUtil.getDirectionInDegrees(lastUnit.worldPoint, targetLocation) - 90;
-
-            run = Math.cos(MathUtil.degreesToRadians(angle)) * velocity;
-            rise = Math.sin(MathUtil.degreesToRadians(angle)) * velocity;
-
-            lastUnit.setPose(Poses.RUN);
+//            if(lastUnit == null) {
+//                return;
+//            }
+//            targetLocation = gameWorld.screenToWorld(new Point(x, y));
+//
+//            lastUnit.lookAt = targetLocation;
+//
+//            var velocity: Float = 40 * 1 / 60;
+//            var angle: Float = MathUtil.getDirectionInDegrees(lastUnit.worldPoint, targetLocation) - 90;
+//
+//            run = Math.cos(MathUtil.degreesToRadians(angle)) * velocity;
+//            rise = Math.sin(MathUtil.degreesToRadians(angle)) * velocity;
+//
+//            lastUnit.setPose(Poses.RUN);
         }
     }
 
@@ -146,18 +147,9 @@ class Playground implements BaseObject {
         topLayer.addChild(hello);
     }
 
-    private inline function createWizard(x:Float, y:Float):Void {
-        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
-        lastUnit = objectCreator.createInstance(NecroGameObject);
-        gameWorld.addGameObject(lastUnit, worldPoint);
-
-        var unitDisplay: NecroDisplay = cast gameWorld.getDisplayByGameObject(lastUnit);
-        lastUnit.display = unitDisplay;
-    }
-
     private inline function moveLastWizard(x:Float, y:Float):Void {
-        var worldPoint: WorldPoint = new WorldPoint2D(x, y);
-        gameWorld.moveItemTo(lastUnit, worldPoint);
+//        var worldPoint: WorldPoint = new WorldPoint2D(x, y);
+//        gameWorld.moveItemTo(lastUnit, worldPoint);
     }
 
 }
