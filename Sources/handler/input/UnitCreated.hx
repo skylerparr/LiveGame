@@ -8,6 +8,7 @@ class UnitCreated implements IOHandler {
 
     public var playerId: Int;
     public var unitId: Int;
+    public var unitType: Int;
     public var posX: Int;
     public var posY: Int;
     public var rotation: Float;
@@ -25,12 +26,14 @@ class UnitCreated implements IOHandler {
             ByteValues.INT +
             ByteValues.INT +
             ByteValues.INT +
+            ByteValues.INT +
             ByteValues.DOUBLE;
     }
 
     public function read(stream:InputOutputStream):Void {
         playerId = stream.readInt();
         unitId = stream.readInt();
+        unitType = stream.readInt();
         posX = stream.readInt();
         posY = stream.readInt();
         rotation = stream.readDouble();

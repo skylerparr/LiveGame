@@ -1,5 +1,7 @@
 package lookup;
 
+import world.GameObject;
+import haxe.ds.ObjectMap;
 import handler.actions.UnitMoveAction;
 import handler.actions.UnitCreatedAction;
 import handler.input.UnitMove;

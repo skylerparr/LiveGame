@@ -48,6 +48,7 @@ class Playground implements BaseObject {
     private var rise: Float = 0;
     private var run: Float = 0;
     private var targetLocation: WorldPoint = new WorldPoint2D();
+    private var playerConnected: Bool = false;
 
     public function new() {
     }
@@ -100,9 +101,10 @@ class Playground implements BaseObject {
 //            if(lastUnit == null) {
 //                createWizard(x, y);
 //            }
-        } else {
+        } else if(!playerConnected) {
             var playerConnect = new PlayerConnect();
             streamHandler.send(playerConnect);
+            playerConnected = true;
 //            if(lastUnit == null) {
 //                return;
 //            }

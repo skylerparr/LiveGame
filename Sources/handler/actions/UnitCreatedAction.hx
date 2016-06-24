@@ -1,9 +1,12 @@
 package handler.actions;
+import world.GameObject;
 import handler.input.UnitCreated;
 import world.GameWorld;
 import core.ObjectCreator;
+#if !test
 import gameentities.NecroDisplay;
 import gameentities.NecroGameObject;
+#end
 import geom.Point;
 import world.WorldPoint;
 import error.Logger;
@@ -28,17 +31,24 @@ class UnitCreatedAction implements StrategyAction {
     public function execute(handler:IOHandler):Void {
         logger.logDebug("unit created");
         var unitCreated: UnitCreated = cast handler;
-        createWizard(unitCreated.unitId, unitCreated.posX, unitCreated.posY);
+        var unit: GameObject = createUnit(unitCreated.unitId, unitCreated.unitType);
+
+        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(unitCreated.posX, unitCreated.posY));
+        gameWorld.addGameObject(unit, worldPoint);
     }
 
-    private inline function createWizard(id: Int, x:Float, y:Float):Void {
-        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
-        var lastUnit: NecroGameObject = objectCreator.createInstance(NecroGameObject);
-        lastUnit.id = id + "";
-        gameWorld.addGameObject(lastUnit, worldPoint);
+    public function createUnit(unitId: Int, unitType: Int): GameObject {
+        #if !test
+        var unit: NecroGameObject = objectCreator.createInstance(NecroGameObject);
+        unit.id = unitId + "";
 
-        var unitDisplay: NecroDisplay = cast gameWorld.getDisplayByGameObject(lastUnit);
-        lastUnit.display = unitDisplay;
+        var unitDisplay: NecroDisplay = cast gameWorld.getDisplayByGameObject(unit);
+        unit.display = unitDisplay;
+
+        return unit;
+        #else
+        return null;
+        #end
     }
 
 }

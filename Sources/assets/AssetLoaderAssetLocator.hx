@@ -110,17 +110,23 @@ class AssetLoaderAssetLocator implements AssetLocator {
     }
 
     public function getDataAssetByName(name:String, onComplete:String->Void):Void {
-        fetchAsset(name, loadText, onComplete);
+        fetchAsset(name, loadText, function(resourceAsset: ResourceAsset): Void {
+            if(resourceAsset == null) {
+                onComplete(null);
+            } else {
+                onComplete(resourceAsset.data);
+            }
+        });
     }
 
     @:async
-    private function loadText(name:String):String {
+    private function loadText(name:String):ResourceAsset {
         var resource: Resource = @await assetLoader.loadText(name);
         var resourceAsset: ResourceAsset = manageResult(name, resource, TextAsset);
         if(resourceAsset == null) {
             return null;
         }
-        return resourceAsset.data;
+        return resourceAsset;
     }
 
     private inline function manageResult(name: String, resource: Resource, type: Class<ResourceAsset>): ResourceAsset {

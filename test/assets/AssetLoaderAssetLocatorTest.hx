@@ -273,9 +273,11 @@ class AssetLoaderAssetLocatorTest {
         var cbCount: Int = 0;
         assetLocator.getDataAssetByName("foo", function(asset: String): Void {
             cbCount++;
+            Assert.areEqual("bar", asset);
         });
         assetLocator.getDataAssetByName("foo", function(asset: String): Void {
             cbCount++;
+            Assert.areEqual("bar", asset);
         });
 
         Assert.areEqual(2, cbCount);
