@@ -1,4 +1,6 @@
 package core;
+import service.ConnectedPlayerService;
+import service.PlayerService;
 import handler.SocketStreamHandler;
 import lookup.MapHandlerLookup;
 import handler.HandlerLookup;
@@ -145,6 +147,9 @@ class InjectionSettings {
 
         var fps: Fps = objectFactory.createInstance(Fps);
         injector.mapValue(Fps, fps);
+
+        var playerService: PlayerService = objectFactory.createInstance(ConnectedPlayerService);
+        injector.mapValue(PlayerService, playerService);
 
         injector.mapSingletonOf(TCPSocket, CPPTCPSocket);
         var socketIOStream: CPPSocketInputOutputStream = objectFactory.createInstance(CPPSocketInputOutputStream);

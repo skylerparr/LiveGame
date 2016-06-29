@@ -1,9 +1,12 @@
 package handler.output;
+import constants.ByteValues;
 import io.InputOutputStream;
 class PlayerConnect implements IOHandler {
 
     public var cmdId(get, null):UInt;
     public var totalBytes(get, null):UInt;
+
+    public var playerId: Int;
 
     public function new() {
     }
@@ -13,7 +16,7 @@ class PlayerConnect implements IOHandler {
     }
 
     function get_totalBytes():UInt {
-        return 0;
+        return ByteValues.INT;
     }
 
     public function read(stream:InputOutputStream):Void {
@@ -21,5 +24,6 @@ class PlayerConnect implements IOHandler {
 
     public function write(stream:InputOutputStream):Void {
         stream.writeUnsignedByte(cmdId);
+        stream.writeInt(playerId);
     }
 }

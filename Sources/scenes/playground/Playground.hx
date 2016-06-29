@@ -1,23 +1,19 @@
 package scenes.playground;
+import vo.UnitVO;
+import vo.PlayerVO;
+import service.PlayerService;
+import handler.output.UnitMoveTo;
 import handler.output.PlayerConnect;
 import handler.StreamHandler;
-import io.InputOutputStream;
-import net.TCPSocketConnector;
 import input.kha.KhaKeyboardInputSourceListener;
-import input.KeyboardInputSourceListener;
 import constants.Poses;
-import util.MathUtil;
-import gameentities.NecroDisplay;
 import gameentities.NecroGameObject;
-import geom.Point;
 import world.two.WorldPoint2D;
 import constants.EventNames;
 import util.Subscriber;
-import gameentities.WizardGameObject;
 import world.WorldPoint;
 import world.GameWorld;
 import kha.input.Mouse;
-import haxe.Json;
 import constants.LayerNames;
 import display.TextFieldNode;
 import kha.Assets;
@@ -43,12 +39,15 @@ class Playground implements BaseObject {
     public var subscriber: Subscriber;
     @inject
     public var streamHandler: StreamHandler;
+    @inject
+    public var playerService: PlayerService;
 
     private var lastUnit: NecroGameObject;
     private var rise: Float = 0;
     private var run: Float = 0;
     private var targetLocation: WorldPoint = new WorldPoint2D();
     private var playerConnected: Bool = false;
+    private var currentPlayer: PlayerVO;
 
     public function new() {
     }
@@ -56,6 +55,10 @@ class Playground implements BaseObject {
     public function init():Void {
         showPlayground(function(): Void {
             Mouse.get().notify(onDown, null, null, null);
+        });
+
+        playerService.getCurrentPlayer(function(p: PlayerVO): Void {
+            currentPlayer = p;
         });
 
         subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onGameLoop);
@@ -94,7 +97,7 @@ class Playground implements BaseObject {
 
     private function onDown(button:Int, x:Int, y:Int):Void {
 
-        if(button == 0) {
+        if(button == 0 && !playerConnected) {
             streamHandler.end();
             streamHandler.start();
 
@@ -103,6 +106,7 @@ class Playground implements BaseObject {
 //            }
         } else if(!playerConnected) {
             var playerConnect = new PlayerConnect();
+            playerConnect.playerId = playerService.uniqueId;
             streamHandler.send(playerConnect);
             playerConnected = true;
 //            if(lastUnit == null) {
@@ -119,6 +123,19 @@ class Playground implements BaseObject {
 //            rise = Math.sin(MathUtil.degreesToRadians(angle)) * velocity;
 //
 //            lastUnit.setPose(Poses.RUN);
+        } else if(playerConnected) {
+            var unitMoveTo = new UnitMoveTo();
+            var currentUnit: UnitVO = null;
+            for(unit in currentPlayer.units) {
+                currentUnit = unit;
+                break;
+            }
+            if(currentUnit != null) {
+                unitMoveTo.unitId = currentUnit.id;
+                unitMoveTo.posX = Std.random(700);
+                unitMoveTo.posY = Std.random(700);
+                streamHandler.send(unitMoveTo);
+            }
         }
     }
 

@@ -19,6 +19,7 @@ import integration.net.CPPSocketInputOutputStreamIntegrationTest;
 import lookup.MapHandlerLookupTest;
 import lookup.ReflectStrategyMapTest;
 import net.CPPSocketInputOutputStreamTest;
+import service.ConnectedPlayerServiceTest;
 import sound.kha.KhaSoundHandleTest;
 import sound.SimpleSoundManagerTest;
 import sound.SoundLayerContainerTest;
@@ -58,6 +59,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(lookup.MapHandlerLookupTest);
 		add(lookup.ReflectStrategyMapTest);
 		add(net.CPPSocketInputOutputStreamTest);
+		add(service.ConnectedPlayerServiceTest);
 		add(sound.kha.KhaSoundHandleTest);
 		add(sound.SimpleSoundManagerTest);
 		add(sound.SoundLayerContainerTest);

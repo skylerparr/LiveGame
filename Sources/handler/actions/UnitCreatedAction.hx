@@ -1,4 +1,7 @@
 package handler.actions;
+import vo.MutableUnitVO;
+import vo.PlayerVO;
+import service.PlayerService;
 import world.GameObject;
 import handler.input.UnitCreated;
 import world.GameWorld;
@@ -18,11 +21,18 @@ class UnitCreatedAction implements StrategyAction {
     public var objectCreator: ObjectCreator;
     @inject
     public var gameWorld: GameWorld;
+    @inject
+    public var playerService: PlayerService;
+
+    private var currentPlayer: PlayerVO;
 
     public function new() {
     }
 
     public function init():Void {
+        playerService.getCurrentPlayer(function(p: PlayerVO): Void {
+            currentPlayer = p;
+        });
     }
 
     public function dispose():Void {
@@ -32,6 +42,14 @@ class UnitCreatedAction implements StrategyAction {
         logger.logDebug("unit created");
         var unitCreated: UnitCreated = cast handler;
         var unit: GameObject = createUnit(unitCreated.unitId, unitCreated.unitType);
+
+        var unitVO: MutableUnitVO = objectCreator.createInstance(MutableUnitVO);
+        unitVO.id = unitCreated.unitId;
+        unitVO.unitType = unitCreated.unitType;
+
+        if(currentPlayer.id == unitCreated.playerId) {
+            currentPlayer.units.set(unitVO.id, unitVO);
+        }
 
         var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(unitCreated.posX, unitCreated.posY));
         gameWorld.addGameObject(unit, worldPoint);

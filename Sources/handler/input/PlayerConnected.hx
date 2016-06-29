@@ -6,6 +6,7 @@ class PlayerConnected implements IOHandler {
     public var cmdId(get, null):UInt;
     public var totalBytes(get, null):UInt;
 
+    public var identifier: Int;
     public var playerId: Int;
 
     private function get_cmdId():UInt {
@@ -20,6 +21,7 @@ class PlayerConnected implements IOHandler {
     }
 
     public function read(stream:InputOutputStream):Void {
+        identifier = stream.readInt();
         playerId = stream.readInt();
     }
 
