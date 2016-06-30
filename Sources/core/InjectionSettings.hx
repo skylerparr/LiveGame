@@ -1,4 +1,8 @@
 package core;
+import animation.tween.Tween;
+import animation.tween.SimpleTween;
+import animation.tween.MultiTweenController;
+import animation.tween.TweenController;
 import service.ConnectedPlayerService;
 import service.PlayerService;
 import handler.SocketStreamHandler;
@@ -132,6 +136,9 @@ class InjectionSettings {
         injector.mapValue(AnimationManager, animationManager);
 
         injector.mapClass(AnimationController, SpriteAnimationController);
+
+        injector.mapValue(TweenController, objectFactory.createInstance(MultiTweenController));
+        injector.mapClass(Tween, SimpleTween);
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
         injector.mapValue(ViewPort, viewPort);

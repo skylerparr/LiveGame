@@ -97,6 +97,7 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     }
 
     private function onSocketClosed(stream:InputOutputStream):Void {
+        trace("socket was closed");
     }
 
     public function send(handler:IOHandler):Void {
