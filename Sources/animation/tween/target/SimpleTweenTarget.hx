@@ -1,4 +1,5 @@
 package animation.tween.target;
+import motion.easing.Linear;
 class SimpleTweenTarget implements TweenTarget {
     @:isVar
     public var easeFunction(get, null):Float->Float->Float->Float->Float;
@@ -11,6 +12,9 @@ class SimpleTweenTarget implements TweenTarget {
 
     @:isVar
     public var completeFunction(get, null): Tween->Void;
+
+    @:isVar
+    public var delayValue(get, null): UInt;
 
     function get_easeFunction():Float->Float->Float->Float->Float {
         return easeFunction;
@@ -28,10 +32,15 @@ class SimpleTweenTarget implements TweenTarget {
         return completeFunction;
     }
 
+    function get_delayValue(): UInt {
+        return delayValue;
+    }
+
     public function new() {
     }
 
     public function init():Void {
+        easeFunction = Linear.easeNone.ease;
     }
 
     public function dispose():Void {
@@ -39,6 +48,11 @@ class SimpleTweenTarget implements TweenTarget {
 
     public function ease(easing:Float->Float->Float->Float->Float):TweenTarget {
         this.easeFunction = easing;
+        return this;
+    }
+
+    public function delay(time:UInt):TweenTarget {
+        this.delayValue = time;
         return this;
     }
 

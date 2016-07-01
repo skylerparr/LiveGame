@@ -9,10 +9,11 @@ class SimpleTween implements Tween {
     @inject
     public var tweenController: TweenController;
 
-    private var currentTime: UInt;
-    private var totalTime: UInt;
+    private var startTime: UInt;
+    private var duration: UInt;
 
-    private var originalProperties: Dynamic;
+    public var originalProperties: Dynamic;
+    public var originalTargetProperties: Dynamic;
 
     private var tweenTarget: TweenTarget;
     private var started: Bool;
@@ -22,26 +23,40 @@ class SimpleTween implements Tween {
     }
 
     public function init():Void {
-        started = false;
     }
 
     public function dispose():Void {
 
     }
 
-    public function to(target:Dynamic, time:UInt, properties:Dynamic):TweenTarget {
+    public function to(target:Dynamic, duration:UInt, properties:Dynamic):TweenTarget {
+        started = false;
+        originalTargetProperties = {};
         this.target = target;
-        currentTime = Timer.now();
-        totalTime = time;
+        startTime = Timer.now();
+        this.duration = duration;
         originalProperties = properties;
+        storeOriginalTargetValues();
         tweenTarget = objectCreator.createInstance(SimpleTweenTarget);
         tweenController.addTween(this);
-        return target;
+        return tweenTarget;
     }
 
     public function update():Void {
         var now = Timer.now();
-        var percentComplete: Float = (now - currentTime) / totalTime;
+        var diff: Int = now - startTime;
+
+        if(tweenTarget.delayValue > 0) {
+            tweenTarget.delay(tweenTarget.delayValue - diff);
+            if(tweenTarget.delayValue >= 0) {
+                startTime = Timer.now();
+                tweenTarget.delay(0);
+                return;
+            }
+        }
+
+        var percentComplete: Float = (diff) / duration;
+        var delta: Float = tweenTarget.easeFunction(diff, 0, 1, duration);
 
         if(percentComplete > 1) {
             updateFields(1);
@@ -59,17 +74,26 @@ class SimpleTween implements Tween {
             }
         }
 
-        updateFields(percentComplete);
+        updateFields(delta);
 
         if(tweenTarget.updateFunction != null) {
             tweenTarget.updateFunction(this);
         }
     }
 
-    private function updateFields(percentComplete: Float):Void {
+    public function updateFields(percentComplete: Float):Void {
         var fields: Array<String> = Reflect.fields(originalProperties);
         for(field in fields) {
-            Reflect.setProperty(target, field, Reflect.getProperty(originalProperties, field) * percentComplete);
+            var startPoint: Float = Reflect.getProperty(originalTargetProperties, field);
+            var propValue: Float = startPoint + ((Reflect.getProperty(originalProperties, field) - startPoint) * percentComplete);
+            Reflect.setProperty(target, field, propValue);
+        }
+    }
+
+    public function storeOriginalTargetValues():Void {
+        var fields: Array<String> = Reflect.fields(originalProperties);
+        for(field in fields) {
+            Reflect.setProperty(originalTargetProperties, field, Reflect.getProperty(target, field));
         }
     }
 

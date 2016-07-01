@@ -6,8 +6,10 @@ interface TweenTarget extends BaseObject {
     var beginFunction(get, null): Tween->Void;
     var updateFunction(get, null): Tween->Void;
     var completeFunction(get, null): Tween->Void;
+    var delayValue(get, null): UInt;
 
     function ease(easing: Float->Float->Float->Float->Float): TweenTarget;
+    function delay(time: UInt): TweenTarget;
     function onBegin(tween: Tween->Void): TweenTarget;
     function onUpdate(tween: Tween->Void): TweenTarget;
     function onComplete(tween: Tween->Void): TweenTarget;

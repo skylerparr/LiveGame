@@ -1,4 +1,6 @@
 package scenes.playground;
+import motion.easing.Bounce;
+import motion.easing.Sine;
 import animation.tween.Tween;
 import motion.Actuate;
 import vo.UnitVO;
@@ -165,10 +167,11 @@ class Playground implements BaseObject {
         hello.fontName = "helveticaneue_light";
         hello.fontSize = 32;
         hello.fontColor = 0xff0000ff;
+        hello.x = 400;
         topLayer.addChild(hello);
 
         var tween: Tween = objectCreator.createInstance(Tween);
-        tween.to(hello, 3000, {x: 500, y: 500});
+        tween.to(hello, 3000, {x: 500, y: 500}).delay(2000);
     }
 
     private inline function moveLastWizard(x:Float, y:Float):Void {
