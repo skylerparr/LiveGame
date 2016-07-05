@@ -1,4 +1,5 @@
 package handler.actions;
+import animation.tween.Tween;
 import constants.Poses;
 import util.Subscriber;
 import world.WorldEntity;
@@ -27,10 +28,19 @@ class UnitMoveAction implements StrategyAction {
     }
 
     public function execute(handler:IOHandler):Void {
-        var unitCreated: UnitMove = cast handler;
-        var unit: WorldEntity = gameWorld.getGameObjectById(unitCreated.unitId + "");
+        var unitMove: UnitMove = cast handler;
+        var unit: GameObject = cast gameWorld.getGameObjectById(unitMove.unitId + "");
 
-        var worldPoint: WorldPoint = new WorldPoint2D(unitCreated.posX, unitCreated.posY);
-        gameWorld.moveItemTo(unit, worldPoint);
+        var worldPoint: WorldPoint = new WorldPoint2D(unit.x, unit.z);
+        unit.lookAt = new WorldPoint2D(unitMove.posX, unitMove.posZ);
+
+        var tween: Tween = objectCreator.createInstance(Tween);
+        tween.to(worldPoint, unitMove.time, {x: unitMove.posX, z: unitMove.posZ})
+        .onUpdate(function(tween: Tween): Void {
+            unit.pose = Poses.RUN;
+            gameWorld.moveItemTo(unit, worldPoint);
+        }).onComplete(function(tween: Tween): Void {
+            unit.pose = Poses.IDLE;
+        });
     }
 }

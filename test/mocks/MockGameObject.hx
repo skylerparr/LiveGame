@@ -1,5 +1,6 @@
 package mocks;
 
+import constants.Poses;
 import world.Bounds;
 import world.Footprint;
 import world.WorldPoint;
@@ -17,6 +18,8 @@ class MockGameObject implements GameObject {
     @:isVar public var worldPoint(get, set):WorldPoint;
 
     @:isVar public var lookAt(get, set):WorldPoint;
+
+    @:isVar public var pose(get, set):Poses;
 
     @:isVar public var id(get, set):String;
 
@@ -59,6 +62,14 @@ class MockGameObject implements GameObject {
 
     public function set_lookAt(value:WorldPoint) {
         return this.lookAt = value;
+    }
+
+    public function set_pose(value:Poses) {
+        return this.pose = value;
+    }
+
+    public function get_pose():Poses {
+        return pose;
     }
 
     public function set_id(value:String) {

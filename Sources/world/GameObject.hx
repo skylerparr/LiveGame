@@ -2,6 +2,7 @@ package world;
 /**
  * Is an object that can be interacted with.
  */
+import constants.Poses;
 interface GameObject extends WorldEntity {
 
     /**
@@ -16,4 +17,8 @@ interface GameObject extends WorldEntity {
      */
     var lookAt(get, set): WorldPoint;
 
+    /**
+     * gets,sets the pose of the entity
+     */
+    var pose(get, set): Poses;
 }

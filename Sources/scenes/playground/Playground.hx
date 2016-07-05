@@ -71,17 +71,17 @@ class Playground implements BaseObject {
     }
 
     private function onGameLoop():Void {
-        if(lastUnit == null) {
-            return;
-        }
-
-        if(between(invert(run), invert(rise))) {
-            moveLastWizard(targetLocation.x, targetLocation.z);
-            lastUnit.setPose(Poses.IDLE);
-            return;
-        }
-
-        moveLastWizard(lastUnit.x + run, lastUnit.z + rise);
+//        if(lastUnit == null) {
+//            return;
+//        }
+//
+//        if(between(invert(run), invert(rise))) {
+//            moveLastWizard(targetLocation.x, targetLocation.z);
+//            lastUnit.setPose(Poses.IDLE);
+//            return;
+//        }
+//
+//        moveLastWizard(lastUnit.x + run, lastUnit.z + rise);
     }
 
     private inline function invert(value: Float): Float {
@@ -136,8 +136,8 @@ class Playground implements BaseObject {
             }
             if(currentUnit != null) {
                 unitMoveTo.unitId = currentUnit.id;
-                unitMoveTo.posX = Std.random(700);
-                unitMoveTo.posY = Std.random(700);
+                unitMoveTo.posX = x;
+                unitMoveTo.posZ = y;
                 streamHandler.send(unitMoveTo);
             }
         }

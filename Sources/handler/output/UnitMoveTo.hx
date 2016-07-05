@@ -15,7 +15,7 @@ class UnitMoveTo implements IOHandler {
 
     public var unitId: Int;
     public var posX: Int;
-    public var posY: Int;
+    public var posZ: Int;
 
     public function new() {
     }
@@ -27,7 +27,7 @@ class UnitMoveTo implements IOHandler {
         stream.writeUnsignedByte(cmdId);
         stream.writeInt(unitId);
         stream.writeInt(posX);
-        stream.writeInt(posY);
+        stream.writeInt(posZ);
     }
 
 }

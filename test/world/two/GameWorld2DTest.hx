@@ -1,5 +1,6 @@
 package world.two;
 
+import mocks.MockGameWorldDisplayObject;
 import world.WorldEntity;
 import units.EntityFactory;
 import mocks.MockViewPort;
@@ -379,6 +380,20 @@ class GameWorld2DTest {
         Assert.isNull(gameWorld.objectToDisplayMap);
         Assert.isNull(gameWorld.entityIndex);
         Assert.isNull(gameWorld.gameObjects);
+    }
+
+    @Test
+    public function shouldAutomaticallyAssignDisplayIfWorldEntityIsAWorldEntityDisplay(): Void {
+        var gameObject: MockGameWorldDisplayObject = mock(MockGameWorldDisplayObject);
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+
+        entityFactory.createViewForEntity(gameObject).returns(display);
+
+        wp.x = 83;
+        wp.z = 347;
+        gameWorld.addGameObject(gameObject, wp);
+
+        gameObject.set_display(display).verify();
     }
 
     @IgnoreCover

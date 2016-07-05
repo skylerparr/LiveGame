@@ -1,4 +1,5 @@
 package gameentities;
+import constants.Poses;
 import world.two.WorldPoint2D;
 import world.Bounds;
 import world.Footprint;
@@ -49,6 +50,9 @@ class WizardGameObject implements GameObject {
     @:isVar
     public var z(get, set):Float;
 
+    @:isVar
+    public var pose(get, set):Poses;
+
     public function get_visible():Bool {
         return visible;
     }
@@ -70,6 +74,14 @@ class WizardGameObject implements GameObject {
 
     public function set_lookAt(value:WorldPoint): WorldPoint {
         return this.lookAt = value;
+    }
+
+    public function set_pose(value:Poses):Poses {
+        return this.pose = value;
+    }
+
+    public function get_pose():Poses {
+        return pose;
     }
 
     public function set_id(value:String) {

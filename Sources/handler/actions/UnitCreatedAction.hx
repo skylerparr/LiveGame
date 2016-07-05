@@ -60,9 +60,6 @@ class UnitCreatedAction implements StrategyAction {
         var unit: NecroGameObject = objectCreator.createInstance(NecroGameObject);
         unit.id = unitId + "";
 
-        var unitDisplay: NecroDisplay = cast gameWorld.getDisplayByGameObject(unit);
-        unit.display = unitDisplay;
-
         return unit;
         #else
         return null;

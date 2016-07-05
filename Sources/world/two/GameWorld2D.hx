@@ -95,6 +95,10 @@ class GameWorld2D implements GameWorld {
         objectToDisplayMap.set(worldEntity, display);
         gameObjectLayer.addChild(display);
         entityIndex.set(worldEntity.id, worldEntity);
+
+        if(Std.is(worldEntity, WorldEntityDisplay)) {
+            cast(worldEntity, WorldEntityDisplay).display = display;
+        }
     }
 
     public function moveItemTo(gameObject:WorldEntity, worldPt:WorldPoint):Void {

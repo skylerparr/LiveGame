@@ -11,7 +11,7 @@ class UnitMove implements IOHandler {
 
     public var unitId: Int;
     public var posX: Int;
-    public var posY: Int;
+    public var posZ: Int;
     public var time: Int;
     public var rotation: Float;
 
@@ -30,7 +30,7 @@ class UnitMove implements IOHandler {
     public function read(stream:InputOutputStream):Void {
         unitId = stream.readInt();
         posX = stream.readInt();
-        posY = stream.readInt();
+        posZ = stream.readInt();
         time = stream.readInt();
         rotation = stream.readDouble();
     }
