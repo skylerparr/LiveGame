@@ -11,7 +11,6 @@ class UnitCreated implements IOHandler {
     public var unitType: Int;
     public var posX: Int;
     public var posY: Int;
-    public var rotation: Float;
 
     public function new() {
     }
@@ -26,8 +25,7 @@ class UnitCreated implements IOHandler {
             ByteValues.INT +
             ByteValues.INT +
             ByteValues.INT +
-            ByteValues.INT +
-            ByteValues.DOUBLE;
+            ByteValues.INT;
     }
 
     public function read(stream:InputOutputStream):Void {
@@ -36,7 +34,6 @@ class UnitCreated implements IOHandler {
         unitType = stream.readInt();
         posX = stream.readInt();
         posY = stream.readInt();
-        rotation = stream.readDouble();
     }
 
     public function write(stream:InputOutputStream):Void {

@@ -39,7 +39,8 @@ class UnitMoveAction implements StrategyAction {
         .onUpdate(function(tween: Tween): Void {
             unit.pose = Poses.RUN;
             gameWorld.moveItemTo(unit, worldPoint);
-        }).onComplete(function(tween: Tween): Void {
+        })
+        .onComplete(function(tween: Tween): Void {
             unit.pose = Poses.IDLE;
         });
     }

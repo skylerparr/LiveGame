@@ -13,7 +13,6 @@ class UnitMove implements IOHandler {
     public var posX: Int;
     public var posZ: Int;
     public var time: Int;
-    public var rotation: Float;
 
     function get_cmdId():UInt {
         return IOCommands.UNIT_MOVE;
@@ -23,8 +22,7 @@ class UnitMove implements IOHandler {
         return ByteValues.INT +
             ByteValues.INT +
             ByteValues.INT +
-            ByteValues.INT +
-            ByteValues.DOUBLE;
+            ByteValues.INT;
     }
 
     public function read(stream:InputOutputStream):Void {
@@ -32,7 +30,6 @@ class UnitMove implements IOHandler {
         posX = stream.readInt();
         posZ = stream.readInt();
         time = stream.readInt();
-        rotation = stream.readDouble();
     }
 
     public function write(stream:InputOutputStream):Void {
