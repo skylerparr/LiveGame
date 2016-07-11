@@ -44,6 +44,7 @@
 -lib mockatoo
 -lib minject
 -lib continuation
+-lib actuate
 --macro mcover.MCover.coverage([''],['test'],['TestMain','TestSuite','animation.spec.JSONArray','core.AnyException','core.Sample','core.SampleBase','core.SampleWithArgs','input.MockKeyboardKey','mocks.*','sound.kha.mocks.*'])
 -D MCOVER
 -cp Sources

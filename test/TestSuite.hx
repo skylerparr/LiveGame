@@ -11,6 +11,7 @@ import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
+import gameentities.BattleUnitInteractionManagerTest;
 import geom.RectangleTest;
 import handler.SocketStreamHandlerTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
@@ -51,6 +52,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.layer.RenderableLayerManagerTest);
 		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
+		add(gameentities.BattleUnitInteractionManagerTest);
 		add(geom.RectangleTest);
 		add(handler.SocketStreamHandlerTest);
 		add(input.kha.KhaKeyboardInputSourceListenerTest);

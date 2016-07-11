@@ -44,6 +44,10 @@ class SimpleTweenTarget implements TweenTarget {
     }
 
     public function dispose():Void {
+        easeFunction = null;
+        beginFunction = null;
+        updateFunction = null;
+        completeFunction = null;
     }
 
     public function ease(easing:Float->Float->Float->Float->Float):TweenTarget {

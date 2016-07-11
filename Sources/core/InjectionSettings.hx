@@ -1,4 +1,6 @@
 package core;
+import gameentities.BattleUnitInteractionManger;
+import gameentities.UnitInteractionManager;
 import animation.tween.TweenDelegate;
 import animation.tween.Tween;
 import animation.tween.SimpleTween;
@@ -69,9 +71,9 @@ class InjectionSettings {
     public var injector: Injector = new Injector();
 
     public function new(backbuffer: Image, fonts: Map<String, Font>) {
-        ObjectFactory.injector = injector;
+        ObjectPoolObjectCreator.injector = injector;
 
-        var objectFactory: ObjectFactory = new ObjectFactory();
+        var objectFactory: ObjectPoolObjectCreator = new ObjectPoolObjectCreator();
         injector.mapValue(ObjectCreator, objectFactory);
         injector.mapValue(kha.graphics2.Graphics, backbuffer.g2);
 
@@ -152,6 +154,8 @@ class InjectionSettings {
 
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
         injector.mapValue(GameWorld, gameWorld);
+
+        injector.mapValue(UnitInteractionManager, objectFactory.createInstance(BattleUnitInteractionManger));
 
         var fps: Fps = objectFactory.createInstance(Fps);
         injector.mapValue(Fps, fps);

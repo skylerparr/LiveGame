@@ -1,4 +1,6 @@
 package scenes.playground;
+import world.WorldPoint;
+import geom.Point;
 import motion.easing.Bounce;
 import motion.easing.Sine;
 import animation.tween.Tween;
@@ -136,8 +138,9 @@ class Playground implements BaseObject {
             }
             if(currentUnit != null) {
                 unitMoveTo.unitId = currentUnit.id;
-                unitMoveTo.posX = x;
-                unitMoveTo.posZ = y;
+                var wp: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
+                unitMoveTo.posX = Std.int(wp.x);
+                unitMoveTo.posZ = Std.int(wp.z);
                 streamHandler.send(unitMoveTo);
             }
         }

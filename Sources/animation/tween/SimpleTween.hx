@@ -26,7 +26,15 @@ class SimpleTween implements Tween {
     }
 
     public function dispose():Void {
-
+        stop();
+        objectCreator.disposeInstance(tweenTarget);
+        tweenTarget = null;
+        started = false;
+        originalProperties = null;
+        target = null;
+        originalTargetProperties = null;
+        tweenController = null;
+        objectCreator = null;
     }
 
     public function to(target:Dynamic, duration:UInt, properties:Dynamic):TweenTarget {
