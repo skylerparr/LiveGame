@@ -18,7 +18,7 @@ import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
 class BattleUnitInteractionManagerTest {
 
-    private var interactionManager: BattleUnitInteractionManger;
+    private var interactionManager: BattleUnitInteractionManager;
     private var objectCreator: ObjectCreator;
     private var gameWorld: GameWorld;
     private var wp: WorldPoint2D;
@@ -46,7 +46,7 @@ class BattleUnitInteractionManagerTest {
             return new WorldPoint2D();
         });
 
-        interactionManager = new BattleUnitInteractionManger();
+        interactionManager = new BattleUnitInteractionManager();
         interactionManager.gameWorld = gameWorld;
         interactionManager.objectCreator = objectCreator;
         interactionManager.init();

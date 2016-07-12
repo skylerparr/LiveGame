@@ -1,5 +1,5 @@
 package core;
-import gameentities.BattleUnitInteractionManger;
+import gameentities.BattleUnitInteractionManager;
 import gameentities.UnitInteractionManager;
 import animation.tween.TweenDelegate;
 import animation.tween.Tween;
@@ -155,7 +155,7 @@ class InjectionSettings {
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
         injector.mapValue(GameWorld, gameWorld);
 
-        injector.mapValue(UnitInteractionManager, objectFactory.createInstance(BattleUnitInteractionManger));
+        injector.mapValue(UnitInteractionManager, objectFactory.createInstance(BattleUnitInteractionManager));
 
         var fps: Fps = objectFactory.createInstance(Fps);
         injector.mapValue(Fps, fps);

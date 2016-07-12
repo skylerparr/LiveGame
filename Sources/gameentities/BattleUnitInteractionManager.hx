@@ -9,7 +9,7 @@ import world.WorldPoint;
 import world.WorldEntity;
 import core.ObjectCreator;
 import world.GameWorld;
-class BattleUnitInteractionManger implements UnitInteractionManager {
+class BattleUnitInteractionManager implements UnitInteractionManager {
     
     @inject
     public var gameWorld: GameWorld;
