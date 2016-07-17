@@ -1,5 +1,6 @@
 package world.two;
 
+import display.DisplayNode;
 import mocks.MockGameWorldDisplayObject;
 import world.WorldEntity;
 import units.EntityFactory;
@@ -215,7 +216,7 @@ class GameWorld2DTest {
 
     @Test
     public function shouldRemoveEntityFromWorld(): Void {
-        var gameObject: MockGameObject = mock(MockGameObject);
+        var gameObject: MockGameWorldDisplayObject = mock(MockGameWorldDisplayObject);
         var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
 
         entityFactory.createViewForEntity(gameObject).returns(display);
@@ -224,6 +225,8 @@ class GameWorld2DTest {
 
         entityFactory.disposeViewForEntity(gameObject, display).verify();
         Assert.areEqual(0, getGameObjectCount());
+        Assert.isNull(gameWorld.displayToObjectMap.get(display));
+        Assert.isNull(gameWorld.objectToDisplayMap.get(gameObject));
     }
 
     @Test
@@ -368,6 +371,19 @@ class GameWorld2DTest {
     }
 
     @Test
+    public function shouldGetEntityAssociatedWithDisplay(): Void {
+        var gameObject: MockGameWorldDisplayObject = mock(MockGameWorldDisplayObject);
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+
+        entityFactory.createViewForEntity(gameObject).returns(display);
+
+        gameWorld.addGameObject(gameObject, wp);
+
+        var gotGameObject: WorldEntity = gameWorld.getWorldEntityByDisplay(display);
+        Assert.areEqual(gameObject, gotGameObject);
+    }
+
+    @Test
     public function shouldDisposeAllReferences(): Void {
         gameWorld.dispose();
 
@@ -380,6 +396,7 @@ class GameWorld2DTest {
         Assert.isNull(gameWorld.objectToDisplayMap);
         Assert.isNull(gameWorld.entityIndex);
         Assert.isNull(gameWorld.gameObjects);
+        Assert.isNull(gameWorld.displayToObjectMap);
     }
 
     @Test

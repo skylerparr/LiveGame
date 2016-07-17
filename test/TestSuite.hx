@@ -26,6 +26,7 @@ import sound.SimpleSoundManagerTest;
 import sound.SoundLayerContainerTest;
 import util.MappedSubscriberTest;
 import world.two.GameWorld2DTest;
+import world.two.SubscriberZSortingManagerTest;
 import world.two.ViewPort2DTest;
 import world.TypeResolvedEntityFactoryTest;
 
@@ -67,6 +68,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(sound.SoundLayerContainerTest);
 		add(util.MappedSubscriberTest);
 		add(world.two.GameWorld2DTest);
+		add(world.two.SubscriberZSortingManagerTest);
 		add(world.two.ViewPort2DTest);
 		add(world.TypeResolvedEntityFactoryTest);
 	}

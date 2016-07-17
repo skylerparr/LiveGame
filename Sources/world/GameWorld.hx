@@ -1,4 +1,5 @@
 package world;
+import display.DisplayNodeContainer;
 import geom.Point;
 import display.DisplayNode;
 import core.BaseObject;
@@ -7,6 +8,12 @@ interface GameWorld extends BaseObject {
      * Return a collection of the placeables on the map.
      */
     var gameObjects(get, null): List<WorldEntity>;
+
+    /**
+     * get the container where all world entities displays
+     * are contained
+     */
+    var displayContainer(get, null): DisplayNodeContainer;
 
     /**
      * Add a placeable to the map at the provided position.
@@ -40,6 +47,14 @@ interface GameWorld extends BaseObject {
      * @return display associated with the game Object
      */
     function getDisplayByGameObject(gameObject: WorldEntity): DisplayNode;
+
+    /**
+     * Returns the gameobject associated by the display node
+     *
+     * @param displayNode
+     * @return the gameobject associated with the display node
+     */
+    function getWorldEntityByDisplay(displayNode: DisplayNode): WorldEntity;
 
     /**
      * current playable area, extends passed viewport

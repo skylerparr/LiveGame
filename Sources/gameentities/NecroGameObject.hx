@@ -1,4 +1,6 @@
 package gameentities;
+import geom.Rectangle;
+import world.two.Footprint2D;
 import display.DisplayNode;
 import world.WorldEntityDisplay;
 import constants.Poses;
@@ -24,6 +26,12 @@ class NecroGameObject extends WizardGameObject implements WorldEntityDisplay {
 
     public function new() {
         super();
+    }
+
+    override public function init():Void {
+        super.init();
+        footprint = new Footprint2D();
+        footprint.footprint = new Rectangle(0, 83, 76, 30);
     }
 
     override public function set_lookAt(value:WorldPoint): WorldPoint {

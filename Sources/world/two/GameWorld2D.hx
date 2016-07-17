@@ -21,6 +21,7 @@ class GameWorld2D implements GameWorld {
     public var gameObjectLayer: DisplayNodeContainer;
     public var objectToDisplayMap: Map<WorldEntity, DisplayNode>;
     public var entityIndex: Map<String, WorldEntity>;
+    public var displayToObjectMap: Map<DisplayNode, WorldEntity>;
 
     public function new() {
     }
@@ -31,6 +32,8 @@ class GameWorld2D implements GameWorld {
     public var totalHeight(get, set):Float;
     @:isVar
     public var totalWidth(get, set):Float;
+
+    public var displayContainer(get, set): DisplayNodeContainer;
 
     public function get_gameObjects():List<WorldEntity> {
         return gameObjects;
@@ -56,6 +59,14 @@ class GameWorld2D implements GameWorld {
         return totalWidth;
     }
 
+    public function get_displayContainer():DisplayNodeContainer {
+        return this.gameObjectLayer;
+    }
+
+    public function set_displayContainer(value:DisplayNodeContainer) {
+        return this.gameObjectLayer = value;
+    }
+
     public function init():Void {
         point = new Point();
         worldPoint = new WorldPoint2D();
@@ -64,6 +75,7 @@ class GameWorld2D implements GameWorld {
         gameObjects = new List<WorldEntity>();
         objectToDisplayMap = new Map<WorldEntity, DisplayNode>();
         entityIndex = new Map<String, WorldEntity>();
+        displayToObjectMap = new Map<DisplayNode, WorldEntity>();
     }
 
     public function dispose():Void {
@@ -76,6 +88,7 @@ class GameWorld2D implements GameWorld {
         objectToDisplayMap = null;
         entityIndex = null;
         gameObjects = null;
+        displayToObjectMap = null;
     }
 
     public function addGameObject(worldEntity:WorldEntity, worldPt:WorldPoint):Void {
@@ -98,6 +111,7 @@ class GameWorld2D implements GameWorld {
 
         if(Std.is(worldEntity, WorldEntityDisplay)) {
             cast(worldEntity, WorldEntityDisplay).display = display;
+            displayToObjectMap.set(display, worldEntity);
         }
     }
 
@@ -128,6 +142,7 @@ class GameWorld2D implements GameWorld {
         }
         entityFactory.disposeViewForEntity(gameObject, display);
         objectToDisplayMap.remove(gameObject);
+        displayToObjectMap.remove(display);
         gameObjects.remove(gameObject);
         entityIndex.remove(gameObject.id);
     }
@@ -140,6 +155,10 @@ class GameWorld2D implements GameWorld {
 
     public function getDisplayByGameObject(gameObject:WorldEntity):DisplayNode {
         return objectToDisplayMap.get(gameObject);
+    }
+
+    public function getWorldEntityByDisplay(displayNode:DisplayNode):WorldEntity {
+        return displayToObjectMap.get(displayNode);
     }
 
     public function getGameObjectById(id:String):WorldEntity {

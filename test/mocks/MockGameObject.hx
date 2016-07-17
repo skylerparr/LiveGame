@@ -1,5 +1,6 @@
 package mocks;
 
+import world.WorldEntityDisplay;
 import constants.Poses;
 import world.Bounds;
 import world.Footprint;

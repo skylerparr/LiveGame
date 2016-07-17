@@ -1,4 +1,6 @@
 package core;
+import world.two.SubscriberZSortingManager;
+import world.two.ZSortingManager;
 import gameentities.BattleUnitInteractionManager;
 import gameentities.UnitInteractionManager;
 import animation.tween.TweenDelegate;
@@ -154,6 +156,10 @@ class InjectionSettings {
 
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
         injector.mapValue(GameWorld, gameWorld);
+
+        var zSorting: SubscriberZSortingManager = objectFactory.createInstance(SubscriberZSortingManager);
+        zSorting.updateEvent = EventNames.ENTER_GAME_LOOP;
+        injector.mapValue(ZSortingManager, zSorting);
 
         injector.mapValue(UnitInteractionManager, objectFactory.createInstance(BattleUnitInteractionManager));
 

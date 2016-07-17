@@ -5,8 +5,6 @@ import constants.Poses;
 import animation.tween.Tween;
 import world.two.WorldPoint2D;
 import world.GameObject;
-import world.WorldPoint;
-import world.WorldEntity;
 import core.ObjectCreator;
 import world.GameWorld;
 class BattleUnitInteractionManager implements UnitInteractionManager {

@@ -102,7 +102,6 @@ class Playground implements BaseObject {
     }
 
     private function onDown(button:Int, x:Int, y:Int):Void {
-
         if(button == 0 && !playerConnected) {
             streamHandler.end();
             streamHandler.start();
@@ -110,7 +109,7 @@ class Playground implements BaseObject {
 //            if(lastUnit == null) {
 //                createWizard(x, y);
 //            }
-        } else if(!playerConnected) {
+        } else if(button == 1 && !playerConnected) {
             var playerConnect = new PlayerConnect();
             playerConnect.playerId = playerService.uniqueId;
             streamHandler.send(playerConnect);
@@ -129,7 +128,7 @@ class Playground implements BaseObject {
 //            rise = Math.sin(MathUtil.degreesToRadians(angle)) * velocity;
 //
 //            lastUnit.setPose(Poses.RUN);
-        } else if(playerConnected) {
+        } else if(button == 1 && playerConnected) {
             var unitMoveTo = new UnitMoveTo();
             var currentUnit: UnitVO = null;
             for(unit in currentPlayer.units) {
