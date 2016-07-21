@@ -1,5 +1,5 @@
 package input;
 interface GameInputTools {
-    var currentTool(get, null): PointingTool;
-    var keyboardTool(get, null): KeyboardTool;
+    var currentTool(get, set): PointingTool;
+    var keyboardTool(get, set): KeyboardTool;
 }

@@ -1,4 +1,5 @@
 package lookup;
+import handler.input.HeroCreated;
 import handler.input.UnitMove;
 import handler.input.UnitCreated;
 import handler.input.PlayerConnected;
@@ -17,6 +18,7 @@ class MapHandlerLookup implements HandlerLookup {
         map = new Map<Int, IOHandler>();
 
         map.set(IOCommands.PLAYER_CONNECTED, new PlayerConnected());
+        map.set(IOCommands.HERO_CREATED, new HeroCreated());
         map.set(IOCommands.UNIT_CREATED, new UnitCreated());
         map.set(IOCommands.UNIT_MOVE, new UnitMove());
     }

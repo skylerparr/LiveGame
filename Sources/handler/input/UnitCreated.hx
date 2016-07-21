@@ -15,7 +15,7 @@ class UnitCreated implements IOHandler {
     public function new() {
     }
 
-    private function get_cmdId():UInt {
+    public function get_cmdId():UInt {
         return IOCommands.UNIT_CREATED;
     }
 

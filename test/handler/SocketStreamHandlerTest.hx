@@ -22,7 +22,7 @@ class SocketStreamHandlerTest {
     private var connector: TCPSocketConnector;
     private var applicationSettings: ApplicationSettings;
     private var handlerLookup: HandlerLookup;
-    private var stream: InputOutputStream;
+    private var stream: MockInputOutputStream;
     private var strategyMap: StrategyMap;
     private var logger: Logger;
     private var cbCount: Int;
@@ -287,7 +287,7 @@ class SocketStreamHandlerTest {
         connector.subscribeToDataReceived(cast any).calls(function(args): Void {
             dataReceivedCb = args[0];
         });
-        var handler: IOHandler = mock(MockIOHandler);
+        var handler: MockIOHandler = mock(MockIOHandler);
         var action: StrategyAction = mock(StrategyAction);
 
         handlerLookup.getHandler(stream).returns(handler);
@@ -346,6 +346,6 @@ class SocketStreamHandlerTest {
 @IgnoreCover
 typedef StrategyActionHandler = {
     action: StrategyAction,
-    handler: IOHandler,
+    handler: MockIOHandler,
     onDataCb: InputOutputStream->Void
 }

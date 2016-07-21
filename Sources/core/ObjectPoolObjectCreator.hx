@@ -35,8 +35,8 @@ class ObjectPoolObjectCreator  implements ObjectCreator {
     private inline function pullFromPool(clazz:Class<Dynamic>, ?constructorArgs:Array<Dynamic>):Dynamic {
         var retVal: Dynamic = null;
         clazz = injector.getMapping(clazz).request;
-        trace(injector.getMapping(clazz).toString());
-        trace("getting from pool " + clazz);
+//        trace(injector.getMapping(clazz).toString());
+//        trace("getting from pool " + clazz);
         if(pool.exists(clazz)) {
             var items: List<Dynamic> = pool.get(clazz);
             if(items.length > 0) {
@@ -59,8 +59,8 @@ class ObjectPoolObjectCreator  implements ObjectCreator {
         if(!pool.exists(type)) {
             pool.set(type, new List<Dynamic>());
         }
-        trace("adding to pool " + type);
+//        trace("adding to pool " + type);
         pool.get(type).add(object);
-        trace("new amount is : " + pool.get(type).length);
+//        trace("new amount is : " + pool.get(type).length);
     }
 }

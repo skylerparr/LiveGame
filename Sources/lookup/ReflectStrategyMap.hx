@@ -1,4 +1,6 @@
 package lookup;
+import handler.actions.HeroCreatedAction;
+import handler.input.HeroCreated;
 import handler.input.UnitCreated;
 import handler.input.UnitMove;
 import handler.actions.UnitMoveAction;
@@ -24,6 +26,7 @@ class ReflectStrategyMap implements StrategyMap {
 
         handlerMap.set(PlayerConnected, objectCreator.createInstance(PlayerConnectedAction));
         handlerMap.set(UnitCreated, objectCreator.createInstance(UnitCreatedAction));
+        handlerMap.set(HeroCreated, objectCreator.createInstance(HeroCreatedAction));
         handlerMap.set(UnitMove, objectCreator.createInstance(UnitMoveAction));
     }
 

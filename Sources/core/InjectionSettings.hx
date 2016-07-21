@@ -1,4 +1,16 @@
 package core;
+import gameentities.SingleHeroInteraction;
+import gameentities.HeroInteraction;
+import world.two.WorldPoint2D;
+import world.WorldPoint;
+import input.tools.BattleKeyboardTool;
+import input.tools.BattlePointingTool;
+import input.PointingInputSourceListener;
+import input.GameInputTools;
+import input.tools.AssignedGameInputTools;
+import input.kha.KhaMouseInputSource;
+import input.kha.KhaKeyboardInputSourceListener;
+import input.KeyboardInputSourceListener;
 import world.two.SubscriberZSortingManager;
 import world.two.ZSortingManager;
 import gameentities.BattleUnitInteractionManager;
@@ -133,6 +145,7 @@ class InjectionSettings {
         injector.mapValue(Subscriber, subscribeNotifer);
         injector.mapValue(EventNotifier, subscribeNotifer);
 
+        injector.mapClass(WorldPoint, WorldPoint2D);
         #if cpp
         var animationManager: animation.ThreadedAnimationManager = objectFactory.createInstance(animation.ThreadedAnimationManager);
         #else
@@ -147,6 +160,9 @@ class InjectionSettings {
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
         injector.mapValue(ViewPort, viewPort);
+
+        var heroInteraction: SingleHeroInteraction = objectFactory.createInstance(SingleHeroInteraction);
+        injector.mapValue(HeroInteraction, heroInteraction);
 
         var entityFactory: TypeResolvedEntityFactory = objectFactory.createInstance(TypeResolvedEntityFactory);
         injector.mapValue(EntityFactory, entityFactory);
@@ -182,7 +198,22 @@ class InjectionSettings {
         injector.mapValue(ApplicationSettings, objectFactory.createInstance(MapApplicationSettings));
         injector.mapValue(StrategyMap, objectFactory.createInstance(ReflectStrategyMap));
         injector.mapValue(HandlerLookup, objectFactory.createInstance(MapHandlerLookup));
-        injector.mapValue(StreamHandler, objectFactory.createInstance(SocketStreamHandler));
+        var streamHandler: SocketStreamHandler = objectFactory.createInstance(SocketStreamHandler);
+        injector.mapValue(StreamHandler, streamHandler);
+
+        heroInteraction.streamHandler = streamHandler;
+
+        var inputTools: AssignedGameInputTools = objectFactory.createInstance(AssignedGameInputTools);
+        injector.mapValue(GameInputTools, inputTools);
+
+        var mouseInputSource: KhaMouseInputSource = objectFactory.createInstance(KhaMouseInputSource);
+        injector.mapValue(PointingInputSourceListener, mouseInputSource);
+
+        var keyboardListener: KhaKeyboardInputSourceListener = objectFactory.createInstance(KhaKeyboardInputSourceListener);
+        injector.mapValue(KeyboardInputSourceListener, keyboardListener);
+
+        inputTools.currentTool = objectFactory.createInstance(BattlePointingTool);
+        inputTools.keyboardTool = objectFactory.createInstance(BattleKeyboardTool);
 
         objectFactory.createInstance(Playground);
     }

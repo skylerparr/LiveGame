@@ -28,7 +28,6 @@ class UnitMoveAction implements StrategyAction {
 
     public function execute(handler:IOHandler):Void {
         var unitMove: UnitMove = cast handler;
-        trace(unitMove.unitId);
         var unit: GameObject = cast gameWorld.getGameObjectById(unitMove.unitId + "");
         if(unit == null) {
             return;

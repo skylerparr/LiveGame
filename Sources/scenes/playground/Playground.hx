@@ -67,23 +67,6 @@ class Playground implements BaseObject {
             currentPlayer = p;
         });
 
-        subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onGameLoop);
-
-        objectCreator.createInstance(KhaKeyboardInputSourceListener);
-    }
-
-    private function onGameLoop():Void {
-//        if(lastUnit == null) {
-//            return;
-//        }
-//
-//        if(between(invert(run), invert(rise))) {
-//            moveLastWizard(targetLocation.x, targetLocation.z);
-//            lastUnit.setPose(Poses.IDLE);
-//            return;
-//        }
-//
-//        moveLastWizard(lastUnit.x + run, lastUnit.z + rise);
     }
 
     private inline function invert(value: Float): Float {
@@ -105,43 +88,25 @@ class Playground implements BaseObject {
         if(button == 0 && !playerConnected) {
             streamHandler.end();
             streamHandler.start();
-
-//            if(lastUnit == null) {
-//                createWizard(x, y);
-//            }
         } else if(button == 1 && !playerConnected) {
             var playerConnect = new PlayerConnect();
             playerConnect.playerId = playerService.uniqueId;
             streamHandler.send(playerConnect);
             playerConnected = true;
-//            if(lastUnit == null) {
-//                return;
+//        } else if(button == 1 && playerConnected) {
+//            var unitMoveTo = new UnitMoveTo();
+//            var currentUnit: UnitVO = null;
+//            for(unit in currentPlayer.units) {
+//                currentUnit = unit;
+//                break;
 //            }
-//            targetLocation = gameWorld.screenToWorld(new Point(x, y));
-//
-//            lastUnit.lookAt = targetLocation;
-//
-//            var velocity: Float = 40 * 1 / 60;
-//            var angle: Float = MathUtil.getDirectionInDegrees(lastUnit.worldPoint, targetLocation) - 90;
-//
-//            run = Math.cos(MathUtil.degreesToRadians(angle)) * velocity;
-//            rise = Math.sin(MathUtil.degreesToRadians(angle)) * velocity;
-//
-//            lastUnit.setPose(Poses.RUN);
-        } else if(button == 1 && playerConnected) {
-            var unitMoveTo = new UnitMoveTo();
-            var currentUnit: UnitVO = null;
-            for(unit in currentPlayer.units) {
-                currentUnit = unit;
-                break;
-            }
-            if(currentUnit != null) {
-                unitMoveTo.unitId = currentUnit.id;
-                var wp: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
-                unitMoveTo.posX = Std.int(wp.x);
-                unitMoveTo.posZ = Std.int(wp.z);
-                streamHandler.send(unitMoveTo);
-            }
+//            if(currentUnit != null) {
+//                unitMoveTo.unitId = currentUnit.id;
+//                var wp: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
+//                unitMoveTo.posX = Std.int(wp.x);
+//                unitMoveTo.posZ = Std.int(wp.z);
+//                streamHandler.send(unitMoveTo);
+//            }
         }
     }
 
@@ -174,11 +139,6 @@ class Playground implements BaseObject {
 
         var tween: Tween = objectCreator.createInstance(Tween);
         tween.to(hello, 3000, {x: 500, y: 500}).delay(2000);
-    }
-
-    private inline function moveLastWizard(x:Float, y:Float):Void {
-//        var worldPoint: WorldPoint = new WorldPoint2D(x, y);
-//        gameWorld.moveItemTo(lastUnit, worldPoint);
     }
 
 }
