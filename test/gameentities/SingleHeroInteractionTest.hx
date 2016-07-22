@@ -1,5 +1,8 @@
 package gameentities;
 
+import mocks.MockViewPort;
+import util.MappedSubscriber;
+import world.ViewPort;
 import handler.output.UnitMoveTo;
 import handler.IOHandler;
 import mocks.MockStreamHandler;
@@ -18,11 +21,13 @@ class SingleHeroInteractionTest {
     private var objectCreator: ObjectCreator;
     private var streamHandler: MockStreamHandler;
     private var hero: MockGameObject;
+    private var viewPortTracker: ViewPortTracker;
 
     @Before
     public function setup():Void {
         hero = mock(MockGameObject);
         hero.id.returns("42");
+        viewPortTracker = mock(ViewPortTracker);
         objectCreator = mock(ObjectCreator);
         objectCreator.createInstance(WorldPoint).returns(new WorldPoint2D());
         objectCreator.createInstance(UnitMoveTo).returns(new UnitMoveTo());
@@ -31,6 +36,7 @@ class SingleHeroInteractionTest {
         heroInteraction = new SingleHeroInteraction();
         heroInteraction.objectCreator = objectCreator;
         heroInteraction.streamHandler = streamHandler;
+        heroInteraction.viewPortTracker = viewPortTracker;
         heroInteraction.init();
 
         heroInteraction.hero = hero;
@@ -64,5 +70,10 @@ class SingleHeroInteractionTest {
         });
         heroInteraction.moveTo(new WorldPoint2D(324, 532));
         streamHandler.send(cast instanceOf(IOHandler)).verify();
+    }
+
+    @Test
+    public function shouldAssignHeroToViewPortTracker(): Void {
+        viewPortTracker.trackToGameObject(hero).verify();
     }
 }

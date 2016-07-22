@@ -1,11 +1,12 @@
 package gameentities;
+import world.ViewPort;
 import constants.Poses;
 import world.two.WorldPoint2D;
 import world.Bounds;
 import world.Footprint;
 import world.WorldPoint;
 import world.GameObject;
-class WizardGameObject implements GameObject {
+class BaseGameObject implements GameObject {
 
     public function new() {
     }

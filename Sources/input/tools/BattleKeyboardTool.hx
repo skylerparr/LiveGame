@@ -63,17 +63,17 @@ class BattleKeyboardTool implements KeyboardTool {
             targetLocation.x = currentLocation.x;
             targetLocation.z = currentLocation.z;
 
-            if(currentPressedKeys.exists(NORTH_KEY)) {
-                targetLocation.z -= MOVE_DISTANCE;
-            }
-            if(currentPressedKeys.exists(SOUTH_KEY)) {
-                targetLocation.z += MOVE_DISTANCE;
-            }
             if(currentPressedKeys.exists(WEST_KEY)) {
                 targetLocation.x -= MOVE_DISTANCE;
             }
             if(currentPressedKeys.exists(EAST_KEY)) {
                 targetLocation.x += MOVE_DISTANCE;
+            }
+            if(currentPressedKeys.exists(NORTH_KEY)) {
+                targetLocation.z -= MOVE_DISTANCE;
+            }
+            if(currentPressedKeys.exists(SOUTH_KEY)) {
+                targetLocation.z += MOVE_DISTANCE;
             }
 
             targetX = targetLocation.x;

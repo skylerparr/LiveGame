@@ -12,6 +12,7 @@ import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
 import gameentities.BattleUnitInteractionManagerTest;
+import gameentities.GameLoopViewPortTrackerTest;
 import gameentities.SingleHeroInteractionTest;
 import geom.RectangleTest;
 import handler.SocketStreamHandlerTest;
@@ -56,6 +57,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
 		add(gameentities.BattleUnitInteractionManagerTest);
+		add(gameentities.GameLoopViewPortTrackerTest);
 		add(gameentities.SingleHeroInteractionTest);
 		add(geom.RectangleTest);
 		add(handler.SocketStreamHandlerTest);

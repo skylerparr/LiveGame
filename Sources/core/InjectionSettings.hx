@@ -1,4 +1,6 @@
 package core;
+import gameentities.GameLoopViewPortTracker;
+import gameentities.ViewPortTracker;
 import gameentities.SingleHeroInteraction;
 import gameentities.HeroInteraction;
 import world.two.WorldPoint2D;
@@ -47,8 +49,7 @@ import error.TraceLogger;
 import error.Logger;
 import gameentities.NecroDisplay;
 import gameentities.NecroGameObject;
-import gameentities.WizardDisplay;
-import gameentities.WizardGameObject;
+import gameentities.BaseGameObject;
 import world.TypeResolvedEntityFactory;
 import units.EntityFactory;
 import world.two.GameWorld2D;
@@ -159,7 +160,11 @@ class InjectionSettings {
         injector.mapClass(Tween, TweenDelegate);
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
+        viewPort.width = 800;
+        viewPort.height = 600;
         injector.mapValue(ViewPort, viewPort);
+
+        injector.mapValue(ViewPortTracker, objectFactory.createInstance(GameLoopViewPortTracker));
 
         var heroInteraction: SingleHeroInteraction = objectFactory.createInstance(SingleHeroInteraction);
         injector.mapValue(HeroInteraction, heroInteraction);
@@ -167,7 +172,6 @@ class InjectionSettings {
         var entityFactory: TypeResolvedEntityFactory = objectFactory.createInstance(TypeResolvedEntityFactory);
         injector.mapValue(EntityFactory, entityFactory);
 
-        entityFactory.mapTypeToType(WizardGameObject, WizardDisplay);
         entityFactory.mapTypeToType(NecroGameObject, NecroDisplay);
 
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);

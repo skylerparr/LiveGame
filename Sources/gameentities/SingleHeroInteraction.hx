@@ -1,4 +1,6 @@
 package gameentities;
+import world.ViewPort;
+import util.Subscriber;
 import handler.output.UnitMoveTo;
 import handler.StreamHandler;
 import core.ObjectCreator;
@@ -10,6 +12,8 @@ class SingleHeroInteraction implements HeroInteraction {
     public var objectCreator: ObjectCreator;
     @inject
     public var streamHandler: StreamHandler;
+    @inject
+    public var viewPortTracker: ViewPortTracker;
 
     private var heroLocation: WorldPoint;
     private var unitMoveTo: UnitMoveTo;
@@ -18,6 +22,7 @@ class SingleHeroInteraction implements HeroInteraction {
     public var hero(get, set):GameObject;
 
     public function set_hero(value:GameObject) {
+        viewPortTracker.trackToGameObject(value);
         return this.hero = value;
     }
 

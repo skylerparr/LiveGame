@@ -55,12 +55,11 @@ class HeroCreatedAction implements StrategyAction {
 
         if(currentPlayer.id == unitCreated.playerId) {
             currentPlayer.units.set(unitVO.id, unitVO);
+            heroInteraction.hero = unit;
         }
 
         var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(unitCreated.posX, unitCreated.posY));
         gameWorld.addGameObject(unit, worldPoint);
-
-        heroInteraction.hero = unit;
     }
 
     public function createUnit(unitId: Int, unitType: Int): GameObject {

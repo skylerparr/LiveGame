@@ -7,7 +7,7 @@ import constants.Poses;
 import util.MathUtil;
 import world.WorldPoint;
 import animation.Animation;
-class NecroGameObject extends WizardGameObject implements WorldEntityDisplay {
+class NecroGameObject extends BaseGameObject implements WorldEntityDisplay {
 
     public var animation: Animation;
 

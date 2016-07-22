@@ -38,39 +38,39 @@ class LiveGame {
     private var framebuffer: Framebuffer;
     private var fonts: Map<String, Font>;
 
-    private var xPos: Int;
-    private var yPos: Int;
-    private var engaged: Bool;
-    private var dirty: Bool;
+//    private var xPos: Int;
+//    private var yPos: Int;
+//    private var engaged: Bool;
+//    private var dirty: Bool;
 
     private var audioChannel: AudioChannel;
 
     public function new() {
         backbuffer = Image.createRenderTarget(800, 600);
 
-        Mouse.get().notify(onDown, onUp, onMove, null);
+//        Mouse.get().notify(onDown, onUp, onMove, null);
     }
 
-    private function onDown(x:Int, y:Int, z:Int):Void {
-        if(x == 0) {
-            engaged = true;
-        }
-    }
-
-    private function onUp(x:Int, y:Int, z:Int):Void {
-        engaged = false;
-        xPos = 0;
-        yPos = 0;
-    }
-
-    private function onMove(w: Int, x:Int, y:Int, z:Int):Void {
-        if(engaged) {
-            xPos = y;
-            yPos = z;
-            dirty = true;
-        }
-    }
-
+//    private function onDown(x:Int, y:Int, z:Int):Void {
+//        if(x == 0) {
+//            engaged = true;
+//        }
+//    }
+//
+//    private function onUp(x:Int, y:Int, z:Int):Void {
+//        engaged = false;
+//        xPos = 0;
+//        yPos = 0;
+//    }
+//
+//    private function onMove(w: Int, x:Int, y:Int, z:Int):Void {
+//        if(engaged) {
+//            xPos = y;
+//            yPos = z;
+//            dirty = true;
+//        }
+//    }
+//
     public function render(framebuffer:Framebuffer):Void {
         this.framebuffer = framebuffer;
         if(initialized) {
@@ -83,7 +83,7 @@ class LiveGame {
             settings.injector.injectInto(this);
             Scheduler.addTimeTask(this.update, 0, 1 / 60);
 
-            loadMusic();
+//            loadMusic();
         });
 
     }
@@ -105,18 +105,18 @@ class LiveGame {
     public function update():Void {
         notifier.notify(EventNames.ENTER_GAME_LOOP, null);
 
-        if(engaged) {
-            viewPort.x -= xPos;
-            viewPort.y -= yPos;
+//        if(engaged) {
+//            viewPort.x -= xPos;
+//            viewPort.y -= yPos;
 
-            xPos = 0;
-            yPos = 0;
+//            xPos = 0;
+//            yPos = 0;
 
-            audioChannel.volume -= 0.0002;
-            if(audioChannel.volume <= 0) {
-                audioChannel.volume = 0;
-            }
-        }
+//            audioChannel.volume -= 0.0002;
+//            if(audioChannel.volume <= 0) {
+//                audioChannel.volume = 0;
+//            }
+//        }
 
         var g = backbuffer.g2;
         g.begin(true, Color.fromValue(0));
@@ -128,6 +128,6 @@ class LiveGame {
         Scaler.scale(backbuffer, framebuffer, System.screenRotation);
         g.end();
 
-        dirty = false;
+//        dirty = false;
     }
 }
