@@ -1,5 +1,6 @@
 package animation.spec;
 
+import geom.Point;
 import haxe.Json;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
@@ -22,7 +23,7 @@ class TexturePackerJSONArrayFrameSpecTest {
     @Test
     public function shouldExtractFramesFromJSONArray(): Void {
         var data: Dynamic = Json.parse(JSONArray.dataString);
-        texturePacker = new TexturePackerJSONArrayFrameSpec(data);
+        texturePacker = new TexturePackerJSONArrayFrameSpec(data, new Point());
 
         var frame: Frame = texturePacker.frames[0];
         Assert.areEqual(133, frame.x);
@@ -34,9 +35,21 @@ class TexturePackerJSONArrayFrameSpecTest {
     @Test
     public function shouldGetTheNumberOfFrames(): Void {
         var data: Dynamic = Json.parse(JSONArray.dataString);
-        texturePacker = new TexturePackerJSONArrayFrameSpec(data);
+        texturePacker = new TexturePackerJSONArrayFrameSpec(data, new Point());
 
         Assert.areEqual(3, texturePacker.frames.length);
+    }
+
+    @Test
+    public function shouldApplyOffsetToEachFrame(): Void {
+        var data: Dynamic = Json.parse(JSONArray.dataString);
+        texturePacker = new TexturePackerJSONArrayFrameSpec(data, new Point(20, 32));
+
+        var frame: Frame = texturePacker.frames[0];
+        Assert.areEqual(153, frame.x);
+        Assert.areEqual(33, frame.y);
+        Assert.areEqual(64, frame.width);
+        Assert.areEqual(61, frame.height);
     }
 }
 

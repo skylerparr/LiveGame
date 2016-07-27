@@ -1,5 +1,6 @@
 package animation;
 
+import geom.Point;
 import display.two.kha.KhaBitmapNode;
 import display.BitmapNode;
 import animation.spec.TexturePackerJSONArrayFrameSpec;
@@ -32,7 +33,7 @@ class SpriteAnimationTest {
                 rotated: false
             }
         ]};
-        frames = new TexturePackerJSONArrayFrameSpec(frameData);
+        frames = new TexturePackerJSONArrayFrameSpec(frameData, new Point());
         bitmap = mock(KhaBitmapNode);
         animation = new SpriteAnimation();
         animation.init();

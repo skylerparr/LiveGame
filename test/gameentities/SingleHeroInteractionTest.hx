@@ -1,5 +1,8 @@
 package gameentities;
 
+import vo.MutableSpellVO;
+import vo.SpellVO;
+import handler.output.UnitCastSpell;
 import mocks.MockViewPort;
 import util.MappedSubscriber;
 import world.ViewPort;
@@ -31,6 +34,7 @@ class SingleHeroInteractionTest {
         objectCreator = mock(ObjectCreator);
         objectCreator.createInstance(WorldPoint).returns(new WorldPoint2D());
         objectCreator.createInstance(UnitMoveTo).returns(new UnitMoveTo());
+        objectCreator.createInstance(UnitCastSpell).returns(new UnitCastSpell());
         streamHandler = mock(MockStreamHandler);
 
         heroInteraction = new SingleHeroInteraction();
@@ -75,5 +79,43 @@ class SingleHeroInteractionTest {
     @Test
     public function shouldAssignHeroToViewPortTracker(): Void {
         viewPortTracker.trackToGameObject(hero).verify();
+    }
+
+    @Test
+    public function shouldSendCastSpellOnTargetUnitToStreamHandler(): Void {
+        streamHandler.send(cast any).calls(function(args): Void {
+            var castSpell: UnitCastSpell = cast args[0];
+            Assert.areEqual(42, castSpell.unitId);
+            Assert.areEqual(100, castSpell.spellId);
+            Assert.areEqual(140, castSpell.targetUnitId);
+            Assert.areEqual(0, castSpell.targetPosX);
+            Assert.areEqual(0, castSpell.targetPosZ);
+        });
+
+        var spell: SpellVO = mock(MutableSpellVO);
+        spell.id.returns(100);
+        var target: MockGameObject = mock(MockGameObject);
+        target.get_id().returns("140");
+        heroInteraction.castSpell(target, null, spell);
+
+        streamHandler.send(cast instanceOf(IOHandler)).verify();
+    }
+
+    @Test
+    public function shouldSendCastSpellOnTargetLocationToStreamHandler(): Void {
+        streamHandler.send(cast any).calls(function(args): Void {
+            var castSpell: UnitCastSpell = cast args[0];
+            Assert.areEqual(42, castSpell.unitId);
+            Assert.areEqual(100, castSpell.spellId);
+            Assert.areEqual(0, castSpell.targetUnitId);
+            Assert.areEqual(324, castSpell.targetPosX);
+            Assert.areEqual(532, castSpell.targetPosZ);
+        });
+
+        var spell: SpellVO = mock(MutableSpellVO);
+        spell.id.returns(100);
+        heroInteraction.castSpell(null, new WorldPoint2D(324, 532), spell);
+
+        streamHandler.send(cast instanceOf(IOHandler)).verify();
     }
 }

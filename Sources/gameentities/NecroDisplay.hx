@@ -1,4 +1,5 @@
 package gameentities;
+import geom.Point;
 import assets.ImageAsset;
 import assets.AssetLocator;
 import constants.Poses;
@@ -61,9 +62,9 @@ class NecroDisplay extends KhaSprite {
         asset = @await assetLocator.getAssetByName("necro_special");
         imagePoses.set(Poses.SPECIAL, asset.data);
 
-        directionPoseMap.set(Poses.IDLE, @await createFrames("_necro_idle"));
-        directionPoseMap.set(Poses.RUN, @await createFrames("_necro_run"));
-        directionPoseMap.set(Poses.SPECIAL, @await createFrames("_necro_special"));
+        directionPoseMap.set(Poses.IDLE, @await createFrames("_necro_idle", new Point()));
+        directionPoseMap.set(Poses.RUN, @await createFrames("_necro_run", new Point()));
+        directionPoseMap.set(Poses.SPECIAL, @await createFrames("_necro_special", new Point()));
 
         var idle: Array<TexturePackerJSONArrayFrameSpec> = directionPoseMap.get(Poses.IDLE);
         totalDirections = idle.length;
@@ -79,10 +80,6 @@ class NecroDisplay extends KhaSprite {
         animationController = objectCreator.createInstance(AnimationController);
         animationController.animation = animation;
         animationController.start();
-
-        var firstFrame: Frame = currentPoseFrames[0].frames[0];
-        bitmap.x = firstFrame.width * -0.5;
-        bitmap.y = firstFrame.height * -0.5;
     }
 
     public function setDirection(index: Int): Void {
@@ -95,10 +92,14 @@ class NecroDisplay extends KhaSprite {
         bitmap.imageData = imagePoses.get(currentPose);
         currentPoseFrames = directionPoseMap.get(currentPose);
         setDirection(currentDirection);
+
+        var firstFrame: Frame = currentPoseFrames[0].frames[0];
+        bitmap.x = firstFrame.width * -0.5;
+        bitmap.y = -firstFrame.height;
     }
 
     @:async
-    private inline function createFrames(key:String):Array<TexturePackerJSONArrayFrameSpec> {
+    private inline function createFrames(key:String, offset: Point):Array<TexturePackerJSONArrayFrameSpec> {
         var retVal: Array<TexturePackerJSONArrayFrameSpec> = [];
         var poseIndex: String = "";
         for(i in 0...15) {
@@ -107,7 +108,7 @@ class NecroDisplay extends KhaSprite {
                 poseIndex = "0" + poseIndex;
             }
             var jsonString = @await assetLocator.getDataAssetByName("_" + poseIndex + key + "_json");
-            var pose = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString)]);
+            var pose = objectCreator.createInstance(TexturePackerJSONArrayFrameSpec,[Json.parse(cast jsonString), offset]);
             retVal.push(pose);
         }
         return retVal;

@@ -1,13 +1,11 @@
 package gameentities;
-import constants.Poses;
+import world.WorldPoint;
+import handler.output.UnitCastSpell;
 import vo.SpellVO;
-import world.ViewPort;
-import util.Subscriber;
 import handler.output.UnitMoveTo;
 import handler.StreamHandler;
 import core.ObjectCreator;
 import world.GameObject;
-import world.WorldPoint;
 class SingleHeroInteraction implements HeroInteraction {
 
     @inject
@@ -19,6 +17,7 @@ class SingleHeroInteraction implements HeroInteraction {
 
     private var heroLocation: WorldPoint;
     private var unitMoveTo: UnitMoveTo;
+    private var unitCastSpell: UnitCastSpell;
 
     @:isVar
     public var hero(get, set):GameObject;
@@ -38,6 +37,7 @@ class SingleHeroInteraction implements HeroInteraction {
     public function init():Void {
         heroLocation = objectCreator.createInstance(WorldPoint);
         unitMoveTo = objectCreator.createInstance(UnitMoveTo);
+        unitCastSpell = objectCreator.createInstance(UnitCastSpell);
     }
 
     public function dispose():Void {
@@ -59,8 +59,16 @@ class SingleHeroInteraction implements HeroInteraction {
         streamHandler.send(unitMoveTo);
     }
 
-    public function castSpell(spell:SpellVO):Void {
-        hero.pose = Poses.SPECIAL;
+    public function castSpell(targetUnit: GameObject, targetLocation: WorldPoint, spell:SpellVO):Void {
+        unitCastSpell.unitId = Std.parseInt(hero.id);
+        unitCastSpell.spellId = spell.id;
+        if(targetUnit != null) {
+            unitCastSpell.targetUnitId = Std.parseInt(targetUnit.id);
+        } else if(targetLocation != null) {
+            unitCastSpell.targetPosX = Std.int(targetLocation.x);
+            unitCastSpell.targetPosZ = Std.int(targetLocation.z);
+        }
+        streamHandler.send(unitCastSpell);
     }
 
 }

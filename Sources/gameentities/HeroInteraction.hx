@@ -7,5 +7,5 @@ interface HeroInteraction extends BaseObject {
     var hero(get, set): GameObject;
     function getCurrentLocation(): WorldPoint;
     function moveTo(worldPoint: WorldPoint): Void;
-    function castSpell(spell: SpellVO): Void;
+    function castSpell(targetUnit: GameObject, targetLocation: WorldPoint, spell:SpellVO): Void;
 }
