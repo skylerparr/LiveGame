@@ -276,6 +276,15 @@ class BattleKeyboardToolTest {
         heroInteraction.moveTo(cast isNotNull).verify(2);
     }
 
+    @Test
+    public function shouldNotNotifyHeroInteractionMoveIfKeyPressedIsNotAMoveKey(): Void {
+        sendKeyDownEvent("\\");
+        mockHeroLocation(100, 100);
+        runGameLoop(1);
+
+        heroInteraction.moveTo(cast isNotNull).verify(0);
+    }
+
     @IgnoreCover
     private inline function mockHeroLocation(x:Float, z:Float):Void {
         var worldPoint: WorldPoint2D = new WorldPoint2D(x, z);

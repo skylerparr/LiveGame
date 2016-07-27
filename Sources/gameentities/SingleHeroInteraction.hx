@@ -1,4 +1,6 @@
 package gameentities;
+import constants.Poses;
+import vo.SpellVO;
 import world.ViewPort;
 import util.Subscriber;
 import handler.output.UnitMoveTo;
@@ -56,4 +58,9 @@ class SingleHeroInteraction implements HeroInteraction {
         unitMoveTo.posZ = Std.int(worldPoint.z);
         streamHandler.send(unitMoveTo);
     }
+
+    public function castSpell(spell:SpellVO):Void {
+        hero.pose = Poses.SPECIAL;
+    }
+
 }

@@ -58,9 +58,12 @@ class NecroDisplay extends KhaSprite {
         imagePoses.set(Poses.IDLE, asset.data);
         asset = @await assetLocator.getAssetByName("necro_run");
         imagePoses.set(Poses.RUN, asset.data);
+        asset = @await assetLocator.getAssetByName("necro_special");
+        imagePoses.set(Poses.SPECIAL, asset.data);
 
         directionPoseMap.set(Poses.IDLE, @await createFrames("_necro_idle"));
         directionPoseMap.set(Poses.RUN, @await createFrames("_necro_run"));
+        directionPoseMap.set(Poses.SPECIAL, @await createFrames("_necro_special"));
 
         var idle: Array<TexturePackerJSONArrayFrameSpec> = directionPoseMap.get(Poses.IDLE);
         totalDirections = idle.length;

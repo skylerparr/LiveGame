@@ -1,4 +1,6 @@
 package scenes.playground;
+import vo.MutableUnitVO;
+import world.GameObject;
 import world.WorldPoint;
 import geom.Point;
 import motion.easing.Bounce;
@@ -54,6 +56,7 @@ class Playground implements BaseObject {
     private var targetLocation: WorldPoint = new WorldPoint2D();
     private var playerConnected: Bool = false;
     private var currentPlayer: PlayerVO;
+    private var unit: GameObject;
 
     public function new() {
     }
@@ -86,6 +89,9 @@ class Playground implements BaseObject {
 
     private function onDown(button:Int, x:Int, y:Int):Void {
         if(button == 0 && !playerConnected) {
+//            unit.pose = Poses.SPECIAL;
+//            var wp: WorldPoint = gameWorld.screenToWorld(new Point(x, y));
+//            unit.lookAt = wp;
             streamHandler.end();
             streamHandler.start();
         } else if(button == 1 && !playerConnected) {
@@ -139,6 +145,27 @@ class Playground implements BaseObject {
 
         var tween: Tween = objectCreator.createInstance(Tween);
         tween.to(hello, 3000, {x: 500, y: 500}).delay(2000);
+//
+//        unit = createUnit(1, 1);
+//
+//        var unitVO: MutableUnitVO = objectCreator.createInstance(MutableUnitVO);
+//        unitVO.id = 1;
+//        unitVO.unitType = 1;
+//
+//        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(100, 100));
+//        gameWorld.addGameObject(unit, worldPoint);
     }
+
+    public function createUnit(unitId: Int, unitType: Int): GameObject {
+        #if !test
+        var unit: NecroGameObject = objectCreator.createInstance(NecroGameObject);
+        unit.id = unitId + "";
+
+        return unit;
+        #else
+        return null;
+        #end
+    }
+
 
 }

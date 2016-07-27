@@ -48,6 +48,9 @@ class SpriteAnimation implements Animation {
 
     private inline function goToFirstFrame():Void {
         if(bitmap != null && frames != null) {
+            if(currentFrame >= maxFrames()) {
+                currentFrame = 0;
+            }
             goToFrame();
         }
     }
@@ -65,7 +68,7 @@ class SpriteAnimation implements Animation {
     }
 
     public function nextFrame():Void {
-        if(currentFrame == maxFrames()) {
+        if(currentFrame >= maxFrames()) {
             currentFrame = 0;
         } else {
             ++currentFrame;
@@ -97,9 +100,11 @@ class SpriteAnimation implements Animation {
     private inline function goToFrame() {
         var frame: Frame = frames[currentFrame];
 
-        bitmap.sx = frame.x;
-        bitmap.sy = frame.y;
-        bitmap.sw = frame.width;
-        bitmap.sh = frame.height;
+        if(frame != null) {
+            bitmap.sx = frame.x;
+            bitmap.sy = frame.y;
+            bitmap.sw = frame.width;
+            bitmap.sh = frame.height;
+        }
     }
 }

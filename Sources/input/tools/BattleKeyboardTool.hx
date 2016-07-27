@@ -1,4 +1,5 @@
 package input.tools;
+import vo.MutableSpellVO;
 import util.Subscriber;
 import world.two.WorldPoint2D;
 import world.WorldPoint;
@@ -46,13 +47,48 @@ class BattleKeyboardTool implements KeyboardTool {
     }
 
     private function onUpdate():Void {
+        handleUnitMove();
+
+        if(currentPressedKeys.exists("1")) {
+            heroInteraction.castSpell(new MutableSpellVO());
+        }
+
+        if(!keysPressed()) {
+            subscribed = false;
+            subscriber.unsubscribe(EventNames.ENTER_GAME_LOOP, onUpdate);
+        }
+    }
+
+    public function onKeyDown(keyEvent:KeyEvent):Void {
+        var key: String = keyEvent.key;
+        currentPressedKeys.set(keyEvent.key, keyEvent);
+        targetChosen = true;
+        if(moveKeyPressed()) {
+            resetTargetChosen(key);
+        }
+
+        if(!subscribed) {
+            subscribed = true;
+            subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onUpdate);
+        }
+    }
+
+    public function onKeyUp(keyEvent:KeyEvent):Void {
+        var key: String = keyEvent.key;
+        if(isMoveKey(key)) {
+            resetTargetChosen(key);
+        }
+        currentPressedKeys.remove(key);
+    }
+
+    private inline function handleUnitMove(): Void {
         var currentLocation: WorldPoint = heroInteraction.getCurrentLocation();
         if(currentLocation == null) {
             return;
         }
 
-        if(currentLocation.x + VARIATION >= targetX && currentLocation.x - VARIATION <= targetX &&
-                currentLocation.z + VARIATION >= targetZ && currentLocation.z - VARIATION <= targetZ) {
+        if(moveKeyPressed() && currentLocation.x + VARIATION >= targetX && currentLocation.x - VARIATION <= targetX &&
+        currentLocation.z + VARIATION >= targetZ && currentLocation.z - VARIATION <= targetZ) {
             targetChosen = false;
         }
         if(!targetChosen) {
@@ -81,28 +117,28 @@ class BattleKeyboardTool implements KeyboardTool {
 
             heroInteraction.moveTo(targetLocation);
         }
-
-        if(!keysPressed()) {
-            subscribed = false;
-            subscriber.unsubscribe(EventNames.ENTER_GAME_LOOP, onUpdate);
-        }
     }
 
-    public function onKeyDown(keyEvent:KeyEvent):Void {
-        var key: String = keyEvent.key;
-        currentPressedKeys.set(keyEvent.key, keyEvent);
-        resetTargetChosen(key);
-
-        if(!subscribed) {
-            subscribed = true;
-            subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onUpdate);
-        }
+    private inline function moveKeyPressed(): Bool {
+        return currentPressedKeys.exists(WEST_KEY) ||
+            currentPressedKeys.exists(EAST_KEY) ||
+            currentPressedKeys.exists(NORTH_KEY) ||
+            currentPressedKeys.exists(SOUTH_KEY);
     }
 
-    public function onKeyUp(keyEvent:KeyEvent):Void {
-        var key: String = keyEvent.key;
-        currentPressedKeys.remove(key);
-        resetTargetChosen(key);
+    private inline function isMoveKey(key: String): Bool {
+        var retVal: Bool = false;
+        switch key {
+            case SOUTH_KEY:
+                retVal = true;
+            case NORTH_KEY:
+                retVal = true;
+            case WEST_KEY:
+                retVal = true;
+            case EAST_KEY:
+                retVal = true;
+        }
+        return retVal;
     }
 
     private inline function resetTargetChosen(key: String): Void {

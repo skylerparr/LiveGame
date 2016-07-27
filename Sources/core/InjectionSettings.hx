@@ -151,6 +151,7 @@ class InjectionSettings {
         var animationManager: animation.ThreadedAnimationManager = objectFactory.createInstance(animation.ThreadedAnimationManager);
         #else
         var animationManager: SubscribedAnimationManager = objectFactory.createInstance(SubscribedAnimationManager);
+        animationManager.eventName = EventNames.ENTER_GAME_LOOP;
         #end
         injector.mapValue(AnimationManager, animationManager);
 
