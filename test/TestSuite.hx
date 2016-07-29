@@ -15,6 +15,8 @@ import gameentities.BattleUnitInteractionManagerTest;
 import gameentities.GameLoopViewPortTrackerTest;
 import gameentities.SingleHeroInteractionTest;
 import geom.RectangleTest;
+import handler.actions.UnitCastedSpellActionTest;
+import handler.actions.UnitCastingSpellActionTest;
 import handler.SocketStreamHandlerTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
@@ -60,6 +62,8 @@ class TestSuite extends massive.munit.TestSuite
 		add(gameentities.GameLoopViewPortTrackerTest);
 		add(gameentities.SingleHeroInteractionTest);
 		add(geom.RectangleTest);
+		add(handler.actions.UnitCastedSpellActionTest);
+		add(handler.actions.UnitCastingSpellActionTest);
 		add(handler.SocketStreamHandlerTest);
 		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);

@@ -21,4 +21,6 @@ interface GameObject extends WorldEntity {
      * gets,sets the pose of the entity
      */
     var pose(get, set): Poses;
+
+    var busy(get, set): Bool;
 }

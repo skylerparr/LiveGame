@@ -53,6 +53,9 @@ class SingleHeroInteraction implements HeroInteraction {
     }
 
     public function moveTo(worldPoint:WorldPoint):Void {
+        if(hero.busy) {
+            return;
+        }
         unitMoveTo.unitId = Std.parseInt(hero.id);
         unitMoveTo.posX = Std.int(worldPoint.x);
         unitMoveTo.posZ = Std.int(worldPoint.z);
@@ -60,6 +63,9 @@ class SingleHeroInteraction implements HeroInteraction {
     }
 
     public function castSpell(targetUnit: GameObject, targetLocation: WorldPoint, spell:SpellVO):Void {
+        if(hero.busy) {
+            return;
+        }
         unitCastSpell.unitId = Std.parseInt(hero.id);
         unitCastSpell.spellId = spell.id;
         if(targetUnit != null) {

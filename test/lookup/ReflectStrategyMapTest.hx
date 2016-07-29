@@ -1,5 +1,13 @@
 package lookup;
 
+import handler.StrategyAction;
+import handler.IOHandler;
+import handler.input.UnitCastedSpell;
+import handler.actions.UnitCastedSpellAction;
+import handler.input.UnitCastingSpell;
+import handler.actions.UnitCastingSpellAction;
+import handler.input.HeroCreated;
+import handler.actions.HeroCreatedAction;
 import world.GameObject;
 import haxe.ds.ObjectMap;
 import handler.actions.UnitMoveAction;
@@ -40,32 +48,32 @@ class ReflectStrategyMapTest {
 
     @Test
     public function shouldGetPlayerConnectedAction(): Void {
-        expectedAction = mock(PlayerConnectedAction);
-        objectCreator.createInstance(PlayerConnectedAction).returns(expectedAction);
-        strategyMap.init();
-
-        var action: StrategyAction = strategyMap.locate(new PlayerConnected());
-        Assert.areEqual(expectedAction, action);
+        validateAction(PlayerConnectedAction, PlayerConnected);
     }
 
     @Test
     public function shouldGetUnitCreatedAction(): Void {
-        expectedAction = mock(UnitCreatedAction);
-        objectCreator.createInstance(UnitCreatedAction).returns(expectedAction);
-        strategyMap.init();
-
-        var action: StrategyAction = strategyMap.locate(new UnitCreated());
-        Assert.areEqual(expectedAction, action);
+        validateAction(UnitCreatedAction, UnitCreated);
     }
 
     @Test
-    public function shouldGetUnitMoveConnectedAction(): Void {
-        expectedAction = mock(UnitMoveAction);
-        objectCreator.createInstance(UnitMoveAction).returns(expectedAction);
-        strategyMap.init();
+    public function shouldGetUnitMoveAction(): Void {
+        validateAction(UnitMoveAction, UnitMove);
+    }
 
-        var action: StrategyAction = strategyMap.locate(new UnitMove());
-        Assert.areEqual(expectedAction, action);
+    @Test
+    public function shouldGetHeroCreatedAction(): Void {
+        validateAction(HeroCreatedAction, HeroCreated);
+    }
+
+    @Test
+    public function shouldGetUnitCastingSpellAction(): Void {
+        validateAction(UnitCastingSpellAction, UnitCastingSpell);
+    }
+
+    @Test
+    public function shouldGetUnitCastedSpellAction(): Void {
+        validateAction(UnitCastedSpellAction, UnitCastedSpell);
     }
 
     @Test
@@ -74,5 +82,15 @@ class ReflectStrategyMapTest {
 
         var action: StrategyAction = strategyMap.locate(new PlayerConnect());
         Assert.isNull(action);
+    }
+
+    @IgnoreCover
+    private function validateAction(action:Class<StrategyAction>, handler: Class<IOHandler>):Void {
+        expectedAction = Type.createInstance(action, []);
+        objectCreator.createInstance(action).returns(expectedAction);
+        strategyMap.init();
+
+        var action: StrategyAction = strategyMap.locate(Type.createInstance(handler, []));
+        Assert.areEqual(expectedAction, action);
     }
 }

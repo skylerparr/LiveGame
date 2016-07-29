@@ -1,4 +1,6 @@
 package lookup;
+import handler.input.UnitCastedSpell;
+import handler.input.UnitCastingSpell;
 import handler.input.HeroCreated;
 import handler.input.UnitMove;
 import handler.input.UnitCreated;
@@ -21,6 +23,8 @@ class MapHandlerLookup implements HandlerLookup {
         map.set(IOCommands.HERO_CREATED, new HeroCreated());
         map.set(IOCommands.UNIT_CREATED, new UnitCreated());
         map.set(IOCommands.UNIT_MOVE, new UnitMove());
+        map.set(IOCommands.UNIT_CASTING_SPELL, new UnitCastingSpell());
+        map.set(IOCommands.UNIT_CASTED_SPELL, new UnitCastedSpell());
     }
 
     public function dispose():Void {

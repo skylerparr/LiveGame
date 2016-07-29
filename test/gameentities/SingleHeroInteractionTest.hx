@@ -77,6 +77,13 @@ class SingleHeroInteractionTest {
     }
 
     @Test
+    public function shouldNotPassUnitMoveToStreamHandlerIfBusy(): Void {
+        hero.busy.returns(true);
+        heroInteraction.moveTo(new WorldPoint2D(324, 532));
+        streamHandler.send(cast instanceOf(IOHandler)).verify(0);
+    }
+
+    @Test
     public function shouldAssignHeroToViewPortTracker(): Void {
         viewPortTracker.trackToGameObject(hero).verify();
     }
@@ -92,7 +99,7 @@ class SingleHeroInteractionTest {
             Assert.areEqual(0, castSpell.targetPosZ);
         });
 
-        var spell: SpellVO = mock(MutableSpellVO);
+        var spell: MutableSpellVO = mock(MutableSpellVO);
         spell.id.returns(100);
         var target: MockGameObject = mock(MockGameObject);
         target.get_id().returns("140");
@@ -112,10 +119,20 @@ class SingleHeroInteractionTest {
             Assert.areEqual(532, castSpell.targetPosZ);
         });
 
-        var spell: SpellVO = mock(MutableSpellVO);
+        var spell: MutableSpellVO = mock(MutableSpellVO);
         spell.id.returns(100);
         heroInteraction.castSpell(null, new WorldPoint2D(324, 532), spell);
 
         streamHandler.send(cast instanceOf(IOHandler)).verify();
+    }
+
+    @Test
+    public function shouldNotSendCastSpellIfUnitIsBusy(): Void {
+        var spell: MutableSpellVO = mock(MutableSpellVO);
+        spell.id.returns(100);
+        hero.busy.returns(true);
+        heroInteraction.castSpell(null, new WorldPoint2D(324, 532), spell);
+
+        streamHandler.send(cast any).verify(0);
     }
 }

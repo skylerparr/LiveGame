@@ -1,4 +1,6 @@
 package gameentities;
+import vo.SpellVO;
+import vo.SpellVO;
 import animation.tween.TweenTarget;
 import world.GameObject;
 import world.WorldPoint;
@@ -9,4 +11,7 @@ interface UnitInteractionManager extends BaseObject {
      */
     function translateGameObjectTo(entity: GameObject, worldPoint: WorldPoint, time: UInt): Void;
 
+    function startCastingSpell(spell: SpellVO, gameObject: GameObject, worldPoint: WorldPoint): Void;
+
+    function spellCasted(spell: SpellVO, gameObject: GameObject, worldPoint: WorldPoint, targetGameObject: GameObject): Void;
 }

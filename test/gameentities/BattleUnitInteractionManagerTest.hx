@@ -1,5 +1,6 @@
 package gameentities;
 
+import vo.MutableSpellVO;
 import world.WorldPoint;
 import constants.Poses;
 import mocks.MockTweenTarget;
@@ -194,6 +195,42 @@ class BattleUnitInteractionManagerTest {
         Assert.isNull(interactionManager.gameWorld);
         Assert.isNull(interactionManager.objectCreator);
         Assert.isNull(interactionManager.objectTweenMap);
+    }
+
+    @Test
+    public function shouldSetPoseOnGameObjectToSpecialOnCastingSpell(): Void {
+        var spell: MutableSpellVO = new MutableSpellVO();
+        interactionManager.startCastingSpell(spell, gameObject, new WorldPoint2D());
+        gameObject.set_pose(Poses.SPECIAL).verify();
+        gameObject.set_busy(true).verify();
+    }
+
+    @Test
+    public function shouldSetPoseOnGameObjectToIdleAfterCastingSpell(): Void {
+        var spell: MutableSpellVO = new MutableSpellVO();
+        interactionManager.spellCasted(spell, gameObject, new WorldPoint2D(), null);
+        gameObject.set_pose(Poses.IDLE).verify();
+        gameObject.set_busy(false).verify();
+    }
+
+    @Test
+    public function shouldNotSetPoseToIdleIfUnitIsBusy(): Void {
+        gameObject.get_busy().returns(true);
+        tweenTarget.reset();
+        tween.to(cast any, 100, cast any).returns(tweenTarget);
+
+        tweenTarget.onUpdate(cast any).returns(tweenTarget);
+        tweenTarget.onComplete(cast any).calls(assignCompleteFunction);
+
+        gameObject.get_x().returns(321);
+        gameObject.get_z().returns(23);
+
+        wp.x = 23;
+        wp.z = 47;
+        interactionManager.translateGameObjectTo(gameObject, wp, 100);
+
+        callOnComplete();
+        gameObject.set_pose(Poses.IDLE).verify(0);
     }
 
     @IgnoreCover

@@ -1,7 +1,7 @@
 package handler.input;
 import io.InputOutputStream;
 import constants.ByteValues;
-class UnitCastedSpell implements IOHandler {
+class UnitCastingSpell implements IOHandler {
     public var cmdId(get, null):UInt;
 
     public var totalBytes(get, null):UInt;
@@ -13,7 +13,6 @@ class UnitCastedSpell implements IOHandler {
     public var spellId: Int;
     public var posX: Int;
     public var posZ: Int;
-    public var targetUnitId: Int;
 
     function get_cmdId():UInt {
         return IOCommands.UNIT_CASTING_SPELL;
@@ -21,7 +20,6 @@ class UnitCastedSpell implements IOHandler {
 
     function get_totalBytes():UInt {
         return ByteValues.INT +
-        ByteValues.INT +
         ByteValues.INT +
         ByteValues.INT +
         ByteValues.INT;
@@ -32,7 +30,6 @@ class UnitCastedSpell implements IOHandler {
         spellId = stream.readInt();
         posX = stream.readInt();
         posZ = stream.readInt();
-        targetUnitId = stream.readInt();
     }
 
     public function write(stream:InputOutputStream):Void {

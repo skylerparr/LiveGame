@@ -1,4 +1,6 @@
 package core;
+import service.StaticSpellService;
+import service.SpellService;
 import gameentities.GameLoopViewPortTracker;
 import gameentities.ViewPortTracker;
 import gameentities.SingleHeroInteraction;
@@ -189,6 +191,8 @@ class InjectionSettings {
 
         var playerService: PlayerService = objectFactory.createInstance(ConnectedPlayerService);
         injector.mapValue(PlayerService, playerService);
+
+        injector.mapValue(SpellService, objectFactory.createInstance(StaticSpellService));
 
         injector.mapSingletonOf(TCPSocket, CPPTCPSocket);
         var socketIOStream: CPPSocketInputOutputStream = objectFactory.createInstance(CPPSocketInputOutputStream);

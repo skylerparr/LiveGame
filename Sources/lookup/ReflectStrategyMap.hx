@@ -1,4 +1,8 @@
 package lookup;
+import handler.actions.UnitCastedSpellAction;
+import handler.input.UnitCastedSpell;
+import handler.actions.UnitCastingSpellAction;
+import handler.input.UnitCastingSpell;
 import handler.actions.HeroCreatedAction;
 import handler.input.HeroCreated;
 import handler.input.UnitCreated;
@@ -28,6 +32,8 @@ class ReflectStrategyMap implements StrategyMap {
         handlerMap.set(UnitCreated, objectCreator.createInstance(UnitCreatedAction));
         handlerMap.set(HeroCreated, objectCreator.createInstance(HeroCreatedAction));
         handlerMap.set(UnitMove, objectCreator.createInstance(UnitMoveAction));
+        handlerMap.set(UnitCastingSpell, objectCreator.createInstance(UnitCastingSpellAction));
+        handlerMap.set(UnitCastedSpell, objectCreator.createInstance(UnitCastedSpellAction));
     }
 
     public function dispose():Void {

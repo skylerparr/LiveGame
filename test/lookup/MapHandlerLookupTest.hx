@@ -1,5 +1,9 @@
 package lookup;
 
+import handler.input.UnitCastedSpell;
+import handler.input.UnitCastingSpell;
+import handler.input.HeroCreated;
+import handler.IOCommands;
 import handler.input.UnitMove;
 import handler.input.UnitCreated;
 import mocks.MockInputOutputStream;
@@ -31,29 +35,32 @@ class MapHandlerLookupTest {
 
     @Test
     public function shouldLookupPlayerConnectedFromLookup(): Void {
-        stream.bytesAvailable.returns(1);
-        stream.readUnsignedByte().returns(1);
-        var handler: IOHandler = lookup.getHandler(stream);
-
-        Assert.areEqual(PlayerConnected, Type.getClass(handler));
+        validateHandler(IOCommands.PLAYER_CONNECTED, PlayerConnected);
     }
 
     @Test
     public function shouldLookupUnitCreatedFromLookup(): Void {
-        stream.bytesAvailable.returns(1);
-        stream.readUnsignedByte().returns(2);
-        var handler: IOHandler = lookup.getHandler(stream);
-
-        Assert.areEqual(UnitCreated, Type.getClass(handler));
+        validateHandler(IOCommands.UNIT_CREATED, UnitCreated);
     }
 
     @Test
     public function shouldLookupUnitMoveFromLookup(): Void {
-        stream.bytesAvailable.returns(1);
-        stream.readUnsignedByte().returns(3);
-        var handler: IOHandler = lookup.getHandler(stream);
+        validateHandler(IOCommands.UNIT_MOVE, UnitMove);
+    }
 
-        Assert.areEqual(UnitMove, Type.getClass(handler));
+    @Test
+    public function shouldLookupHeroCreatedFromLookup(): Void {
+        validateHandler(IOCommands.HERO_CREATED, HeroCreated);
+    }
+
+    @Test
+    public function shouldLookupUnitCastingSpellFromLookup(): Void {
+        validateHandler(IOCommands.UNIT_CASTING_SPELL, UnitCastingSpell);
+    }
+
+    @Test
+    public function shouldLookupUnitCastedSpellFromLookup(): Void {
+        validateHandler(IOCommands.UNIT_CASTED_SPELL, UnitCastedSpell);
     }
 
     @Test
@@ -69,5 +76,14 @@ class MapHandlerLookupTest {
         lookup.dispose();
 
         Assert.isNull(lookup.map);
+    }
+
+    @IgnoreCover
+    private function validateHandler(id:Int, handlerClass:Class<IOHandler>):Void {
+        stream.bytesAvailable.returns(1);
+        stream.readUnsignedByte().returns(id);
+        var handler: IOHandler = lookup.getHandler(stream);
+
+        Assert.areEqual(handlerClass, Type.getClass(handler));
     }
 }

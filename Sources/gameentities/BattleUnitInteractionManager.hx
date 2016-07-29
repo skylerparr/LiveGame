@@ -1,4 +1,6 @@
 package gameentities;
+import vo.SpellVO;
+import vo.SpellVO;
 import world.WorldPoint;
 import animation.tween.TweenTarget;
 import constants.Poses;
@@ -46,7 +48,9 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
                 gameWorld.moveItemTo(unit, startingPoint);
             })
             .onComplete(function(t: Tween): Void {
-                unit.pose = Poses.IDLE;
+                if(!unit.busy) {
+                    unit.pose = Poses.IDLE;
+                }
                 killOldTween(unit);
                 objectCreator.disposeInstance(startingPoint);
                 objectCreator.disposeInstance(lookAtPoint);
@@ -69,4 +73,15 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
         retVal.z = z;
         return retVal;
     }
+
+    public function startCastingSpell(spell:SpellVO, gameObject:GameObject, worldPoint:WorldPoint):Void {
+        gameObject.pose = Poses.SPECIAL;
+        gameObject.busy = true;
+    }
+
+    public function spellCasted(spell:SpellVO, gameObject:GameObject, worldPoint:WorldPoint, targetGameObject:GameObject):Void {
+        gameObject.pose = Poses.IDLE;
+        gameObject.busy = false;
+    }
+
 }

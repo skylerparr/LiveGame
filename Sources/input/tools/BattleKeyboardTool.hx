@@ -49,9 +49,9 @@ class BattleKeyboardTool implements KeyboardTool {
     private function onUpdate():Void {
         handleUnitMove();
 
-//        if(currentPressedKeys.exists("1")) {
-//            heroInteraction.castSpell(new MutableSpellVO());
-//        }
+        if(currentPressedKeys.exists("1")) {
+            heroInteraction.castSpell(null, null, new MutableSpellVO());
+        }
 
         if(!keysPressed()) {
             subscribed = false;

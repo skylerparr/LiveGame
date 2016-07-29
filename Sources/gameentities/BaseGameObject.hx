@@ -54,6 +54,9 @@ class BaseGameObject implements GameObject {
     @:isVar
     public var pose(get, set):Poses;
 
+    @:isVar
+    public var busy(get, set):Bool;
+
     public function get_visible():Bool {
         return visible;
     }
@@ -123,6 +126,14 @@ class BaseGameObject implements GameObject {
 
     public function set_category(value:String) {
         return this.category = value;
+    }
+
+    public function set_busy(value:Bool): Bool {
+        return this.busy = value;
+    }
+
+    public function get_busy():Bool {
+        return busy;
     }
 
     public function get_x():Float {
