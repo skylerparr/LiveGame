@@ -75,13 +75,17 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
     }
 
     public function startCastingSpell(spell:SpellVO, gameObject:GameObject, worldPoint:WorldPoint):Void {
-        gameObject.pose = Poses.SPECIAL;
-        gameObject.busy = true;
+        if(gameObject != null) {
+            gameObject.pose = Poses.SPECIAL;
+            gameObject.busy = true;
+        }
     }
 
     public function spellCasted(spell:SpellVO, gameObject:GameObject, worldPoint:WorldPoint, targetGameObject:GameObject):Void {
-        gameObject.pose = Poses.IDLE;
-        gameObject.busy = false;
+        if(gameObject != null) {
+            gameObject.pose = Poses.IDLE;
+            gameObject.busy = false;
+        }
     }
 
 }

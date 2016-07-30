@@ -22,7 +22,8 @@ class StaticUnitFactory implements UnitFactory {
             {pose: Poses.SPECIAL, assetName: "necro_special", numberOfDirections: 16}
         ]);
         mapping.set("2", [
-            {pose: Poses.IDLE, assetName: "zombie_idle", numberOfDirections: 8}
+            {pose: Poses.IDLE, assetName: "zombie_idle", numberOfDirections: 8},
+            {pose: Poses.RUN, assetName: "zombie_run", numberOfDirections: 8}
         ]);
     }
 

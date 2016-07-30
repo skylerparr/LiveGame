@@ -53,6 +53,7 @@ class BattleKeyboardTool implements KeyboardTool {
             var spell: MutableSpellVO = new MutableSpellVO();
             spell.id = 1;
             heroInteraction.castSpell(null, null, spell);
+            currentPressedKeys.remove("!");
         }
 
         if(!keysPressed()) {
