@@ -11,6 +11,7 @@ import core.ObjectFactoryTest;
 import display.layer.RenderableLayerManagerTest;
 import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
+import gameentities.AnimatedPoseDisplayTest;
 import gameentities.BattleUnitInteractionManagerTest;
 import gameentities.GameLoopViewPortTrackerTest;
 import gameentities.SingleHeroInteractionTest;
@@ -58,6 +59,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.layer.RenderableLayerManagerTest);
 		add(display.two.kha.Kha2DRendererTest);
 		add(display.two.TwoDimDisplayNodeContainerTest);
+		add(gameentities.AnimatedPoseDisplayTest);
 		add(gameentities.BattleUnitInteractionManagerTest);
 		add(gameentities.GameLoopViewPortTrackerTest);
 		add(gameentities.SingleHeroInteractionTest);

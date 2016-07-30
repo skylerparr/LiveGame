@@ -7,7 +7,6 @@ import assets.ImageAsset;
 import animation.AnimationController;
 import animation.spec.TexturePackerJSONArrayFrameSpec;
 import display.BitmapNode;
-import kha.Image;
 import constants.Poses;
 import animation.Animation;
 import core.ObjectCreator;
@@ -33,7 +32,7 @@ class AnimatedPoseDisplay extends KhaSprite {
         return totalDirections;
     }
 
-    private var imagePoses: Map<Poses, Image>;
+    private var imagePoses: Map<Poses, Dynamic>;
     private var bitmap: BitmapNode;
 
     private var directionPoseMap: Map<Poses, Array<TexturePackerJSONArrayFrameSpec>>;
@@ -50,7 +49,7 @@ class AnimatedPoseDisplay extends KhaSprite {
     override public function init():Void {
         super.init();
         directionPoseMap = new Map<Poses, Array<TexturePackerJSONArrayFrameSpec>>();
-        imagePoses = new Map<Poses, Image>();
+        imagePoses = new Map<Poses, Dynamic>();
 
     }
 

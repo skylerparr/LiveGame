@@ -1,15 +1,12 @@
 package gameentities.fx;
 import animation.AnimationWithEvents;
-import animation.AnimationWithEvents;
 import constants.LayerNames;
 import display.DisplayNodeContainer;
 import constants.Poses;
-import display.two.kha.KhaBitmapNode;
 import world.WorldPoint;
 import geom.Point;
 import assets.AssetLocator;
 import core.ObjectCreator;
-import core.BaseObject;
 import display.LayerManager;
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
 class UnitSpawnFX implements SpecialEffect {
