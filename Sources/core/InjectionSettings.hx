@@ -1,4 +1,7 @@
 package core;
+import gameentities.StaticUnitFactory;
+import gameentities.UnitFactory;
+import world.UnitTypeEntityFactory;
 import service.StaticSpellService;
 import service.SpellService;
 import gameentities.GameLoopViewPortTracker;
@@ -21,7 +24,6 @@ import gameentities.BattleUnitInteractionManager;
 import gameentities.UnitInteractionManager;
 import animation.tween.TweenDelegate;
 import animation.tween.Tween;
-import animation.tween.SimpleTween;
 import animation.tween.MultiTweenController;
 import animation.tween.TweenController;
 import service.ConnectedPlayerService;
@@ -49,10 +51,6 @@ import assets.kha.KhaAssetsAssetLoader;
 import assets.AssetLoader;
 import error.TraceLogger;
 import error.Logger;
-import gameentities.NecroDisplay;
-import gameentities.NecroGameObject;
-import gameentities.BaseGameObject;
-import world.TypeResolvedEntityFactory;
 import units.EntityFactory;
 import world.two.GameWorld2D;
 import world.GameWorld;
@@ -172,10 +170,8 @@ class InjectionSettings {
         var heroInteraction: SingleHeroInteraction = objectFactory.createInstance(SingleHeroInteraction);
         injector.mapValue(HeroInteraction, heroInteraction);
 
-        var entityFactory: TypeResolvedEntityFactory = objectFactory.createInstance(TypeResolvedEntityFactory);
-        injector.mapValue(EntityFactory, entityFactory);
-
-        entityFactory.mapTypeToType(NecroGameObject, NecroDisplay);
+        injector.mapValue(UnitFactory, objectFactory.createInstance(StaticUnitFactory));
+        injector.mapValue(EntityFactory, objectFactory.createInstance(UnitTypeEntityFactory));
 
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
         injector.mapValue(GameWorld, gameWorld);

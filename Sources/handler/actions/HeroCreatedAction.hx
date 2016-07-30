@@ -14,8 +14,7 @@ import handler.input.PlayerConnected;
 import vo.PlayerVO;
 import vo.MutablePlayerVO;
 #if !test
-import gameentities.NecroDisplay;
-import gameentities.NecroGameObject;
+import gameentities.InteractiveGameObject;
 #end
 class HeroCreatedAction implements StrategyAction {
 
@@ -64,8 +63,9 @@ class HeroCreatedAction implements StrategyAction {
 
     public function createUnit(unitId: Int, unitType: Int): GameObject {
         #if !test
-        var unit: NecroGameObject = objectCreator.createInstance(NecroGameObject);
+        var unit: InteractiveGameObject = objectCreator.createInstance(InteractiveGameObject);
         unit.id = unitId + "";
+        unit.type = unitType + "";
 
         return unit;
         #else

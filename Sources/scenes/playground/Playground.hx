@@ -15,7 +15,7 @@ import handler.output.PlayerConnect;
 import handler.StreamHandler;
 import input.kha.KhaKeyboardInputSourceListener;
 import constants.Poses;
-import gameentities.NecroGameObject;
+import gameentities.InteractiveGameObject;
 import world.two.WorldPoint2D;
 import constants.EventNames;
 import util.Subscriber;
@@ -50,7 +50,7 @@ class Playground implements BaseObject {
     @inject
     public var playerService: PlayerService;
 
-    private var lastUnit: NecroGameObject;
+    private var lastUnit: InteractiveGameObject;
     private var rise: Float = 0;
     private var run: Float = 0;
     private var targetLocation: WorldPoint = new WorldPoint2D();
@@ -158,7 +158,7 @@ class Playground implements BaseObject {
 
     public function createUnit(unitId: Int, unitType: Int): GameObject {
         #if !test
-        var unit: NecroGameObject = objectCreator.createInstance(NecroGameObject);
+        var unit: InteractiveGameObject = objectCreator.createInstance(InteractiveGameObject);
         unit.id = unitId + "";
 
         return unit;

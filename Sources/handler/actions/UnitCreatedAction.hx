@@ -7,8 +7,7 @@ import handler.input.UnitCreated;
 import world.GameWorld;
 import core.ObjectCreator;
 #if !test
-import gameentities.NecroDisplay;
-import gameentities.NecroGameObject;
+import gameentities.InteractiveGameObject;
 #end
 import geom.Point;
 import world.WorldPoint;
@@ -57,7 +56,7 @@ class UnitCreatedAction implements StrategyAction {
 
     public function createUnit(unitId: Int, unitType: Int): GameObject {
         #if !test
-        var unit: NecroGameObject = objectCreator.createInstance(NecroGameObject);
+        var unit: InteractiveGameObject = objectCreator.createInstance(InteractiveGameObject);
         unit.id = unitId + "";
 
         return unit;

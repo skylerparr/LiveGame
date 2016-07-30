@@ -49,8 +49,10 @@ class BattleKeyboardTool implements KeyboardTool {
     private function onUpdate():Void {
         handleUnitMove();
 
-        if(currentPressedKeys.exists("1")) {
-            heroInteraction.castSpell(null, null, new MutableSpellVO());
+        if(currentPressedKeys.exists("!")) {
+            var spell: MutableSpellVO = new MutableSpellVO();
+            spell.id = 1;
+            heroInteraction.castSpell(null, null, spell);
         }
 
         if(!keysPressed()) {
@@ -60,8 +62,8 @@ class BattleKeyboardTool implements KeyboardTool {
     }
 
     public function onKeyDown(keyEvent:KeyEvent):Void {
-        var key: String = keyEvent.key;
-        currentPressedKeys.set(keyEvent.key, keyEvent);
+        var key: String = keyEvent.key.toLowerCase();
+        currentPressedKeys.set(key, keyEvent);
         targetChosen = true;
         if(moveKeyPressed()) {
             resetTargetChosen(key);
@@ -74,7 +76,7 @@ class BattleKeyboardTool implements KeyboardTool {
     }
 
     public function onKeyUp(keyEvent:KeyEvent):Void {
-        var key: String = keyEvent.key;
+        var key: String = keyEvent.key.toLowerCase();
         if(isMoveKey(key)) {
             resetTargetChosen(key);
         }

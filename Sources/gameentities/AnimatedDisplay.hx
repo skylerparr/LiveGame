@@ -1,20 +1,22 @@
 package gameentities;
+import haxe.Json;
+import animation.Frame;
 import geom.Point;
 import assets.ImageAsset;
-import assets.AssetLocator;
-import constants.Poses;
-import animation.Frame;
-import display.two.kha.KhaSprite;
-import core.ObjectCreator;
-import kha.Image;
-import display.BitmapNode;
-import kha.Assets;
-import animation.spec.TexturePackerJSONArrayFrameSpec;
-import haxe.Json;
-import animation.Animation;
 import animation.AnimationController;
+import animation.spec.TexturePackerJSONArrayFrameSpec;
+import display.BitmapNode;
+import kha.Image;
+import constants.Poses;
+import animation.Animation;
+import core.ObjectCreator;
+import assets.AssetLocator;
+import display.two.kha.KhaSprite;
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
-class NecroDisplay extends KhaSprite {
+class AnimatedDisplay extends KhaSprite {
+
+    private static var point: Point = new Point();
+
     @inject
     public var objectCreator: ObjectCreator;
     @inject
@@ -38,6 +40,7 @@ class NecroDisplay extends KhaSprite {
     private var currentDirection: Int;
 
     private var animationController: AnimationController;
+    private var mapping: Array<AnimationPoseMapping>;
 
     public function new() {
         super();
@@ -48,6 +51,10 @@ class NecroDisplay extends KhaSprite {
         directionPoseMap = new Map<Poses, Array<TexturePackerJSONArrayFrameSpec>>();
         imagePoses = new Map<Poses, Image>();
 
+    }
+
+    public function generateAnimations(mapping: Array<AnimationPoseMapping>): Void {
+        this.mapping = mapping;
         createDisplay(function(): Void {
 
         });
@@ -55,16 +62,11 @@ class NecroDisplay extends KhaSprite {
 
     @:async
     private function createDisplay():Void {
-        var asset: ImageAsset = @await assetLocator.getAssetByName("necro_idle");
-        imagePoses.set(Poses.IDLE, asset.data);
-        asset = @await assetLocator.getAssetByName("necro_run");
-        imagePoses.set(Poses.RUN, asset.data);
-        asset = @await assetLocator.getAssetByName("necro_special");
-        imagePoses.set(Poses.SPECIAL, asset.data);
-
-        directionPoseMap.set(Poses.IDLE, @await createFrames("_necro_idle", new Point()));
-        directionPoseMap.set(Poses.RUN, @await createFrames("_necro_run", new Point()));
-        directionPoseMap.set(Poses.SPECIAL, @await createFrames("_necro_special", new Point()));
+        for(map in mapping) {
+            var asset: ImageAsset = @await assetLocator.getAssetByName(map.assetName);
+            imagePoses.set(map.pose, asset.data);
+            directionPoseMap.set(map.pose, @await createFrames("_" + map.assetName, map.numberOfDirections, point));
+        }
 
         var idle: Array<TexturePackerJSONArrayFrameSpec> = directionPoseMap.get(Poses.IDLE);
         totalDirections = idle.length;
@@ -99,10 +101,10 @@ class NecroDisplay extends KhaSprite {
     }
 
     @:async
-    private inline function createFrames(key:String, offset: Point):Array<TexturePackerJSONArrayFrameSpec> {
+    private inline function createFrames(key:String, numberOfDirections: Int, offset: Point):Array<TexturePackerJSONArrayFrameSpec> {
         var retVal: Array<TexturePackerJSONArrayFrameSpec> = [];
         var poseIndex: String = "";
-        for(i in 0...15) {
+        for(i in 0...numberOfDirections - 1) {
             poseIndex = i + "";
             if(i < 10) {
                 poseIndex = "0" + poseIndex;

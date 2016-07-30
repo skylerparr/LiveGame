@@ -40,6 +40,7 @@ class UnitCastedSpellAction implements StrategyAction {
         var spell: SpellVO = @await spellService.getSpellById(unitCastedSpell.spellId);
         var gameObject: GameObject = cast gameWorld.getGameObjectById(unitCastedSpell.unitId + "");
         if(gameObject == null) {
+            trace("game object not found for " + unitCastedSpell.unitId);
             return;
         }
         var worldPoint: WorldPoint = objectCreator.createInstance(WorldPoint);
