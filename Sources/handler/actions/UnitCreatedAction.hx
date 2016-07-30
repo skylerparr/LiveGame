@@ -50,7 +50,9 @@ class UnitCreatedAction implements StrategyAction {
             currentPlayer.units.set(unitVO.id, unitVO);
         }
 
-        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(unitCreated.posX, unitCreated.posY));
+        var worldPoint: WorldPoint = objectCreator.createInstance(WorldPoint);
+        worldPoint.x = unitCreated.posX;
+        worldPoint.z = unitCreated.posZ;
         gameWorld.addGameObject(unit, worldPoint);
     }
 
@@ -58,6 +60,7 @@ class UnitCreatedAction implements StrategyAction {
         #if !test
         var unit: InteractiveGameObject = objectCreator.createInstance(InteractiveGameObject);
         unit.id = unitId + "";
+        unit.type = unitType + "";
 
         return unit;
         #else

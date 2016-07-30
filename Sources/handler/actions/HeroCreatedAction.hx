@@ -57,7 +57,7 @@ class HeroCreatedAction implements StrategyAction {
             heroInteraction.hero = unit;
         }
 
-        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(unitCreated.posX, unitCreated.posY));
+        var worldPoint: WorldPoint = gameWorld.screenToWorld(new Point(unitCreated.posX, unitCreated.posZ));
         gameWorld.addGameObject(unit, worldPoint);
     }
 

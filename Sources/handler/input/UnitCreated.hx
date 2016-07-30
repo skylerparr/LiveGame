@@ -10,7 +10,7 @@ class UnitCreated implements IOHandler {
     public var unitId: Int;
     public var unitType: Int;
     public var posX: Int;
-    public var posY: Int;
+    public var posZ: Int;
 
     public function new() {
     }
@@ -33,7 +33,7 @@ class UnitCreated implements IOHandler {
         unitId = stream.readInt();
         unitType = stream.readInt();
         posX = stream.readInt();
-        posY = stream.readInt();
+        posZ = stream.readInt();
     }
 
     public function write(stream:InputOutputStream):Void {
