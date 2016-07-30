@@ -1,6 +1,5 @@
 package gameentities;
-//import gameentities.fx.UnitSpawnFX;
-import gameentities.fx.UnitSpawnFX;
+import gameentities.fx.SpecialEffect;
 import gameentities.fx.EffectManager;
 import vo.SpellVO;
 import world.WorldPoint;
@@ -22,19 +21,21 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
 
     public var objectTweenMap: Map<GameObject, Tween>;
 
-    private var spawnUnitEffectKey: String;
+    public var specialEffectMap: Map<GameObject, String>;
 
     public function new() {
     }
 
     public function init():Void {
         objectTweenMap = new Map<GameObject, Tween>();
+        specialEffectMap = new Map<GameObject, String>();
     }
 
     public function dispose():Void {
         gameWorld = null;
         objectCreator = null;
         objectTweenMap = null;
+        specialEffectMap = null;
     }
 
     public function translateGameObjectTo(gameObject:GameObject, targetPoint:WorldPoint, time:UInt):Void {
@@ -84,7 +85,8 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
         if(gameObject != null) {
             gameObject.pose = Poses.SPECIAL;
             gameObject.busy = true;
-            spawnUnitEffectKey = effectManager.spawnEffect(UnitSpawnFX, worldPoint);
+            var fxKey: String = effectManager.spawnEffect(getSpawnFX(), worldPoint);
+            specialEffectMap.set(gameObject, fxKey);
         }
     }
 
@@ -92,9 +94,18 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
         if(gameObject != null) {
             gameObject.pose = Poses.IDLE;
             gameObject.busy = false;
-            effectManager.endEffect(spawnUnitEffectKey);
-            spawnUnitEffectKey = null;
+            var fxKey: String = specialEffectMap.get(gameObject);
+            effectManager.endEffect(fxKey);
+            specialEffectMap.remove(gameObject);
         }
+    }
+
+    private inline function getSpawnFX(): Class<SpecialEffect> {
+        #if test
+        return SpecialEffect;
+        #else
+        return gameentities.fx.UnitSpawnFX;
+        #end
     }
 
 }

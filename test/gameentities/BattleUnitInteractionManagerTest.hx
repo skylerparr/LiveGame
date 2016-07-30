@@ -1,5 +1,6 @@
 package gameentities;
 
+import gameentities.fx.EffectManager;
 import vo.MutableSpellVO;
 import world.WorldPoint;
 import constants.Poses;
@@ -22,6 +23,7 @@ class BattleUnitInteractionManagerTest {
     private var interactionManager: BattleUnitInteractionManager;
     private var objectCreator: ObjectCreator;
     private var gameWorld: GameWorld;
+    private var effectManager: EffectManager;
     private var wp: WorldPoint2D;
     private var tween:Tween;
     private var tweenTarget:MockTweenTarget;
@@ -33,6 +35,7 @@ class BattleUnitInteractionManagerTest {
     public function setup():Void {
         objectCreator = mock(ObjectCreator);
         gameWorld = mock(MockGameWorld);
+        effectManager = mock(EffectManager);
         wp = new WorldPoint2D();
         tween = mock(Tween);
         tweenTarget = mock(MockTweenTarget);
@@ -50,6 +53,7 @@ class BattleUnitInteractionManagerTest {
         interactionManager = new BattleUnitInteractionManager();
         interactionManager.gameWorld = gameWorld;
         interactionManager.objectCreator = objectCreator;
+        interactionManager.effectManager = effectManager;
         interactionManager.init();
     }
 
@@ -195,6 +199,7 @@ class BattleUnitInteractionManagerTest {
         Assert.isNull(interactionManager.gameWorld);
         Assert.isNull(interactionManager.objectCreator);
         Assert.isNull(interactionManager.objectTweenMap);
+        Assert.isNull(interactionManager.specialEffectMap);
     }
 
     @Test
@@ -231,6 +236,48 @@ class BattleUnitInteractionManagerTest {
 
         callOnComplete();
         gameObject.set_pose(Poses.IDLE).verify(0);
+    }
+
+    @Test
+    public function shouldShowUnitSpawnEffect(): Void {
+        var spell: MutableSpellVO = new MutableSpellVO();
+        var worldPoint: WorldPoint = new WorldPoint2D();
+        interactionManager.startCastingSpell(spell, gameObject, worldPoint);
+
+        effectManager.spawnEffect(cast isNotNull, worldPoint).verify();
+    }
+
+    @Test
+    public function shouldEndSpawnEffectOnSpellCasted(): Void {
+        var spell: MutableSpellVO = new MutableSpellVO();
+        var worldPoint: WorldPoint = new WorldPoint2D();
+        effectManager.spawnEffect(cast isNotNull, worldPoint).returns("234");
+        interactionManager.startCastingSpell(spell, gameObject, worldPoint);
+        interactionManager.spellCasted(spell, gameObject, worldPoint, null);
+
+        effectManager.endEffect("234").verify();
+    }
+
+    @Test
+    public function shouldEndSpawnEffectAssociatedWithGameObject(): Void {
+        var spell: MutableSpellVO = new MutableSpellVO();
+        var worldPoint: WorldPoint = new WorldPoint2D();
+        effectManager.spawnEffect(cast isNotNull, worldPoint).returns("234");
+        interactionManager.startCastingSpell(spell, gameObject, worldPoint);
+
+        effectManager.reset();
+        effectManager.spawnEffect(cast isNotNull, worldPoint).returns("456");
+        var gameObject2: MockGameObject = mock(MockGameObject);
+        interactionManager.startCastingSpell(spell, gameObject2, worldPoint);
+
+        interactionManager.spellCasted(spell, gameObject2, worldPoint, null);
+        effectManager.endEffect("456").verify();
+
+        interactionManager.spellCasted(spell, gameObject, worldPoint, null);
+        effectManager.endEffect("234").verify();
+
+        Assert.isFalse(interactionManager.specialEffectMap.exists(gameObject));
+        Assert.isFalse(interactionManager.specialEffectMap.exists(gameObject2));
     }
 
     @IgnoreCover
