@@ -1,4 +1,8 @@
 package core;
+import gameentities.fx.MappedEffectManager;
+import gameentities.fx.EffectManager;
+import animation.SpriteAnimationWithEvents;
+import animation.AnimationWithEvents;
 import gameentities.StaticUnitFactory;
 import gameentities.UnitFactory;
 import world.UnitTypeEntityFactory;
@@ -86,9 +90,9 @@ class InjectionSettings {
     public var injector: Injector = new Injector();
 
     public function new(backbuffer: Image, fonts: Map<String, Font>) {
-        ObjectPoolObjectCreator.injector = injector;
+        ObjectFactory.injector = injector;
 
-        var objectFactory: ObjectPoolObjectCreator = new ObjectPoolObjectCreator();
+        var objectFactory: ObjectFactory = new ObjectFactory();
         injector.mapValue(ObjectCreator, objectFactory);
         injector.mapValue(kha.graphics2.Graphics, backbuffer.g2);
 
@@ -112,6 +116,8 @@ class InjectionSettings {
         injector.mapClass(DisplayNodeContainer, KhaSprite);
         injector.mapClass(TextFieldNode, KhaTextFieldNode);
         injector.mapClass(Animation, SpriteAnimation);
+        injector.mapClass(AnimationWithEvents, SpriteAnimationWithEvents);
+        injector.mapValue(EffectManager, objectFactory.createInstance(MappedEffectManager));
 
         var viewPortContainer: DisplayNodeContainer = objectFactory.createInstance(DisplayNodeContainer);
         var gameWorldLayerManager: RenderableLayerManager = objectFactory.createInstance(RenderableLayerManager, [viewPortContainer]);
@@ -121,6 +127,9 @@ class InjectionSettings {
 
         container = objectFactory.createInstance(DisplayNodeContainer);
         gameWorldLayerManager.addLayerByName(LayerNames.GAME_OBJECTS, container);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
+        gameWorldLayerManager.addLayerByName(LayerNames.FX, container);
 
         layerManager.addLayerByName(LayerNames.GAME_WORLD, viewPortContainer);
 

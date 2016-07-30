@@ -1,4 +1,5 @@
 package gameentities;
+import animation.AnimationWithEvents;
 import haxe.Json;
 import animation.Frame;
 import geom.Point;
@@ -13,7 +14,7 @@ import core.ObjectCreator;
 import assets.AssetLocator;
 import display.two.kha.KhaSprite;
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
-class AnimatedDisplay extends KhaSprite {
+class AnimatedPoseDisplay extends KhaSprite {
 
     private static var point: Point = new Point();
 
@@ -22,7 +23,8 @@ class AnimatedDisplay extends KhaSprite {
     @inject
     public var assetLocator: AssetLocator;
 
-    public var animation: Animation;
+    public var animation: AnimationWithEvents;
+    public var animationController: AnimationController;
 
     @:isVar
     public var totalDirections(get, null): Int;
@@ -39,7 +41,6 @@ class AnimatedDisplay extends KhaSprite {
     private var currentPose: Poses;
     private var currentDirection: Int;
 
-    private var animationController: AnimationController;
     private var mapping: Array<AnimationPoseMapping>;
 
     public function new() {
@@ -71,7 +72,7 @@ class AnimatedDisplay extends KhaSprite {
         var idle: Array<TexturePackerJSONArrayFrameSpec> = directionPoseMap.get(Poses.IDLE);
         totalDirections = idle.length;
 
-        animation = objectCreator.createInstance(Animation);
+        animation = objectCreator.createInstance(AnimationWithEvents);
         animation.frameTime = 70;
 
         bitmap = objectCreator.createInstance(BitmapNode);
@@ -104,7 +105,7 @@ class AnimatedDisplay extends KhaSprite {
     private inline function createFrames(key:String, numberOfDirections: Int, offset: Point):Array<TexturePackerJSONArrayFrameSpec> {
         var retVal: Array<TexturePackerJSONArrayFrameSpec> = [];
         var poseIndex: String = "";
-        for(i in 0...numberOfDirections - 1) {
+        for(i in 0...numberOfDirections) {
             poseIndex = i + "";
             if(i < 10) {
                 poseIndex = "0" + poseIndex;

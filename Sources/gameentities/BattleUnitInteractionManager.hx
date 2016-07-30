@@ -1,5 +1,7 @@
 package gameentities;
-import vo.SpellVO;
+//import gameentities.fx.UnitSpawnFX;
+import gameentities.fx.UnitSpawnFX;
+import gameentities.fx.EffectManager;
 import vo.SpellVO;
 import world.WorldPoint;
 import animation.tween.TweenTarget;
@@ -15,8 +17,12 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
     public var gameWorld: GameWorld;
     @inject
     public var objectCreator: ObjectCreator;
+    @inject
+    public var effectManager: EffectManager;
 
     public var objectTweenMap: Map<GameObject, Tween>;
+
+    private var spawnUnitEffectKey: String;
 
     public function new() {
     }
@@ -78,6 +84,7 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
         if(gameObject != null) {
             gameObject.pose = Poses.SPECIAL;
             gameObject.busy = true;
+            spawnUnitEffectKey = effectManager.spawnEffect(UnitSpawnFX, worldPoint);
         }
     }
 
@@ -85,6 +92,8 @@ class BattleUnitInteractionManager implements UnitInteractionManager {
         if(gameObject != null) {
             gameObject.pose = Poses.IDLE;
             gameObject.busy = false;
+            effectManager.endEffect(spawnUnitEffectKey);
+            spawnUnitEffectKey = null;
         }
     }
 

@@ -22,7 +22,7 @@ class InteractiveGameObject extends BaseGameObject implements WorldEntityDisplay
         return thisDisplay;
     }
 
-    private var thisDisplay: AnimatedDisplay;
+    private var thisDisplay: AnimatedPoseDisplay;
 
     public function new() {
         super();

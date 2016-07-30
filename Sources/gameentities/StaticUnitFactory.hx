@@ -1,5 +1,5 @@
 package gameentities;
-import gameentities.AnimatedDisplay;
+import gameentities.AnimatedPoseDisplay;
 import core.ObjectCreator;
 import constants.Poses;
 import world.GameObject;
@@ -31,8 +31,8 @@ class StaticUnitFactory implements UnitFactory {
         mapping = null;
     }
 
-    public function createUnitDisplayByUnitTypeId(unitType:String):AnimatedDisplay {
-        var animatedDisplay: AnimatedDisplay = objectCreator.createInstance(AnimatedDisplay);
+    public function createUnitDisplayByUnitTypeId(unitType:String):AnimatedPoseDisplay {
+        var animatedDisplay: AnimatedPoseDisplay = objectCreator.createInstance(AnimatedPoseDisplay);
         animatedDisplay.generateAnimations(mapping.get(unitType));
         return animatedDisplay;
     }
