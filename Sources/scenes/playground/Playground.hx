@@ -73,21 +73,6 @@ class Playground implements BaseObject {
         });
     }
 
-    private inline function invert(value: Float): Float {
-        if(value < 0) {
-            value = -value;
-        }
-        return value;
-    }
-
-    private inline function between(_run: Float, _rise: Float):Bool {
-        return (lastUnit.x >= targetLocation.x - _run) &&
-            (lastUnit.x <= targetLocation.x + _run) &&
-            (lastUnit.z >= targetLocation.z - _rise) &&
-            (lastUnit.z <= targetLocation.z + _rise);
-
-    }
-
     private function onConnected(stream: InputOutputStream): Void {
         var playerConnect = new PlayerConnect();
         playerConnect.playerId = playerService.uniqueId;
