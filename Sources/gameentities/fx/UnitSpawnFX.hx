@@ -30,6 +30,15 @@ class UnitSpawnFX implements SpecialEffect {
     }
 
     public function dispose():Void {
+        disposeAnimation();
+        animatedPoseDisplay.animation.unsubscribeOnComplete(onIdleComplete);
+        animatedPoseDisplay.animation.unsubscribeOnComplete(onDieComplete);
+
+        container = null;
+        animatedPoseDisplay = null;
+        layerManager = null;
+        objectCreator = null;
+        assetLocator = null;
     }
 
     public function begin(worldPoint: WorldPoint):Void {
@@ -48,6 +57,7 @@ class UnitSpawnFX implements SpecialEffect {
     }
 
     private function onIdleComplete(animation: AnimationWithEvents):Void {
+        animatedPoseDisplay.animation.unsubscribeOnComplete(onIdleComplete);
         animatedPoseDisplay.setPose(Poses.RUN);
     }
 
@@ -66,9 +76,19 @@ class UnitSpawnFX implements SpecialEffect {
     }
 
     private function onDieComplete(animation:AnimationWithEvents):Void {
-        container.removeChild(animatedPoseDisplay);
         animatedPoseDisplay.animation.unsubscribeOnComplete(onDieComplete);
-        objectCreator.disposeInstance(animatedPoseDisplay);
+    }
+
+    private inline function disposeAnimation():Void {
+        if(container != null) {
+            container.removeChild(animatedPoseDisplay);
+        }
+        if(animatedPoseDisplay != null) {
+            animatedPoseDisplay.animation.unsubscribeOnComplete(onDieComplete);
+        }
+        if(objectCreator != null) {
+            objectCreator.disposeInstance(animatedPoseDisplay);
+        }
     }
 
 }

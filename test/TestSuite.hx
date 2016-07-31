@@ -13,6 +13,7 @@ import display.two.kha.Kha2DRendererTest;
 import display.two.TwoDimDisplayNodeContainerTest;
 import gameentities.AnimatedPoseDisplayTest;
 import gameentities.BattleUnitInteractionManagerTest;
+import gameentities.fx.MappedEffectManagerTest;
 import gameentities.GameLoopViewPortTrackerTest;
 import gameentities.SingleHeroInteractionTest;
 import geom.RectangleTest;
@@ -61,6 +62,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(display.two.TwoDimDisplayNodeContainerTest);
 		add(gameentities.AnimatedPoseDisplayTest);
 		add(gameentities.BattleUnitInteractionManagerTest);
+		add(gameentities.fx.MappedEffectManagerTest);
 		add(gameentities.GameLoopViewPortTrackerTest);
 		add(gameentities.SingleHeroInteractionTest);
 		add(geom.RectangleTest);

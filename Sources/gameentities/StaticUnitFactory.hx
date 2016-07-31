@@ -29,6 +29,7 @@ class StaticUnitFactory implements UnitFactory {
 
     public function dispose():Void {
         mapping = null;
+        objectCreator = null;
     }
 
     public function createUnitDisplayByUnitTypeId(unitType:String):AnimatedPoseDisplay {

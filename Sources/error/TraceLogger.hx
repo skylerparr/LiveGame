@@ -4,22 +4,22 @@ class TraceLogger implements Logger {
     }
 
     public function logDebug(msg:Dynamic):Void {
-        trace("[DEBUG] " + msg);
+        Console.debug("[DEBUG] " + msg);
     }
 
     public function logInfo(msg:Dynamic):Void {
-        trace("[INFO] " +msg);
+        Console.log("[INFO] " + msg);
     }
 
     public function logWarning(msg:Dynamic):Void {
-        trace("[WARN] " +msg);
+        Console.warn("[WARN] " + msg);
     }
 
     public function logError(msg:Dynamic):Void {
-        trace("[ERROR] " +msg);
+        Console.error("[ERROR] " + msg);
     }
 
     public function logFatal(msg:Dynamic):Void {
-        trace("[FATAL] " +msg);
+        Console.error("[FATAL] " + msg);
     }
 }

@@ -50,7 +50,6 @@ class AnimatedPoseDisplay extends KhaSprite {
         super.init();
         directionPoseMap = new Map<Poses, Array<TexturePackerJSONArrayFrameSpec>>();
         imagePoses = new Map<Poses, Dynamic>();
-
     }
 
     public function generateAnimations(mapping: Array<AnimationPoseMapping>): Void {

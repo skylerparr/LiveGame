@@ -1,5 +1,6 @@
 package handler;
 
+import util.MappedSubscriber;
 import error.Logger;
 import handler.SocketStreamHandlerTest.StrategyActionHandler;
 import util.MappedSubscriber;
@@ -19,6 +20,7 @@ using mockatoo.Mockatoo;
 class SocketStreamHandlerTest {
 
     private var streamHandler: SocketStreamHandler;
+    private var objectCreator: ObjectCreator;
     private var connector: TCPSocketConnector;
     private var applicationSettings: ApplicationSettings;
     private var handlerLookup: HandlerLookup;
@@ -34,8 +36,13 @@ class SocketStreamHandlerTest {
         connector = mock(TCPSocketConnector);
         applicationSettings = mock(ApplicationSettings);
         strategyMap = mock(StrategyMap);
+        objectCreator = mock(ObjectCreator);
         logger = mock(Logger);
 
+        var subscriber: MappedSubscriber = new MappedSubscriber();
+        subscriber.init();
+
+        objectCreator.createInstance(MappedSubscriber).returns(subscriber);
         applicationSettings.getSetting(SettingKeys.SOCKET_HOST).returns("localhost");
         applicationSettings.getSetting(SettingKeys.SOCKET_PORT).returns(1337);
 
@@ -44,6 +51,7 @@ class SocketStreamHandlerTest {
         streamHandler.settings = applicationSettings;
         streamHandler.handlerLookup = handlerLookup;
         streamHandler.strategyMap = strategyMap;
+        streamHandler.objectCreator = objectCreator;
         streamHandler.logger = logger;
         streamHandler.init();
     }
@@ -174,9 +182,7 @@ class SocketStreamHandlerTest {
     public function shouldSubscribeToConnected(): Void {
         var connectedCallback: InputOutputStream->Void = null;
         connector.subscribeToConnected(cast any).calls(function(args): Void {
-            if(connectedCallback == null) {
-                connectedCallback = args[0];
-            }
+            connectedCallback = args[0];
         });
         streamHandler.subscribeToConnected(onConnected);
         streamHandler.start();
@@ -190,12 +196,7 @@ class SocketStreamHandlerTest {
     public function shouldUnSubscribeToConnected(): Void {
         var connectedCallback: InputOutputStream->Void = null;
         connector.subscribeToConnected(cast any).calls(function(args): Void {
-            if(connectedCallback == null) {
-                connectedCallback = args[0];
-            }
-        });
-        connector.unsubscribeToConnected(cast any).calls(function(args): Void {
-            connectedCallback = null;
+            connectedCallback = args[0];
         });
         streamHandler.subscribeToConnected(onConnected);
         streamHandler.start();
@@ -204,16 +205,14 @@ class SocketStreamHandlerTest {
         streamHandler.unsubscribeToConnected(onConnected);
         streamHandler.start();
 
-        Assert.isNull(connectedCallback);
+        Assert.areEqual(1, cbCount);
     }
 
     @Test
     public function shouldSubscribeToClose(): Void {
         var closedCb: InputOutputStream->Void = null;
         connector.subscribeToClosed(cast any).calls(function(args): Void {
-            if(closedCb == null) {
-                closedCb = args[0];
-            }
+            closedCb = args[0];
         });
         streamHandler.subscribeToClose(onConnected);
         streamHandler.start();
@@ -228,12 +227,7 @@ class SocketStreamHandlerTest {
     public function shouldUnsubscribeToClose(): Void {
         var closedCb: InputOutputStream->Void = null;
         connector.subscribeToClosed(cast any).calls(function(args): Void {
-            if(closedCb == null) {
-                closedCb = args[0];
-            }
-        });
-        connector.unsubscribeToClosed(cast any).calls(function(args): Void {
-            closedCb = null;
+            closedCb = args[0];
         });
         streamHandler.subscribeToClose(onConnected);
         streamHandler.start();
@@ -242,16 +236,14 @@ class SocketStreamHandlerTest {
         streamHandler.unsubscribeToClose(onConnected);
         streamHandler.start();
 
-        Assert.isNull(closedCb);
+        Assert.areEqual(1, cbCount);
     }
 
     @Test
     public function shouldSendDataAction(): Void {
         var connectedCallback: InputOutputStream->Void = null;
         connector.subscribeToConnected(cast any).calls(function(args): Void {
-            if(connectedCallback == null) {
-                connectedCallback = args[0];
-            }
+            connectedCallback = args[0];
         });
         streamHandler.start();
         connectedCallback(stream);

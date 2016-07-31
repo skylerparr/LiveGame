@@ -38,8 +38,18 @@ class UnitCreatedAction implements StrategyAction {
     }
 
     public function execute(handler:IOHandler):Void {
-        logger.logDebug("unit created");
         var unitCreated: UnitCreated = cast handler;
+
+        if(unitCreated.unitType > 2) {
+            trace("cmd id " + unitCreated.cmdId);
+            trace("player id " + unitCreated.playerId);
+            trace("unit id " + unitCreated.unitId);
+            trace("unit type " + unitCreated.unitType);
+            trace("pos x " + unitCreated.posX);
+            trace("pos z " + unitCreated.posZ);
+            Console.assert(unitCreated.unitType < 3, "unit type does not exist");
+        }
+        trace("unitCreated " + unitCreated.unitId);
         var unit: GameObject = createUnit(unitCreated.unitId, unitCreated.unitType);
 
         var unitVO: MutableUnitVO = objectCreator.createInstance(MutableUnitVO);

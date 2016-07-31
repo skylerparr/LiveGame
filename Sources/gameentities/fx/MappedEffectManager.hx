@@ -4,12 +4,12 @@ import gameentities.fx.SpecialEffect;
 import core.ObjectCreator;
 class MappedEffectManager implements EffectManager {
 
-    private var effectInc: UInt = 0;
+    private var effectInc: UInt;
 
     @inject
     public var objectCreator: ObjectCreator;
 
-    private var mappedEffect: Map<String, SpecialEffect>;
+    public var mappedEffect: Map<String, SpecialEffect>;
 
     public function new() {
     }
@@ -21,7 +21,7 @@ class MappedEffectManager implements EffectManager {
 
     public function dispose():Void {
         for(effect in mappedEffect) {
-            effect.end(onEffectEnd);
+            objectCreator.disposeInstance(effect);
         }
         mappedEffect = null;
         objectCreator = null;
@@ -30,7 +30,7 @@ class MappedEffectManager implements EffectManager {
     public function spawnEffect(effectClass:Class<SpecialEffect>, worldPoint: WorldPoint):String {
         var effect: SpecialEffect = objectCreator.createInstance(effectClass);
         effect.begin(worldPoint);
-        var key: String = effectInc++ + "";
+        var key: String = ++effectInc + "";
         mappedEffect.set(key, effect);
         return key;
     }

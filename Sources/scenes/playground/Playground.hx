@@ -1,4 +1,5 @@
 package scenes.playground;
+import io.InputOutputStream;
 import world.GameObject;
 import world.WorldPoint;
 import motion.easing.Bounce;
@@ -55,13 +56,18 @@ class Playground implements BaseObject {
 
     public function init():Void {
         showPlayground(function(): Void {
-            Mouse.get().notify(onDown, null, null, null);
+            playerService.getCurrentPlayer(function(p: PlayerVO): Void {
+                currentPlayer = p;
+                if(!playerConnected) {
+                    streamHandler.end();
+                    streamHandler.unsubscribeToConnected(onConnected);
+                    streamHandler.unsubscribeToClose(onClosed);
+                    streamHandler.subscribeToConnected(onConnected);
+                    streamHandler.subscribeToClose(onClosed);
+                    streamHandler.start();
+                }
+            });
         });
-
-        playerService.getCurrentPlayer(function(p: PlayerVO): Void {
-            currentPlayer = p;
-        });
-
     }
 
     private inline function invert(value: Float): Float {
@@ -79,16 +85,18 @@ class Playground implements BaseObject {
 
     }
 
-    private function onDown(button:Int, x:Int, y:Int):Void {
-        if(button == 0 && !playerConnected) {
-            streamHandler.end();
-            streamHandler.start();
-        } else if(button == 1 && !playerConnected) {
-            var playerConnect = new PlayerConnect();
-            playerConnect.playerId = playerService.uniqueId;
-            streamHandler.send(playerConnect);
-            playerConnected = true;
-        }
+    private function onConnected(stream: InputOutputStream): Void {
+        var playerConnect = new PlayerConnect();
+        playerConnect.playerId = playerService.uniqueId;
+        streamHandler.send(playerConnect);
+        playerConnected = true;
+    }
+
+    private function onClosed(stream:InputOutputStream):Void {
+        streamHandler.end();
+        playerConnected = false;
+        streamHandler.unsubscribeToConnected(onConnected);
+        streamHandler.unsubscribeToClose(onClosed);
     }
 
     public function dispose():Void {

@@ -5,5 +5,6 @@ project.addSources('Sources');
 project.addLibrary('minject');
 project.addLibrary('continuation');
 project.addLibrary('actuate');
+project.addLibrary('mconsole');
 
 return project;

@@ -1,4 +1,6 @@
 package handler;
+import core.ObjectCreator;
+import util.MappedSubscriber;
 import handler.output.PlayerConnect;
 import error.Logger;
 import handler.IOHandler;
@@ -18,6 +20,8 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     @inject
     public var strategyMap: StrategyMap;
     @inject
+    public var objectCreator: ObjectCreator;
+    @inject
     public var logger: Logger;
 
     @:isVar
@@ -34,11 +38,13 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     }
 
     private var stream: InputOutputStream;
+    public var mappedSubscriber: MappedSubscriber;
 
     public function new() {
     }
 
     public function init():Void {
+        mappedSubscriber = objectCreator.createInstance(MappedSubscriber);
     }
 
     public function dispose():Void {
@@ -49,6 +55,8 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
         strategyMap = null;
         logger = null;
         handler = null;
+        mappedSubscriber.dispose();
+        mappedSubscriber = null;
     }
 
     public function start():Void {
@@ -77,27 +85,28 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
     }
 
     public function subscribeToConnected(callback:InputOutputStream->Void):Void {
-        connector.subscribeToConnected(callback);
+        mappedSubscriber.subscribe("connected", callback);
     }
 
     public function subscribeToClose(callback:InputOutputStream->Void):Void {
-        connector.subscribeToClosed(callback);
+        mappedSubscriber.subscribe("closed", callback);
     }
 
     public function unsubscribeToConnected(callback:InputOutputStream->Void):Void {
-        connector.unsubscribeToConnected(callback);
+        mappedSubscriber.unsubscribe("connected", callback);
     }
 
     public function unsubscribeToClose(callback:InputOutputStream->Void):Void {
-        connector.unsubscribeToClosed(callback);
+        mappedSubscriber.unsubscribe("closed", callback);
     }
 
     private function onSocketConnected(stream:InputOutputStream):Void {
         this.stream = stream;
+        mappedSubscriber.notify("connected", [stream]);
     }
 
     private function onSocketClosed(stream:InputOutputStream):Void {
-        trace("socket was closed");
+        mappedSubscriber.notify("closed", [stream]);
     }
 
     public function send(handler:IOHandler):Void {
