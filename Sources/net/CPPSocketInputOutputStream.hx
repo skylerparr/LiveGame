@@ -84,6 +84,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         } catch(e: Dynamic) {
             if(e == "Blocking") {
                 connected = true;
+                Sys.sleep(0.01); //give the server a moment to process this
                 subscriber.notify(CONNECTED, [this]);
             } else {
                 errorManager.logError(e);
@@ -175,7 +176,7 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
 
     public function writeUnsignedByte(value:Int):Void {
         if(connected) {
-            var bytes = Bytes.alloc(1);
+            var bytes: Bytes = Bytes.alloc(1);
             bytes.set(0, value);
             output.write(bytes);
         }
