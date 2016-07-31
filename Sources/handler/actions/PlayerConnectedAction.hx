@@ -1,5 +1,5 @@
 package handler.actions;
-import vo.MutablePlayerVO;
+import vo.mutable.MutablePlayerVO;
 import vo.PlayerVO;
 import service.PlayerService;
 import handler.input.PlayerConnected;

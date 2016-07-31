@@ -1,7 +1,7 @@
 package gameentities;
 
 import gameentities.fx.EffectManager;
-import vo.MutableSpellVO;
+import vo.mutable.MutableSpellVO;
 import world.WorldPoint;
 import constants.Poses;
 import mocks.MockTweenTarget;

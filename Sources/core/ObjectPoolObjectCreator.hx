@@ -1,7 +1,8 @@
 package core;
 import haxe.ds.ObjectMap;
 import minject.Injector;
-class ObjectPoolObjectCreator  implements ObjectCreator {
+@IgnoreCover
+class ObjectPoolObjectCreator implements ObjectCreator {
 
     public static var injector: Injector;
 

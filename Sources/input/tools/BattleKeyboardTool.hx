@@ -1,5 +1,5 @@
 package input.tools;
-import vo.MutableSpellVO;
+import vo.mutable.MutableSpellVO;
 import util.Subscriber;
 import world.two.WorldPoint2D;
 import world.WorldPoint;

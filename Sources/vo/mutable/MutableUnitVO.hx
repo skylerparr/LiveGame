@@ -1,4 +1,4 @@
-package vo;
+package vo.mutable;
 class MutableUnitVO implements UnitVO {
 
     public var id:Int;

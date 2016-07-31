@@ -1,4 +1,4 @@
-package vo;
+package vo.mutable;
 class MutableSpellVO implements SpellVO {
 
     @:isVar

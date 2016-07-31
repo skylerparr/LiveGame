@@ -1,4 +1,5 @@
 package world.two;
+@IgnoreCover
 class Bounds2D implements Bounds {
 
     @:isVar
@@ -19,7 +20,7 @@ class Bounds2D implements Bounds {
     @:isVar
     public var depth(get, set):Float = 0;
 
-    public public function new(x: Float = 0, z:Float = 0, width:Float = 0, depth:Float = 0) {
+    public function new(x: Float = 0, z:Float = 0, width:Float = 0, depth:Float = 0) {
         this.x = x;
         this.z = z;
         this.width = width;

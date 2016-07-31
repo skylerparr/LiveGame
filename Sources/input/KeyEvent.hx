@@ -1,4 +1,5 @@
 package input;
+@IgnoreCover
 class KeyEvent {
     public var key: String;
     public var shift: Bool;

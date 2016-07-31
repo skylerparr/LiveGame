@@ -1,8 +1,7 @@
 package handler.actions;
 import world.WorldPoint;
 import geom.Point;
-import vo.MutableUnitVO;
-import vo.MutableUnitVO;
+import vo.mutable.MutableUnitVO;
 import world.GameObject;
 import handler.input.UnitCreated;
 import world.GameWorld;
@@ -12,7 +11,7 @@ import error.Logger;
 import service.PlayerService;
 import handler.input.PlayerConnected;
 import vo.PlayerVO;
-import vo.MutablePlayerVO;
+import vo.mutable.MutablePlayerVO;
 #if !test
 import gameentities.InteractiveGameObject;
 #end

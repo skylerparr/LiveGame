@@ -1,4 +1,6 @@
 package scenes.playground;
+import assets.ImageAsset;
+import assets.AssetLocator;
 import io.InputOutputStream;
 import world.GameObject;
 import world.WorldPoint;
@@ -14,16 +16,15 @@ import gameentities.InteractiveGameObject;
 import world.two.WorldPoint2D;
 import util.Subscriber;
 import world.GameWorld;
-import kha.input.Mouse;
 import constants.LayerNames;
 import display.TextFieldNode;
-import kha.Assets;
 import display.DisplayNodeContainer;
 import display.BitmapNode;
 import display.DisplayNode;
 import core.BaseObject;
 import display.LayerManager;
 import core.ObjectCreator;
+@IgnoreCover
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
 class Playground implements BaseObject {
     
@@ -42,6 +43,8 @@ class Playground implements BaseObject {
     public var streamHandler: StreamHandler;
     @inject
     public var playerService: PlayerService;
+    @inject
+    public var assetLocator: AssetLocator;
 
     private var lastUnit: InteractiveGameObject;
     private var rise: Float = 0;
@@ -108,12 +111,12 @@ class Playground implements BaseObject {
         var middleLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.GAME_OBJECTS);
 
         var grumpyCat: BitmapNode = objectCreator.createInstance(BitmapNode);
-        var image = @await Assets.loadImage("grumpy_cat_nope");
-        grumpyCat.imageData = image;
+        var image:ImageAsset = @await assetLocator.getAssetByName("grumpy_cat_nope");
+        grumpyCat.imageData = image.data;
         grumpyCat.sx = 0;
         grumpyCat.sy = 0;
-        grumpyCat.sw = image.realWidth;
-        grumpyCat.sh = image.realHeight;
+        grumpyCat.sw = image.width;
+        grumpyCat.sh = image.height;
         bottomLayer.addChild(grumpyCat);
 
         var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");

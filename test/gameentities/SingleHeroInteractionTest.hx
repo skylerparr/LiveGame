@@ -1,6 +1,6 @@
 package gameentities;
 
-import vo.MutableSpellVO;
+import vo.mutable.MutableSpellVO;
 import vo.SpellVO;
 import handler.output.UnitCastSpell;
 import mocks.MockViewPort;

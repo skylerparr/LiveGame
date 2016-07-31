@@ -1,6 +1,7 @@
 package util;
 import geom.Point;
 import world.WorldPoint;
+@IgnoreCover
 class MathUtil {
 
     private static var point: Point = new Point();

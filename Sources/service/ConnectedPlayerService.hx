@@ -1,5 +1,5 @@
 package service;
-import vo.MutablePlayerVO;
+import vo.mutable.MutablePlayerVO;
 import vo.UnitVO;
 import vo.PlayerVO;
 class ConnectedPlayerService implements PlayerService {

@@ -4,7 +4,7 @@ import handler.input.UnitCastedSpell;
 import world.GameObject;
 import world.two.WorldPoint2D;
 import world.WorldPoint;
-import vo.MutableSpellVO;
+import vo.mutable.MutableSpellVO;
 import mocks.MockGameWorld;
 import gameentities.UnitInteractionManager;
 import service.SpellService;

@@ -1,4 +1,5 @@
 package assets.kha;
+@IgnoreCover
 class KhaSoundAsset implements SoundAsset {
 
     @:isVar

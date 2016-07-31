@@ -1,5 +1,6 @@
 package core;
 import constants.SettingKeys;
+@IgnoreCover
 class MapApplicationSettings implements ApplicationSettings {
     public function new() {
     }

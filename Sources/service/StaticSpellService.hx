@@ -1,6 +1,5 @@
 package service;
-import vo.MutableSpellVO;
-import vo.MutableSpellVO;
+import vo.mutable.MutableSpellVO;
 import vo.SpellVO;
 class StaticSpellService implements SpellService {
     public function new() {

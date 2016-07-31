@@ -1,4 +1,5 @@
 package world.two;
+@IgnoreCover
 class WorldPoint2D implements WorldPoint {
 
     @:isVar

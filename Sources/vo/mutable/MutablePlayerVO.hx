@@ -1,4 +1,4 @@
-package vo;
+package vo.mutable;
 class MutablePlayerVO implements PlayerVO {
 
     @:isVar

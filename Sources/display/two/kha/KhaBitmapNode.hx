@@ -1,4 +1,5 @@
 package display.two.kha;
+@IgnoreCover
 class KhaBitmapNode extends TwoDimDisplayNode implements BitmapNode {
 
     @:isVar

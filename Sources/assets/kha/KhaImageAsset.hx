@@ -1,8 +1,11 @@
 package assets.kha;
+@IgnoreCover
 class KhaImageAsset implements ImageAsset {
 
+    @:isVar
     public var width(get, null):UInt;
 
+    @:isVar
     public var height(get, null):UInt;
 
     @:isVar
@@ -13,6 +16,10 @@ class KhaImageAsset implements ImageAsset {
     }
 
     public function set_data(value:Dynamic) {
+        #if !test
+        width = cast(value, kha.Image).realWidth;
+        height = cast(value, kha.Image).realHeight;
+        #end
         return this.data = value;
     }
 

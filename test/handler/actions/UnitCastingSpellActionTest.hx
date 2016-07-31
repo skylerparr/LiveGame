@@ -6,7 +6,7 @@ import world.WorldPoint;
 import mocks.MockGameObject;
 import world.GameObject;
 import vo.SpellVO;
-import vo.MutableSpellVO;
+import vo.mutable.MutableSpellVO;
 import service.SpellService;
 import handler.output.UnitCastSpell;
 import core.ObjectCreator;

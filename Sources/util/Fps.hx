@@ -6,6 +6,7 @@ import display.TextFieldNode;
 import constants.EventNames;
 import display.LayerManager;
 import core.BaseObject;
+@IgnoreCover
 class Fps implements BaseObject{
 
     @inject

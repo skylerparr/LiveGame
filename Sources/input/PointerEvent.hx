@@ -1,4 +1,5 @@
 package input;
+@IgnoreCover
 class PointerEvent {
     public var screenX: Int;
     public var screenY: Int;

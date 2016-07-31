@@ -1,6 +1,7 @@
 package net;
 import sys.net.Socket;
 import sys.net.Host;
+@IgnoreCover
 class CPPTCPSocket implements TCPSocket {
     public var input(default, null):haxe.io.Input;
 

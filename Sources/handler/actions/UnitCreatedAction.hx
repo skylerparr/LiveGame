@@ -1,5 +1,5 @@
 package handler.actions;
-import vo.MutableUnitVO;
+import vo.mutable.MutableUnitVO;
 import vo.PlayerVO;
 import service.PlayerService;
 import world.GameObject;

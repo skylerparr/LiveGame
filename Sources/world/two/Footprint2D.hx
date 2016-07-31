@@ -1,6 +1,7 @@
 package world.two;
 import geom.Rectangle;
 import geom.Point;
+@IgnoreCover
 class Footprint2D implements Footprint {
     @:isVar
     public var registrationPoint(get, set):Point;

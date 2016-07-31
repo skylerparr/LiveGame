@@ -1,4 +1,5 @@
 package display.two.kha;
+@IgnoreCover
 class KhaTextFieldNode extends TwoDimDisplayNode implements TextFieldNode {
     @:isVar
     public var text(get, set):String;

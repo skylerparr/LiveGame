@@ -1,5 +1,6 @@
 package animation.tween;
 import display.DisplayNode;
+@IgnoreCover
 class DisplayTween extends SimpleTween {
 
     private var targetProps: DisplayProperties;

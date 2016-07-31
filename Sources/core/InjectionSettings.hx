@@ -83,13 +83,16 @@ import display.LayerManager;
 import display.two.kha.Kha2DRenderer;
 import display.two.kha.KhaSprite;
 import display.layer.RenderableLayerManager;
-import kha.Font;
 import minject.Injector;
-import kha.Image;
 class InjectionSettings {
     public var injector: Injector = new Injector();
 
-    public function new(backbuffer: Image, fonts: Map<String, Font>) {
+    #if test
+    public function new(backbuffer: Dynamic, fonts: Map<String, Dynamic>) {
+    #else
+    public function new(backbuffer: kha.Image, fonts: Map<String, kha.Font>) {
+    #end
+        #if !test
         ObjectFactory.injector = injector;
 
         var objectFactory: ObjectFactory = new ObjectFactory();
@@ -230,5 +233,6 @@ class InjectionSettings {
         inputTools.keyboardTool = objectFactory.createInstance(BattleKeyboardTool);
 
         objectFactory.createInstance(Playground);
+        #end
     }
 }
