@@ -84,6 +84,7 @@ import display.two.kha.Kha2DRenderer;
 import display.two.kha.KhaSprite;
 import display.layer.RenderableLayerManager;
 import minject.Injector;
+@IgnoreCover
 class InjectionSettings {
     public var injector: Injector = new Injector();
 
