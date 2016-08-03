@@ -1,5 +1,7 @@
 package world.two;
 
+import mocks.MockDisplayNodeContainer;
+import display.DisplayNode;
 import display.two.TwoDimDisplayNodeContainer;
 import display.DisplayNodeContainer;
 import constants.EventNames;
@@ -109,6 +111,24 @@ class ViewPort2DTest {
 
         Assert.areEqual(-10, viewPort.container.x);
         Assert.areEqual(-20, viewPort.container.y);
+    }
+
+    @Test
+    public function shouldUpdateTheScale(): Void {
+        viewPort.scale = 0.4;
+        Assert.areEqual(0.4, viewPort.scale);
+    }
+
+    @Test
+    public function shouldUpdateZ(): Void {
+        viewPort.z = 0.4;
+        Assert.areEqual(0, viewPort.z);
+    }
+
+    @Test
+    public function shouldTestToSeeIfItemsAreInViewableArea(): Void {
+        var displayNode: DisplayNode = mock(MockDisplayNodeContainer);
+        Assert.isTrue(viewPort.isInViewableRegion(displayNode));
     }
 
     @Test

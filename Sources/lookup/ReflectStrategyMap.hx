@@ -37,6 +37,8 @@ class ReflectStrategyMap implements StrategyMap {
     }
 
     public function dispose():Void {
+        handlerMap = null;
+        objectCreator = null;
     }
 
     public function locate(handler:IOHandler):StrategyAction {

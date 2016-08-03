@@ -1,4 +1,4 @@
-package collection;
+package collections;
 
 import geom.Rectangle;
 import collections.UniqueCollection;

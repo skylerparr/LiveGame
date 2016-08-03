@@ -78,6 +78,7 @@ class Playground implements BaseObject {
         playerConnect.playerId = playerService.uniqueId;
         streamHandler.send(playerConnect);
         playerConnected = true;
+        streamHandler.unsubscribeToConnected(onConnected);
     }
 
     private function onClosed(stream:InputOutputStream):Void {

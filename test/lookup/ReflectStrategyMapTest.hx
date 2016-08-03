@@ -84,6 +84,15 @@ class ReflectStrategyMapTest {
         Assert.isNull(action);
     }
 
+    @Test
+    public function shouldDisposeStrategyMap(): Void {
+        strategyMap.init();
+        strategyMap.dispose();
+
+        Assert.isNull(strategyMap.handlerMap);
+        Assert.isNull(strategyMap.objectCreator);
+    }
+
     @IgnoreCover
     private function validateAction(action:Class<StrategyAction>, handler: Class<IOHandler>):Void {
         expectedAction = Type.createInstance(action, []);

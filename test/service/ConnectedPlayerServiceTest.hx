@@ -33,4 +33,22 @@ class ConnectedPlayerServiceTest {
         Assert.isNotNull(player);
     }
 
+    @Test
+    public function shouldGetPlayerUniqueId(): Void {
+        Assert.isTrue(playerService.uniqueId > 0);
+    }
+
+    @Test
+    public function shouldNotCrashIfCallbackIsNull(): Void {
+        playerService.getCurrentPlayer(null);
+        Assert.isTrue(true);
+    }
+
+    @Test
+    public function shouldDisposePlayer(): Void {
+        playerService.dispose();
+        Assert.isNull(playerService.currentPlayer);
+        Assert.areEqual(0, playerService.uniqueId);
+    }
+
 }

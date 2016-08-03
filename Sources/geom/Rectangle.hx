@@ -13,7 +13,7 @@ class Rectangle {
         this.height = height;
     }
 
-    public inline function intersects(rect: Rectangle): Bool {
+    public function intersects(rect: Rectangle): Bool {
         if(rect == null) {
             return false;
         } else {
@@ -22,18 +22,19 @@ class Rectangle {
             var rectWidth: Float = rectX + rect.width;
             var rectHeight: Float = rectY + rect.height;
 
-            return contains(rectX, rectY) ||
-                contains(rectWidth, rectY) ||
-                contains(rectX, rectHeight) ||
-                contains(rectWidth, rectHeight) ||
+            return
                 rect.contains(this.x, this.y) ||
                 rect.contains(this.x + this.width, this.y) ||
                 rect.contains(this.x, this.y + this.height) ||
-                rect.contains(this.x + this.width, this.y + this.height);
+                rect.contains(this.x + this.width, this.y + this.height) ||
+                contains(rectWidth, rectHeight);
         }
     }
 
-    public inline function containsPoint(point: Point): Bool {
+    public function containsPoint(point: Point): Bool {
+        if(point == null) {
+            return false;
+        }
         var pointX: Float = point.x;
         var pointY: Float = point.y;
         return contains(pointX, pointY);
@@ -44,5 +45,9 @@ class Rectangle {
             pointX <= x + width &&
             pointY >= y &&
             pointY <= y + height);
+    }
+
+    public function clone(): Rectangle {
+        return new Rectangle(x, y, width, height);
     }
 }

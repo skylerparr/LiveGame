@@ -20,6 +20,16 @@ class RectangleTest {
     }
 
     @Test
+    public function shouldReturnTrueIfXAndYIsWithinRectangle(): Void {
+        Assert.isTrue(rectangle.contains(50, 50));
+    }
+
+    @Test
+    public function shouldReturnFalseIfXAndYIsNotWithinRectangle(): Void {
+        Assert.isFalse(rectangle.contains(150, 250));
+    }
+
+    @Test
     public function shouldReturnTrueIfPointIsWithinRectangle(): Void {
         Assert.isTrue(rectangle.containsPoint(new Point(50, 50)));
     }
@@ -33,6 +43,11 @@ class RectangleTest {
     @Test
     public function shouldReturnFalseIfPointDoesNotFallInsideRectangle(): Void {
         Assert.isFalse(rectangle.containsPoint(new Point(0, 0)));
+    }
+
+    @Test
+    public function shouldReturnFalseIfPointIsNull(): Void {
+        Assert.isFalse(rectangle.containsPoint(null));
     }
 
     @Test
@@ -80,5 +95,14 @@ class RectangleTest {
     public function shouldReturnFalseIfTheRectanglesDontIntersect(): Void {
         var rect2: Rectangle = new Rectangle(100, 100, 200, 200);
         Assert.isFalse(rectangle.intersects(rect2));
+    }
+
+    @Test
+    public function shouldCloneItself(): Void {
+        var rect2: Rectangle = rectangle.clone();
+        Assert.areEqual(rectangle.x, rect2.x);
+        Assert.areEqual(rectangle.y, rect2.y);
+        Assert.areEqual(rectangle.width, rect2.width);
+        Assert.areEqual(rectangle.height, rect2.height);
     }
 }

@@ -11,6 +11,7 @@ class MutablePlayerVO implements PlayerVO {
     public var units(get, set):Map<Int, UnitVO>;
 
     public function new() {
+        units = new Map<Int, UnitVO>();
     }
 
     function set_id(value:Int) {

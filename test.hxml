@@ -45,7 +45,7 @@
 -lib minject
 -lib continuation
 -lib actuate
---macro mcover.MCover.coverage([''],['test','Sources'],['TestMain','TestSuite','animation.spec.JSONArray','core.AnyException','core.Sample','core.SampleBase','core.SampleWithArgs','input.MockKeyboardKey','mocks.*','sound.kha.mocks.*','vo.mutable.*','handler.input.*','handler.output.*','error.*','constants.*'])
+--macro mcover.MCover.coverage([''],['Sources'],['TestMain','TestSuite','animation.spec.JSONArray','core.AnyException','core.Sample','core.SampleBase','core.SampleWithArgs','input.MockKeyboardKey','mocks.*','sound.kha.mocks.*','vo.mutable.*','handler.input.*','handler.output.*','error.*','constants.*'])
 -D MCOVER
 -cp Sources
 

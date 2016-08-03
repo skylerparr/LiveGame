@@ -4,7 +4,7 @@ import vo.UnitVO;
 import vo.PlayerVO;
 class ConnectedPlayerService implements PlayerService {
 
-    private var currentPlayer: MutablePlayerVO;
+    public var currentPlayer: MutablePlayerVO;
 
     @:isVar
     public var uniqueId(get, null):Int;
@@ -18,18 +18,18 @@ class ConnectedPlayerService implements PlayerService {
 
     public function init():Void {
         uniqueId = Std.random(65535);
-
         currentPlayer = new MutablePlayerVO();
-        currentPlayer.units = new Map<Int, UnitVO>();
     }
 
     public function dispose():Void {
+        uniqueId = 0;
+        currentPlayer = null;
     }
 
     public function getCurrentPlayer(onComplete:PlayerVO->Void):Void {
-        onComplete(currentPlayer);
+        if(onComplete != null) {
+            onComplete(currentPlayer);
+        }
     }
 
-    public function getPlayerById(id:Int, onComplete: PlayerVO->Void):Void {
-    }
 }

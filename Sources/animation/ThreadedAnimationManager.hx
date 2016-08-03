@@ -1,5 +1,6 @@
 package animation;
 import cpp.vm.Thread;
+@IgnoreCover
 class ThreadedAnimationManager extends SubscribedAnimationManager {
 
     private var running: Bool = false;

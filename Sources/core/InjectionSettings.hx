@@ -26,10 +26,10 @@ import world.two.SubscriberZSortingManager;
 import world.two.ZSortingManager;
 import gameentities.BattleUnitInteractionManager;
 import gameentities.UnitInteractionManager;
-import animation.tween.TweenDelegate;
 import animation.tween.Tween;
 import animation.tween.MultiTweenController;
 import animation.tween.TweenController;
+import animation.tween.SimpleTween;
 import service.ConnectedPlayerService;
 import service.PlayerService;
 import handler.SocketStreamHandler;
@@ -170,7 +170,7 @@ class InjectionSettings {
         injector.mapClass(AnimationController, SpriteAnimationController);
 
         injector.mapValue(TweenController, objectFactory.createInstance(MultiTweenController));
-        injector.mapClass(Tween, TweenDelegate);
+        injector.mapClass(Tween, SimpleTween);
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
         viewPort.width = 800;
