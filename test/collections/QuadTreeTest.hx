@@ -24,7 +24,7 @@ class QuadTreeTest {
     public function tearDown():Void {
     }
 
-    @Test
+//    @Test
     public function shouldBeAbleToIndexASingleNode(): Void {
         var data = {};
         var rectangle: Rectangle = new Rectangle(200, 100, 20, 20);
@@ -143,25 +143,24 @@ class QuadTreeTest {
 
     @Test
     public function shouldSplitIntoFourTreesIfHitsThreshold(): Void {
-        var itemToRemove: Dynamic = null;
         var data = {value: 0};
         var rectangle: Rectangle = new Rectangle(50, 100, 20, 20);
         quadTree.add(rectangle, data);
 
-        var data = {value: 1};
-        var rectangle: Rectangle = new Rectangle(550, 100, 20, 20);
+        data = {value: 1};
+        rectangle = new Rectangle(550, 100, 20, 20);
         quadTree.add(rectangle, data);
 
-        var data = {value: 2};
-        var rectangle: Rectangle = new Rectangle(50, 400, 20, 20);
+        data = {value: 2};
+        rectangle = new Rectangle(50, 400, 20, 20);
         quadTree.add(rectangle, data);
 
-        var data = {value: 3};
-        var rectangle: Rectangle = new Rectangle(550, 400, 20, 20);
+        data = {value: 3};
+        rectangle = new Rectangle(550, 400, 20, 20);
         quadTree.add(rectangle, data);
 
-        var data = {value: 4};
-        var rectangle: Rectangle = new Rectangle(90, 100, 20, 20);
+        data = {value: 4};
+        rectangle = new Rectangle(90, 100, 20, 20);
         quadTree.add(rectangle, data);
 
         var tree: Array<QuadTreeNode> = quadTree.tree;
@@ -171,7 +170,80 @@ class QuadTreeTest {
         validateQuadTree(tree[3], 450, 380, 400, 300, 1);
     }
 
-    private function validateQuadTree(treeNode:QuadTreeNode, x:Int, y:Int, width:Int, height:Int, leafCount: Int):Void {
+    @Test
+    public function shouldIncludeItemsThatStradleQuadTreeBorders(): Void {
+        var data = {value: 0};
+        var rectangle: Rectangle = new Rectangle(445, 100, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 1};
+        rectangle = new Rectangle(445, 110, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 2};
+        rectangle = new Rectangle(445, 120, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 3};
+        rectangle = new Rectangle(445, 130, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 4};
+        rectangle = new Rectangle(445, 140, 20, 20);
+        quadTree.add(rectangle, data);
+
+        var tree: Array<QuadTreeNode> = quadTree.tree;
+        Assert.isType(tree[0], QuadTree);
+        var tree: Array<QuadTreeNode> = cast(tree[0], QuadTree).tree;
+        Assert.isType(tree[1], QuadTree);
+        validateQuadTree(tree[0], 50, 80, 200, 150, 0);
+        validateQuadTree(tree[1], 250, 80, 200, 150, 4);
+        validateQuadTree(tree[2], 50, 230, 200, 150, 0);
+        validateQuadTree(tree[3], 250, 230, 200, 150, 0);
+        var tree: Array<QuadTreeNode> = cast(tree[1], QuadTree).tree;
+        Assert.isType(tree[1], QuadTree);
+        validateQuadTree(tree[0], 250, 80, 100, 75, 0);
+        validateQuadTree(tree[1], 350, 80, 100, 75, 4);
+        validateQuadTree(tree[2], 250, 155, 100, 75, 0);
+        validateQuadTree(tree[3], 350, 155, 100, 75, 1);
+
+        Assert.isType(tree[3], QuadTree);
+        var singleLeafTree: Array<QuadTreeNode> = cast(tree[3], QuadTree).tree;
+        Assert.areEqual(4, cast(singleLeafTree[0], QuadTreeNodeLeaf).data.value);
+
+        var tree: Array<QuadTreeNode> = cast(tree[1], QuadTree).tree;
+        Assert.isType(tree[0], QuadTree);
+        validateQuadTree(tree[0], 350, 80, 50, 37.5, 0);
+        validateQuadTree(tree[1], 400, 80, 50, 37.5, 2);
+        validateQuadTree(tree[2], 350, 117.5, 50, 37.5, 0);
+        validateQuadTree(tree[3], 400, 117.5, 50, 37.5, 4);
+
+        var singleLeafTree: Array<QuadTreeNode> = cast(tree[1], QuadTree).tree;
+        Assert.areEqual(0, cast(singleLeafTree[0], QuadTreeNodeLeaf).data.value);
+        Assert.areEqual(1, cast(singleLeafTree[1], QuadTreeNodeLeaf).data.value);
+
+        Assert.isType(tree[3], QuadTree);
+
+        var tree: Array<QuadTreeNode> = cast(tree[3], QuadTree).tree;
+        validateQuadTree(tree[0], 400, 117.5, 25, 18.75, 0);
+        validateQuadTree(tree[1], 425, 117.5, 25, 18.75, 4);
+        validateQuadTree(tree[2], 400, 136.25, 25, 18.75, 0);
+        validateQuadTree(tree[3], 425, 136.25, 25, 18.75, 3);
+
+        var singleLeafTree: Array<QuadTreeNode> = cast(tree[3], QuadTree).tree;
+        Assert.areEqual(2, cast(singleLeafTree[0], QuadTreeNodeLeaf).data.value);
+        Assert.areEqual(3, cast(singleLeafTree[1], QuadTreeNodeLeaf).data.value);
+        Assert.areEqual(4, cast(singleLeafTree[2], QuadTreeNodeLeaf).data.value);
+
+        Assert.isType(tree[1], QuadTree);
+        var tree: Array<QuadTreeNode> = cast(tree[1], QuadTree).tree;
+        Assert.areEqual(0, cast(tree[0], QuadTreeNodeLeaf).data.value);
+        Assert.areEqual(1, cast(tree[1], QuadTreeNodeLeaf).data.value);
+        Assert.areEqual(2, cast(tree[2], QuadTreeNodeLeaf).data.value);
+        Assert.areEqual(3, cast(tree[3], QuadTreeNodeLeaf).data.value);
+    }
+
+    private function validateQuadTree(treeNode:QuadTreeNode, x:Float, y:Float, width:Float, height:Float, leafCount: Int):Void {
         Assert.isType(treeNode, QuadTree);
         Assert.areEqual(x, treeNode.area.x);
         Assert.areEqual(y, treeNode.area.y);

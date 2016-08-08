@@ -50,4 +50,8 @@ class Rectangle {
     public function clone(): Rectangle {
         return new Rectangle(x, y, width, height);
     }
+
+    public function toString(): String {
+        return '${x}x${y} ${width}x${height}';
+    }
 }
