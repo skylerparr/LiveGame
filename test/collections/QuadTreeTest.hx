@@ -24,7 +24,7 @@ class QuadTreeTest {
     public function tearDown():Void {
     }
 
-//    @Test
+    @Test
     public function shouldBeAbleToIndexASingleNode(): Void {
         var data = {};
         var rectangle: Rectangle = new Rectangle(200, 100, 20, 20);
@@ -36,7 +36,7 @@ class QuadTreeTest {
     }
 
     @Test
-    public function shouldReturnNullIfNothingFoundAtPoint(): Void {
+    public function shouldReturnEmptyArrayIfNothingFoundAtPoint(): Void {
         var data = {};
         var rectangle: Rectangle = new Rectangle(200, 100, 20, 20);
         quadTree.add(rectangle, data);
@@ -45,80 +45,6 @@ class QuadTreeTest {
         Assert.areEqual(0, items.length);
     }
 
-    @Test
-    public function shouldGetRectForData(): Void {
-        var data = {};
-        var rectangle: Rectangle = new Rectangle(200, 100, 20, 20);
-        quadTree.add(rectangle, data);
-
-        var items: Array<Dynamic> = quadTree.getItemsAtPoint(new Point(215, 110));
-        var itemData: Dynamic = items[0];
-        var itemRect: Rectangle = quadTree.getRectForData(itemData);
-        Assert.areEqual(200, itemRect.x);
-        Assert.areEqual(100, itemRect.y);
-        Assert.areEqual(20, itemRect.width);
-        Assert.areEqual(20, itemRect.height);
-    }
-
-    @Test
-    public function shouldReturnNullIfNoRectangleForData(): Void {
-        var data = {};
-        var rectangle: Rectangle = new Rectangle(200, 100, 20, 20);
-        quadTree.add(rectangle, data);
-
-        var itemRect: Rectangle = quadTree.getRectForData({});
-        Assert.isNull(itemRect);
-    }
-
-//    @Test
-//    public function shouldGetAllDataFromTree(): Void {
-//        for(i in 0...50) {
-//            var data = {value: i};
-//            var rectangle: Rectangle = new Rectangle(200 + i, 100, 20, 20);
-//            quadTree.add(rectangle, data);
-//        }
-//
-//        var items: Array<Dynamic> = quadTree.getAllData();
-//        Assert.areEqual(50, items.length);
-//        var item: Dynamic = items[0];
-//        Assert.areEqual(0, item.value);
-//    }
-//
-//    @Test
-//    public function shouldRemoveItem(): Void {
-//        var itemToRemove: Dynamic = null;
-//        for(i in 0...50) {
-//            var data = {value: i};
-//            var rectangle: Rectangle = new Rectangle(200 + i, 100, 20, 20);
-//            quadTree.add(rectangle, data);
-//            if(i == 18) {
-//                itemToRemove = data;
-//            }
-//        }
-//
-//        var retVal: Dynamic = quadTree.remove(itemToRemove);
-//        Assert.isNotNull(retVal);
-//        Assert.areEqual(itemToRemove, retVal);
-//    }
-//
-//    @Test
-//    public function shouldReturnNullIfNoItemFoundOnRemoveItem(): Void {
-//        var itemToRemove: Dynamic = null;
-//        for(i in 0...50) {
-//            var data = {value: i};
-//            var rectangle: Rectangle = new Rectangle(200 + i, 100, 20, 20);
-//            quadTree.add(rectangle, data);
-//            if(i == 18) {
-//                itemToRemove = data;
-//            }
-//        }
-//        var retVal: Dynamic = quadTree.remove(itemToRemove);
-//        Assert.isNotNull(retVal);
-//
-//        var retVal: Dynamic = quadTree.remove(itemToRemove);
-//        Assert.isNull(retVal);
-//    }
-//
 //    @Test
 //    public function shouldRemoveItemAtPoint(): Void {
 //        var itemToRemove: Dynamic = null;
@@ -241,6 +167,43 @@ class QuadTreeTest {
         Assert.areEqual(1, cast(tree[1], QuadTreeNodeLeaf).data.value);
         Assert.areEqual(2, cast(tree[2], QuadTreeNodeLeaf).data.value);
         Assert.areEqual(3, cast(tree[3], QuadTreeNodeLeaf).data.value);
+    }
+
+    @Test
+    public function shouldGetItemsAtPoint(): Void {
+        var data = {value: 0};
+        var rectangle: Rectangle = new Rectangle(445, 100, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 1};
+        rectangle = new Rectangle(445, 110, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 2};
+        rectangle = new Rectangle(445, 120, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 3};
+        rectangle = new Rectangle(445, 130, 20, 20);
+        quadTree.add(rectangle, data);
+
+        data = {value: 4};
+        rectangle = new Rectangle(445, 140, 20, 20);
+        quadTree.add(rectangle, data);
+
+        var nodes: Array<Dynamic> = quadTree.getItemsAtPoint(new Point(450, 110));
+        Assert.areEqual(2, nodes.length);
+        Assert.areEqual(0, nodes[0].value);
+        Assert.areEqual(1, nodes[1].value);
+
+        var nodes: Array<Dynamic> = quadTree.getItemsAtPoint(new Point(51, 110));
+        Assert.areEqual(0, nodes.length);
+
+        var nodes: Array<Dynamic> = quadTree.getItemsAtPoint(new Point(51, 510));
+        Assert.areEqual(0, nodes.length);
+
+        var nodes: Array<Dynamic> = quadTree.getItemsAtPoint(new Point(451, 510));
+        Assert.areEqual(0, nodes.length);
     }
 
     private function validateQuadTree(treeNode:QuadTreeNode, x:Float, y:Float, width:Float, height:Float, leafCount: Int):Void {

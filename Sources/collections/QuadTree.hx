@@ -1,4 +1,5 @@
 package collections;
+import collections.QuadTree;
 import geom.Point;
 import geom.Rectangle;
 class QuadTree implements QuadTreeNode {
@@ -58,73 +59,64 @@ class QuadTree implements QuadTreeNode {
         return retVal;
     }
 
-    /**
-     * very expensive, has to traverse entire tree
-     */
-    public function remove(data: Dynamic): Dynamic {
-        var retVal: Dynamic = null;
-        for(item in tree) {
-            var itemData: Dynamic = cast(item, QuadTreeNodeLeaf).data;
-            if(itemData == data) {
-                tree.remove(item);
-                return itemData;
-            }
-        }
-        return null;
-    }
-
     public function removeItemAtPoint(point: Point, data: Dynamic): Dynamic {
-        var retVal: Array<Dynamic> = [];
-        var nodes: Array<QuadTreeNode> = getNodesAtPoint(point);
-        for(node in nodes) {
-            if(cast(node, QuadTreeNodeLeaf).data == data) {
-                tree.remove(node);
-                return data;
-            }
-        }
+//        var retVal: Array<Dynamic> = [];
+//        var nodes: Array<QuadTreeNode> = getNodesAtPoint(point);
+//        for(node in nodes) {
+//            if(cast(node, QuadTreeNodeLeaf).data == data) {
+//                tree.remove(node);
+//                return data;
+//            }
+//        }
         return null;
     }
 
     public function getItemsAtPoint(point: Point): Array<Dynamic> {
         var retVal: Array<Dynamic> = [];
-        var nodes: Array<QuadTreeNode> = getNodesAtPoint(point);
+        var accumulator: UniqueCollection<QuadTreeNode> = new UniqueCollection<QuadTreeNode>();
+        var nodes: UniqueCollection<QuadTreeNode> = getNodesAtPoint(tree, point.x, point.y, accumulator);
         for(node in nodes) {
             retVal.push(cast(node, QuadTreeNodeLeaf).data);
         }
         return retVal;
     }
 
-    private inline function getNodesAtPoint(point: Point): Array<QuadTreeNode> {
-        var retVal: Array<QuadTreeNode> = [];
-        for(item in tree) {
+    private inline function getNodesAtPoint(quadTreeNodes: Array<QuadTreeNode>, x: Float, y: Float, accumulator: UniqueCollection<QuadTreeNode>): UniqueCollection<QuadTreeNode> {
+        var secondNode: QuadTreeNode = quadTreeNodes[1];
+        if(Std.is(secondNode, QuadTree)) {
+            var secondNodeArea: Rectangle = secondNode.area;
+            var fourthNodeArea: Rectangle = quadTreeNodes[3].area;
+            if(x < secondNodeArea.x) {
+                if(y < fourthNodeArea.y) {
+                    //quadrant 1
+                    getNodesAtPoint(cast(quadTreeNodes[0], QuadTree).tree, x, y, accumulator);
+                } else {
+                    //quadrant 4
+                    getNodesAtPoint(cast(quadTreeNodes[3], QuadTree).tree, x, y, accumulator);
+                }
+            } else {
+                if(y < fourthNodeArea.y) {
+                    //quadrant 2
+                    getNodesAtPoint(cast(quadTreeNodes[1], QuadTree).tree, x, y, accumulator);
+                } else {
+                    //quadrant 3
+                    getNodesAtPoint(cast(quadTreeNodes[2], QuadTree).tree, x, y, accumulator);
+                }
+            }
+        } else {
+            getLeavesAtPoint(quadTreeNodes, x, y, accumulator);
+        }
+        return accumulator;
+    }
+
+    private inline function getLeavesAtPoint(quadTreeNodes: Array<QuadTreeNode>, x: Float, y: Float, accumulator: UniqueCollection<QuadTreeNode>):UniqueCollection<QuadTreeNode> {
+        for(item in quadTreeNodes) {
             var rect: Rectangle = item.area;
-            if(rect.containsPoint(point)) {
-                retVal.push(item);
+            if(rect.contains(x, y)) {
+                accumulator.add(item);
             }
         }
-        return retVal;
+        return accumulator;
     }
 
-    /**
-     * very expensive, has to traverse entire tree
-     */
-    public function getRectForData(data: Dynamic): Rectangle {
-        for(item in tree) {
-            if(cast(item, QuadTreeNodeLeaf).data == data) {
-                return item.area;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * very expensive, has to traverse entire tree
-     */
-    public function getAllData(): Array<Dynamic> {
-        var retVal: Array<Dynamic> = [];
-        for(item in tree) {
-            retVal.push(cast(item, QuadTreeNodeLeaf).data);
-        }
-        return retVal;
-    }
 }
