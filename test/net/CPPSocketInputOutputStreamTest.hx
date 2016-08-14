@@ -1,5 +1,5 @@
 package net;
-
+#if cpp
 import haxe.io.Input;
 import haxe.io.Bytes;
 import haxe.io.Output;
@@ -7,6 +7,7 @@ import io.InputOutputStream;
 import error.Logger;
 import util.MappedSubscriber;
 import core.ObjectCreator;
+#end
 import massive.munit.Assert;
 import mockatoo.Mockatoo;
 import mockatoo.Mockatoo.*;
@@ -14,7 +15,7 @@ import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
 
 class CPPSocketInputOutputStreamTest {
-
+#if cpp
     private var objectCreator: ObjectCreator;
     private var subscriber: MappedSubscriber;
     private var socket: TCPSocket;
@@ -430,6 +431,7 @@ class CPPSocketInputOutputStreamTest {
         cbCount++;
         Assert.areEqual(socketStream, stream);
     }
+#end
 }
 
 class Error {

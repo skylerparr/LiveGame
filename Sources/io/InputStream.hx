@@ -1,6 +1,6 @@
 package io;
 interface InputStream {
-    var bytesAvailable(get,null) : Int;
+    var bytesAvailable(get,null) : UInt;
 
     function readBoolean() : Bool;
     function readByte() : Int;

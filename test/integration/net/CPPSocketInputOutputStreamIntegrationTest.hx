@@ -1,5 +1,6 @@
 package integration.net;
 
+#if integration
 import haxe.io.BytesInput;
 import haxe.io.BytesBuffer;
 import haxe.io.Bytes;
@@ -9,6 +10,7 @@ import util.MappedSubscriber;
 import io.InputOutputStream;
 import net.CPPSocketInputOutputStream;
 import net.CPPTCPSocket;
+#end
 import massive.munit.Assert;
 import mockatoo.Mockatoo;
 import mockatoo.Mockatoo.*;

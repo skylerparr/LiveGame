@@ -1,14 +1,17 @@
 package net;
+#if cpp
 import sys.net.Socket;
 import haxe.io.BytesInput;
 import haxe.io.Bytes;
 import haxe.io.Output;
 import haxe.io.Input;
 import sys.net.Host;
+#end
 import util.MappedSubscriber;
 import error.Logger;
 import io.InputOutputStream;
 import core.ObjectCreator;
+#if cpp
 class CPPSocketInputOutputStream implements TCPSocketConnector implements InputOutputStream {
 
     private static inline var CONNECTED: String = "connected";
@@ -36,9 +39,9 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         return bufferInput.position;
     }
 
-    public var bytesAvailable(get, null):Int;
+    public var bytesAvailable(get, null):UInt;
 
-    public function get_bytesAvailable():Int {
+    public function get_bytesAvailable():UInt {
         if(bufferInput == null) {
             return 0;
         }
@@ -317,3 +320,4 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         return false;
     }
 }
+#end

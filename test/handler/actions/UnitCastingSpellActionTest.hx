@@ -1,5 +1,6 @@
 package handler.actions;
 
+import mocks.MockGameWorld;
 import handler.input.UnitCastingSpell;
 import world.two.WorldPoint2D;
 import world.WorldPoint;
@@ -22,7 +23,7 @@ class UnitCastingSpellActionTest {
 
     private var castingSpellAction: UnitCastingSpellAction;
     private var unitInteractionManager: UnitInteractionManager;
-    private var gameWorld: GameWorld;
+    private var gameWorld: MockGameWorld;
     private var objectCreator: ObjectCreator;
     private var spellService: SpellService;
     private var spell: MutableSpellVO;
@@ -31,7 +32,7 @@ class UnitCastingSpellActionTest {
     @Before
     public function setup():Void {
         unitInteractionManager = mock(UnitInteractionManager);
-        gameWorld = mock(GameWorld);
+        gameWorld = mock(MockGameWorld);
         objectCreator = mock(ObjectCreator);
         spellService = mock(SpellService);
         gameObject = mock(MockGameObject);

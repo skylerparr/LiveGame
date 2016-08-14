@@ -4,9 +4,15 @@
 #-lib hamcrest
 #-lib mockatoo
 #-lib minject
+#-lib continuation
+#-lib actuate
 #-cp Sources
 
 #-cp test
+#-D test
+#-debug
+#-D integration
+#--no-inline
 #-swf-version 11
 #-swf build/as3_test.swf
 
@@ -45,6 +51,7 @@
 -lib minject
 -lib continuation
 -lib actuate
+-lib hxcpp-debugger
 --macro mcover.MCover.coverage([''],['Sources'],['TestMain','TestSuite','animation.spec.JSONArray','core.AnyException','core.Sample','core.SampleBase','core.SampleWithArgs','input.MockKeyboardKey','mocks.*','sound.kha.mocks.*','vo.mutable.*','handler.input.*','handler.output.*','error.*','constants.*'])
 -D MCOVER
 -cp Sources
@@ -52,6 +59,8 @@
 -cp test
 -D HXCPP_M64
 -D test
+#-debug
+#-D HXCPP_DEBUGGER
 #-D integration
 --no-inline
 -cpp build/cpp_test

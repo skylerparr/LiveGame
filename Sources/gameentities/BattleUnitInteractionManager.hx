@@ -11,7 +11,7 @@ import world.GameObject;
 import core.ObjectCreator;
 import world.GameWorld;
 class BattleUnitInteractionManager implements UnitInteractionManager {
-    
+
     @inject
     public var gameWorld: GameWorld;
     @inject

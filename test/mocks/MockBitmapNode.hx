@@ -5,15 +5,6 @@ import display.DisplayNodeContainer;
 import display.BitmapNode;
 class MockBitmapNode extends TwoDimDisplayNode implements BitmapNode {
 
-//    @:isVar
-//    public var parent(get, set):DisplayNodeContainer;
-
-//    public function init():Void {
-//    }
-//
-//    public function dispose():Void {
-//    }
-
     @:isVar
     public var imageData(get, set):Dynamic;
 
@@ -25,18 +16,6 @@ class MockBitmapNode extends TwoDimDisplayNode implements BitmapNode {
 
     @:isVar
     public var sw(get, set):UInt;
-
-//    @:isVar
-//    public var depth(get, set):Float;
-//
-//    @:isVar
-//    public var scaleX(get, set):Float;
-//
-//    @:isVar
-//    public var scaleY(get, set):Float;
-//
-//    @:isVar
-//    public var scaleZ(get, set):Float;
 
     @:isVar
     public var sh(get, set):UInt;
