@@ -54,36 +54,42 @@ class RectangleTest {
     public function shouldReturnTrueIfTopLeftCornerOfRectangleIntersects(): Void {
         var rect2: Rectangle = new Rectangle(50, 50, 100, 100);
         Assert.isTrue(rectangle.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rectangle));
     }
 
     @Test
     public function shouldReturnTrueIfTopRightCornerOfRectangleIntersects(): Void {
         var rect2: Rectangle = new Rectangle(0, 50, 30, 100);
         Assert.isTrue(rectangle.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rectangle));
     }
 
     @Test
     public function shouldReturnTrueIfBottomLeftCornerOfRectangleIntersects(): Void {
         var rect2: Rectangle = new Rectangle(30, 0, 30, 50);
         Assert.isTrue(rectangle.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rectangle));
     }
 
     @Test
     public function shouldReturnTrueIfBottomRightCornerOfRectangleIntersects(): Void {
         var rect2: Rectangle = new Rectangle(0, 0, 60, 70);
         Assert.isTrue(rectangle.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rectangle));
     }
 
     @Test
     public function shouldReturnTrueIfTheEntireRectangleIsContainedInTheRectangle(): Void {
         var rect2: Rectangle = new Rectangle(15, 25, 10, 10);
         Assert.isTrue(rectangle.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rectangle));
     }
 
     @Test
     public function shouldReturnTrueIfTheEntireRectangleEngulfsTheRectangle(): Void {
         var rect2: Rectangle = new Rectangle(0, 0, 200, 200);
         Assert.isTrue(rectangle.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rectangle));
     }
 
     @Test
@@ -95,6 +101,15 @@ class RectangleTest {
     public function shouldReturnFalseIfTheRectanglesDontIntersect(): Void {
         var rect2: Rectangle = new Rectangle(100, 100, 200, 200);
         Assert.isFalse(rectangle.intersects(rect2));
+        Assert.isFalse(rect2.intersects(rectangle));
+    }
+
+    @Test
+    public function shouldIntersect(): Void {
+        var rect1: Rectangle = new Rectangle(390,110,20,20);
+        var rect2: Rectangle = new Rectangle(0,0,400,300);
+        Assert.isTrue(rect1.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rect1));
     }
 
     @Test
