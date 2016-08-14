@@ -297,6 +297,9 @@ class QuadTreeTest {
         var rectangle: Rectangle = new Rectangle(390, 110, 20, 20);
         quadTree.add(rectangle, data4);
 
+        var node: QuadTreeNodeLeaf = quadTree.getLeafByData(data);
+        Assert.areEqual(1, node.parentNodes.length);
+
         var node: QuadTreeNodeLeaf = quadTree.getLeafByData(data4);
         Assert.areEqual(2, node.parentNodes.length);
     }
@@ -313,7 +316,18 @@ class QuadTreeTest {
         quadTree.add(rectangle, data);
 
         var node: QuadTreeNodeLeaf = quadTree.getLeafByData(data);
-        Assert.areEqual(13, node.parentNodes.length);
+        Assert.areEqual(25, node.parentNodes.length);
+    }
+
+    @Test
+    public function shouldGetAllItemsAtPoint(): Void {
+        for(i in 0...50) {
+            var data = {value: i};
+            var rectangle: Rectangle = new Rectangle(i, 110, 20, 20);
+            quadTree.add(rectangle, data);
+        }
+        var items: Array<Dynamic> = quadTree.getAllItemsAtPoint(new Point(20, 110));
+        Assert.areEqual(21, items.length);
     }
 
     private function assertQuadTree(tree:QuadTree, x:Float, y:Float, w:Float, h:Float):Void {

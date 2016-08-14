@@ -110,6 +110,16 @@ class RectangleTest {
         var rect2: Rectangle = new Rectangle(0,0,400,300);
         Assert.isTrue(rect1.intersects(rect2));
         Assert.isTrue(rect2.intersects(rect1));
+
+        var rect1: Rectangle = new Rectangle(390,110,20,20);
+        var rect2: Rectangle = new Rectangle(400,0,400,300);
+        Assert.isTrue(rect1.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rect1));
+
+        var rect1: Rectangle = new Rectangle(0,310,20,20);
+        var rect2: Rectangle = new Rectangle(0,300,400,300);
+        Assert.isTrue(rect1.intersects(rect2));
+        Assert.isTrue(rect2.intersects(rect1));
     }
 
     @Test

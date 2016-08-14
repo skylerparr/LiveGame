@@ -23,14 +23,12 @@ class Rectangle {
             var rectHeight: Float = rectY + rect.height;
 
             return
-                contains(rectX, rectY) ||
-                contains(rectWidth, rectY) ||
-                contains(rectX, rectHeight) ||
-                contains(rectWidth, rectHeight) ||
                 rect.contains(this.x, this.y) ||
                 rect.contains(this.x + this.width, this.y) ||
                 rect.contains(this.x, this.y + this.height) ||
-                rect.contains(this.x + this.width, this.y + this.height);
+                rect.contains(this.x + this.width, this.y + this.height) ||
+                contains(rectX, rectY) ||
+                contains(rectWidth, rectHeight);
         }
     }
 

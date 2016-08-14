@@ -38,7 +38,7 @@ class QuadTree implements QuadTreeNode {
     }
 
     public function addLeaf(leaf: QuadTreeNodeLeaf): Void {
-        if(tree.length == 0 || maxDepth == 0) {
+        if(tree.length == 0) {
             addLeafToThisTree(leaf);
             return;
         }
@@ -53,7 +53,7 @@ class QuadTree implements QuadTreeNode {
             return;
         }
         addLeafToThisTree(leaf);
-        if(tree.length == countToSplit) {
+        if(tree.length == countToSplit && maxDepth > 0) {
             var tempTree: Array<QuadTreeNode> = tree;
             splitTree();
             for(leaf in tempTree) {
@@ -154,6 +154,24 @@ class QuadTree implements QuadTreeNode {
                 }
             }
             return null;
+        }
+    }
+
+    public function getAllItemsAtPoint(point: Point): Array<Dynamic> {
+        if(Std.is(tree[0], QuadTree)) {
+            var quad: QuadTree = getQuad(point);
+            return quad.getAllItemsAtPoint(point);
+        } else {
+            var retVal: Array<Dynamic> = [];
+            var x: Float = point.x;
+            var y: Float = point.y;
+            for(node in tree) {
+                var leaf: QuadTreeNodeLeaf = cast node;
+                if(leaf.area.contains(x, y)) {
+                    retVal.push(leaf.data);
+                }
+            }
+            return retVal;
         }
     }
 }
