@@ -213,4 +213,28 @@ class QuadTree implements QuadTreeNode {
             }
         }
     }
+
+    #if !test
+    public function debug(g: kha.graphics2.Graphics): Void {
+        g.begin(false);
+        g.drawRect(area.x, area.y, area.width, area.height);
+        g.end();
+        if(Std.is(tree[0], QuadTree)) {
+            for(node in tree) {
+                var quad: QuadTree = cast node;
+                quad.debug(g);
+            }
+        } else {
+            for(node in tree) {
+                var leaf: QuadTreeNodeLeaf = cast node;
+                var leafArea: Rectangle = leaf.area;
+                var data: Dynamic = leaf.data;
+                g.begin(false);
+                g.color = kha.Color.fromBytes(data.r, data.g, data.b);
+                g.fillRect(leafArea.x, leafArea.y, leafArea.width, leafArea.height);
+                g.end();
+            }
+        }
+    }
+    #end
 }
