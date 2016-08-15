@@ -1,4 +1,5 @@
 package collections;
+import collections.QuadTreeNodeLeaf;
 import collections.QuadTree;
 import collections.QuadTreeNodeLeaf;
 import geom.Point;
@@ -172,6 +173,44 @@ class QuadTree implements QuadTreeNode {
                 }
             }
             return retVal;
+        }
+    }
+
+    public function remove(data:Dynamic):Bool {
+        var leaf: QuadTreeNodeLeaf = getLeafByData(data);
+        if(leaf != null) {
+            for(node in leaf.parentNodes) {
+                var quad: QuadTree = cast node;
+                quad.tree.remove(leaf);
+                restructureQuad(quad);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private inline function restructureQuad(quad: QuadTree): Void {
+        var parent: QuadTree = cast quad.parentNodes[0];
+        if(parent != null) {
+            var count: Int = 0;
+            for(node in parent.tree) {
+                if(Std.is(node, QuadTree)) {
+                    var quad: QuadTree = cast node;
+                    count += quad.tree.length;
+                }
+            }
+            if(count == parent.countToSplit - 1) {
+                var tmpTree: Array<QuadTreeNode> = parent.tree;
+                parent.tree = [];
+                for(quad in tmpTree) {
+                    var quad: QuadTree = cast quad;
+                    for(node in quad.tree) {
+                        var leaf: QuadTreeNodeLeaf = cast node;
+                        leaf.parentNodes.remove(parent);
+                        parent.addLeaf(leaf);
+                    }
+                }
+            }
         }
     }
 }

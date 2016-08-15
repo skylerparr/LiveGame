@@ -329,6 +329,100 @@ class QuadTreeTest {
         var items: Array<Dynamic> = quadTree.getAllItemsAtPoint(new Point(20, 110));
         Assert.areEqual(21, items.length);
     }
+    
+    @Test
+    public function shouldRemoveItem(): Void {
+        var data = {};
+        var rectangle: Rectangle = new Rectangle(100, 110, 20, 20);
+        quadTree.add(rectangle, data);
+
+        Assert.isTrue(quadTree.remove(data));
+
+        Assert.areEqual(0, quadTree.tree.length);
+    }
+
+    @Test
+    public function shouldReturnFalseItemNotFound(): Void {
+        var data = {};
+        var rectangle: Rectangle = new Rectangle(100, 110, 20, 20);
+        quadTree.add(rectangle, data);
+        Assert.isFalse(quadTree.remove({}));
+    }
+    
+    @Test
+    public function shouldRemoveItemFromNestedQuadTree(): Void {
+        var data = {value: 1};
+        var rectangle: Rectangle = new Rectangle(100, 110, 20, 20);
+        quadTree.add(rectangle, data);
+
+        var data1 = {value: 2};
+        var rectangle: Rectangle = new Rectangle(430, 110, 20, 20);
+        quadTree.add(rectangle, data1);
+
+        var data2 = {value: 3};
+        var rectangle: Rectangle = new Rectangle(130, 310, 20, 20);
+        quadTree.add(rectangle, data2);
+
+        var data3 = {value: 4};
+        var rectangle: Rectangle = new Rectangle(430, 310, 20, 20);
+        quadTree.add(rectangle, data3);
+
+        var data4 = {value: 5};
+        var rectangle: Rectangle = new Rectangle(40, 110, 20, 20);
+        quadTree.add(rectangle, data4);
+
+        quadTree.remove(data4);
+
+        Assert.isNull(quadTree.getLeafByData(data4));
+    }
+    
+    @Test
+    public function shouldRestructureParentQuadsOnRemove(): Void {
+        var data = {value: 1};
+        var rectangle: Rectangle = new Rectangle(100, 110, 20, 20);
+        quadTree.add(rectangle, data);
+
+        var data1 = {value: 2};
+        var rectangle: Rectangle = new Rectangle(430, 110, 20, 20);
+        quadTree.add(rectangle, data1);
+
+        var data2 = {value: 3};
+        var rectangle: Rectangle = new Rectangle(130, 310, 20, 20);
+        quadTree.add(rectangle, data2);
+
+        var data3 = {value: 4};
+        var rectangle: Rectangle = new Rectangle(430, 310, 20, 20);
+        quadTree.add(rectangle, data3);
+
+        var data4 = {value: 5};
+        var rectangle: Rectangle = new Rectangle(40, 110, 20, 20);
+        quadTree.add(rectangle, data4);
+
+        var data5 = {value: 6};
+        var rectangle: Rectangle = new Rectangle(0, 110, 20, 20);
+        quadTree.add(rectangle, data5);
+
+        quadTree.remove(data5);
+
+        Assert.isType(quadTree.tree[0], QuadTree);
+        Assert.isType(quadTree.tree[1], QuadTree);
+        Assert.isType(quadTree.tree[2], QuadTree);
+        Assert.isType(quadTree.tree[3], QuadTree);
+
+        quadTree.remove(data4);
+
+        Assert.isType(quadTree.tree[0], QuadTreeNodeLeaf);
+        Assert.isType(quadTree.tree[1], QuadTreeNodeLeaf);
+        Assert.isType(quadTree.tree[2], QuadTreeNodeLeaf);
+        Assert.isType(quadTree.tree[3], QuadTreeNodeLeaf);
+
+        quadTree.remove(data3);
+        quadTree.remove(data2);
+        quadTree.remove(data1);
+        quadTree.remove(data);
+
+        Assert.areEqual(0, quadTree.tree.length);
+    }
 
     private function assertQuadTree(tree:QuadTree, x:Float, y:Float, w:Float, h:Float):Void {
         Assert.areEqual(x, tree.area.x);
