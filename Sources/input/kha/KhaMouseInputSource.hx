@@ -67,7 +67,7 @@ class KhaMouseInputSource implements BaseObject {
     }
 
     public function onMouseWheel(value: Int):Void {
-        pointerEvent.mouseWheeValue = value;
+        pointerEvent.mouseWheelValue = value;
         currentTool().onScroll(pointerEvent);
     }
 

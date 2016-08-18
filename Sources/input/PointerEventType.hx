@@ -1,0 +1,19 @@
+package input;
+enum PointerEventType {
+    POINTER_1_DOWN;
+    POINTER_1_UP;
+    POINTER_1_CLICK;
+    POINTER_1_MOVE;
+
+    POINTER_2_DOWN;
+    POINTER_2_UP;
+    POINTER_2_CLICK;
+    POINTER_2_MOVE;
+
+    POINTER_3_DOWN;
+    POINTER_3_UP;
+    POINTER_3_CLICK;
+    POINTER_3_MOVE;
+
+    ZOOM;
+}

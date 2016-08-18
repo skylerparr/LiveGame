@@ -103,7 +103,7 @@ class KhaMouseInputSourceTest {
         mouseInput.onMouseWheel(5);
 
         currentTool.onScroll(pointerEvent).verify();
-        Assert.areEqual(5, pointerEvent.mouseWheeValue);
+        Assert.areEqual(5, pointerEvent.mouseWheelValue);
     }
 
     @Test

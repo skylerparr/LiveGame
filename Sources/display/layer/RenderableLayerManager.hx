@@ -26,6 +26,7 @@ class RenderableLayerManager implements LayerManager {
             return;
         }
         layerMap.set(layerName, container);
+        container.name = layerName;
         topContainer.addChild(container);
     }
 

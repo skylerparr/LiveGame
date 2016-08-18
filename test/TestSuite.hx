@@ -27,6 +27,7 @@ import handler.actions.UnitCastingSpellActionTest;
 import handler.SocketStreamHandlerTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
+import input.kha.KhaPointerEventManagerTest;
 import input.tools.BattleKeyboardToolTest;
 import integration.net.CPPSocketInputOutputStreamIntegrationTest;
 import lookup.MapHandlerLookupTest;
@@ -81,6 +82,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(handler.SocketStreamHandlerTest);
 		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);
+		add(input.kha.KhaPointerEventManagerTest);
 		add(input.tools.BattleKeyboardToolTest);
 		add(integration.net.CPPSocketInputOutputStreamIntegrationTest);
 		add(lookup.MapHandlerLookupTest);

@@ -7,13 +7,13 @@ class BattlePointingTool implements PointingTool {
         return name;
     }
 
+    public function new() {
+    }
+
     public function init():Void {
     }
 
     public function dispose():Void {
-    }
-
-    public function new() {
     }
 
     public function activate(args:Array<Dynamic>):Void {

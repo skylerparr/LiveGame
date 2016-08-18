@@ -67,4 +67,12 @@ class GameLoopViewPortTrackerTest {
         viewPort.set_x(-500 + 300).verify();
         viewPort.set_y(-400 + 225).verify();
     }
+
+    @Test
+    public function shouldotSubscribeIfGameObjectIsNull(): Void {
+        viewPortTracker.trackToGameObject(null);
+        subscriber.notify(EventNames.ENTER_GAME_LOOP, []);
+        viewPort.set_x(cast any).verify(0);
+        viewPort.set_y(cast any).verify(0);
+    }
 }
