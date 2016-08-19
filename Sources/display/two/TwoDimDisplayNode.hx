@@ -32,6 +32,9 @@ class TwoDimDisplayNode implements DisplayNode {
     public var name(get, set): String;
 
     @:isVar
+    public var mouseEnabled(get, set):Bool;
+
+    @:isVar
     public var parent(get, null):DisplayNodeContainer;
 
     @:isVar
@@ -115,6 +118,14 @@ class TwoDimDisplayNode implements DisplayNode {
 
     public function get_name():String {
         return name;
+    }
+
+    public function get_mouseEnabled():Bool {
+        return mouseEnabled;
+    }
+
+    public function set_mouseEnabled(value:Bool) {
+        return this.mouseEnabled = value;
     }
 
     public function set_parent(value:DisplayNodeContainer) {

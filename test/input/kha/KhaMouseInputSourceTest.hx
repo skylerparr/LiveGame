@@ -69,7 +69,6 @@ class KhaMouseInputSourceTest {
         currentTool.onPointerClick(pointerEvent).verify();
         Assert.areEqual(10, pointerEvent.screenX);
         Assert.areEqual(20, pointerEvent.screenY);
-
     }
 
     @Test

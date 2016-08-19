@@ -6,6 +6,9 @@ class TwoDimDisplayNodeContainer extends TwoDimDisplayNode implements DisplayNod
     public var children(get, null): Array<DisplayNode>;
     public var numChildren(get, null): UInt;
 
+    @:isVar
+    public var mouseChildren(get, set):Bool;
+
     public function new() {
         super();
     }
@@ -16,6 +19,14 @@ class TwoDimDisplayNodeContainer extends TwoDimDisplayNode implements DisplayNod
 
     public function get_numChildren(): UInt {
         return children.length;
+    }
+
+    public function get_mouseChildren():Bool {
+        return mouseChildren;
+    }
+
+    public function set_mouseChildren(value:Bool) {
+        return this.mouseChildren = value;
     }
 
     override public function init():Void {

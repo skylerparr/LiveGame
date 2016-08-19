@@ -11,6 +11,7 @@ interface DisplayNode extends BaseObject {
     var scaleY(get, set): Float;
     var scaleZ(get, set): Float;
     var name(get, set): String;
+    var mouseEnabled(get, set): Bool;
 
     var parent(get, null): DisplayNodeContainer;
 }

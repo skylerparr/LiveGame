@@ -1,5 +1,6 @@
 package display.two.kha;
 
+import mocks.MockMouseNotifier;
 import input.DisplayEventMouseInputHandler;
 import geom.Point;
 class Kha2DRenderer implements Renderer {
@@ -34,7 +35,7 @@ class Kha2DRenderer implements Renderer {
     public function init():Void {
         nodesUnderPoint = new List();
         #if !test
-        kha.input.Mouse.get(0).notify(null, onUp, onMove, null);
+        kha.input.Mouse.get(0).notify(onDown, onUp, onMove, onWheel);
         #end
     }
 
@@ -48,14 +49,18 @@ class Kha2DRenderer implements Renderer {
         currentMouseY = y;
         nodesUnderPoint.clear();
         isDirty = true;
-        trace("mouse moved");
+    }
+
+    private function onDown(but:Int, x:Int, y:Int):Void {
+        inputHandler.mouseDown(nodesUnderPoint, but, x, y);
     }
 
     private function onUp(but:Int, x:Int, y:Int):Void {
-        trace("items under mouse");
-        for(node in nodesUnderPoint) {
-            trace('${node.name} : ${node.x}, ${node.y}');
-        }
+        inputHandler.mouseUp(nodesUnderPoint, but, x, y);
+    }
+
+    private function onWheel(delta:Int):Void {
+        inputHandler.mouseWheel(nodesUnderPoint, delta);
     }
 
     public function render():Void {
@@ -118,6 +123,14 @@ class Kha2DRenderer implements Renderer {
 
     private inline function getWhite():mocks.MockColor {
         return new mocks.MockColor();
+    }
+    public function getMouseHandlers(): MockMouseNotifier {
+        var retVal: MockMouseNotifier = new MockMouseNotifier();
+        retVal.onMouseDown = onDown;
+        retVal.onMouseUp = onUp;
+        retVal.onMouseMove = onMove;
+        retVal.onMouseWheel = onWheel;
+        return retVal;
     }
     #else
     private inline function getColorFromValue(value: UInt): kha.Color {

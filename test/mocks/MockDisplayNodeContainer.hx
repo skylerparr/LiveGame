@@ -16,6 +16,10 @@ class MockDisplayNodeContainer implements DisplayNodeContainer {
 
     @:isVar public var numChildren(get, set): UInt;
 
+    @:isVar public var mouseChildren(get, set): Bool;
+
+    @:isVar public var mouseEnabled(get, set): Bool;
+
     @:isVar public var x(get, set): Float;
 
     @:isVar public var y(get, set): Float;
@@ -74,6 +78,22 @@ class MockDisplayNodeContainer implements DisplayNodeContainer {
 
     public function get_numChildren():UInt {
         return numChildren;
+    }
+
+    public function get_mouseChildren():Bool {
+        return mouseChildren;
+    }
+
+    public function set_mouseChildren(value:Bool) {
+        return this.mouseChildren = value;
+    }
+
+    public function get_mouseEnabled():Bool {
+        return mouseEnabled;
+    }
+
+    public function set_mouseEnabled(value:Bool) {
+        return this.mouseEnabled = value;
     }
 
     public function get_x():Float {

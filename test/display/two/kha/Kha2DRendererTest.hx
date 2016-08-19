@@ -1,5 +1,7 @@
 package display.two.kha;
 
+import mocks.MockMouseNotifier;
+import input.DisplayEventMouseInputHandler;
 import mocks.TestableGraphics;
 import mocks.MockKhaFont;
 import massive.munit.Assert;
@@ -11,12 +13,15 @@ class Kha2DRendererTest {
     private var graphics: TestableGraphics;
     private var container: KhaSprite;
     private var fonts: Map<String, MockKhaFont>;
+    private var displayEventMouseInputHandler: DisplayEventMouseInputHandler;
 
     @Before
     public function setup():Void {
+        displayEventMouseInputHandler = mock(DisplayEventMouseInputHandler);
         container = new KhaSprite();
         container.init();
         khaRenderer = new Kha2DRenderer();
+        khaRenderer.inputHandler = displayEventMouseInputHandler;
         khaRenderer.init();
         khaRenderer.container = container;
         graphics = mock(TestableGraphics);
@@ -176,6 +181,96 @@ class Kha2DRendererTest {
 
         graphics.drawSubImage(cast any, 126, 87, 0, 0, 0, 0).verify();
         graphics.drawString(null, 128, 89).verify();
+    }
+
+    @Test
+    public function shouldPassMouseDownEventToDisplayEventMouseInputHandler(): Void {
+        var handler: MockMouseNotifier = khaRenderer.getMouseHandlers();
+        handler.onMouseDown(0, 4, 21);
+
+        displayEventMouseInputHandler.mouseDown(cast isNotNull, 0, 4, 21).verify();
+    }
+
+    @Test
+    public function shouldPassMouseUpEventToDisplayEventMouseInputHandler(): Void {
+        var handler: MockMouseNotifier = khaRenderer.getMouseHandlers();
+        handler.onMouseUp(0, 54, 321);
+
+        displayEventMouseInputHandler.mouseUp(cast isNotNull, 0, 54, 321).verify();
+    }
+
+    @Test
+    public function shouldPassMouseWheelEventToDisplayEventMouseInputHandler(): Void {
+        var handler: MockMouseNotifier = khaRenderer.getMouseHandlers();
+        handler.onMouseWheel(21);
+
+        displayEventMouseInputHandler.mouseWheel(cast isNotNull, 21).verify();
+    }
+
+    @Test
+    public function shouldPassMouseMoveOnRender(): Void {
+        var handler: MockMouseNotifier = khaRenderer.getMouseHandlers();
+        handler.onMouseMove(5, 6, 0, 0);
+
+        displayEventMouseInputHandler.mouseMove(cast isNotNull, 5, 6).verify(0);
+
+        khaRenderer.render();
+
+        displayEventMouseInputHandler.mouseMove(cast isNotNull, 5, 6).verify();
+    }
+
+    @Test
+    public function shouldCollectItemsUnderMousePoint(): Void {
+        var bitmap: KhaBitmapNode = mock(KhaBitmapNode);
+        var imageData: Dynamic = {};
+        bitmap.imageData.returns(imageData);
+        bitmap.x.returns(1);
+        bitmap.y.returns(2);
+        bitmap.width.returns(10);
+        bitmap.height.returns(20);
+
+        var handler: MockMouseNotifier = khaRenderer.getMouseHandlers();
+        handler.onMouseMove(5, 6, 0, 0);
+
+        var child: KhaSprite = mock(KhaSprite);
+        child.x.returns(0);
+        child.y.returns(0);
+        child.width.returns(100);
+        child.height.returns(200);
+        child.children.returns([bitmap]);
+
+        container.addChild(child);
+
+        displayEventMouseInputHandler.mouseMove(cast isNotNull, 5, 6).calls(function(args): Void {
+            var objects: List<DisplayNode> = args[0];
+            Assert.areEqual(2, objects.length);
+            Assert.areEqual(bitmap, objects.pop());
+            Assert.areEqual(child, objects.pop());
+        });
+
+        khaRenderer.render();
+
+        displayEventMouseInputHandler.mouseMove(cast isNotNull, 5, 6).verify();
+    }
+
+    @Test
+    public function shouldNotNotifyUnlessMouseHasMoved(): Void {
+        var handler: MockMouseNotifier = khaRenderer.getMouseHandlers();
+        handler.onMouseMove(5, 6, 0, 0);
+
+        displayEventMouseInputHandler.mouseMove(cast isNotNull, 5, 6).verify(0);
+
+        khaRenderer.render();
+        khaRenderer.render();
+        khaRenderer.render();
+        khaRenderer.render();
+
+        displayEventMouseInputHandler.mouseMove(cast isNotNull, 5, 6).verify();
+
+        handler.onMouseMove(6, 7, 0, 0);
+        khaRenderer.render();
+
+        displayEventMouseInputHandler.mouseMove(cast isNotNull, 6, 7).verify();
     }
 
     @Test

@@ -1,6 +1,9 @@
 package display;
 interface DisplayNodeContainer extends DisplayNode {
+
     var numChildren(get, null): UInt;
+
+    var mouseChildren(get, set): Bool;
 
     function addChild(node: DisplayNode): DisplayNode;
 
