@@ -21,6 +21,9 @@ class DisplayEventMouseIntputHandlerDelegateTest {
     public function setup():Void {
         objectCreator = mock(ObjectCreator);
         sourceListener = mock(PointingInputSourceListener);
+        objectCreator.createInstance(PointerEvent).calls(function(args): PointerEvent {
+            return new PointerEvent();
+        });
 
         nodes = new List<DisplayNode>();
 
