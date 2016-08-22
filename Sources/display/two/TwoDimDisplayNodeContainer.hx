@@ -7,7 +7,7 @@ class TwoDimDisplayNodeContainer extends TwoDimDisplayNode implements DisplayNod
     public var numChildren(get, null): UInt;
 
     @:isVar
-    public var mouseChildren(get, set):Bool;
+    public var mouseChildren(get, set):Bool = true;
 
     public function new() {
         super();

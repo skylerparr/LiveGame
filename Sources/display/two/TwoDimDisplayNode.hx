@@ -32,7 +32,7 @@ class TwoDimDisplayNode implements DisplayNode {
     public var name(get, set): String;
 
     @:isVar
-    public var mouseEnabled(get, set):Bool;
+    public var mouseEnabled(get, set):Bool = true;
 
     @:isVar
     public var parent(get, null):DisplayNodeContainer;

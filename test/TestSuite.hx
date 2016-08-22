@@ -25,7 +25,7 @@ import geom.RectangleTest;
 import handler.actions.UnitCastedSpellActionTest;
 import handler.actions.UnitCastingSpellActionTest;
 import handler.SocketStreamHandlerTest;
-import input.DisplayEventMouseIntputHandlerDelegateTest;
+import input.DisplayEventMouseInputHandlerDelegateTest;
 import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaMouseInputSourceTest;
 import input.kha.KhaPointerEventManagerTest;
@@ -81,7 +81,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(handler.actions.UnitCastedSpellActionTest);
 		add(handler.actions.UnitCastingSpellActionTest);
 		add(handler.SocketStreamHandlerTest);
-		add(input.DisplayEventMouseIntputHandlerDelegateTest);
+		add(input.DisplayEventMouseInputHandlerDelegateTest);
 		add(input.kha.KhaKeyboardInputSourceListenerTest);
 		add(input.kha.KhaMouseInputSourceTest);
 		add(input.kha.KhaPointerEventManagerTest);
