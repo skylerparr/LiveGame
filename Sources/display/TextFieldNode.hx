@@ -1,5 +1,5 @@
 package display;
-interface TextFieldNode extends DisplayNode {
+interface TextFieldNode extends InteractiveDisplay {
     var text(get, set): String;
     var fontSize(get, set): UInt;
     var fontColor(get, set): UInt;

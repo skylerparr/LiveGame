@@ -35,5 +35,5 @@ interface PointingInputSourceListener extends BaseObject {
 
     function onPointerMiddleUp(e: PointerEvent): Void;
 
-    function onPointerMiddleClick( event: PointerEvent ): Void;
+    function onPointerMiddleClick( e: PointerEvent ): Void;
 }

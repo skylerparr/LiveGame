@@ -19,6 +19,8 @@ class KhaPointerEventManagerTest {
     private var eventManager: KhaPointerEventManager;
     private var objectCreator: ObjectCreator;
 
+    private var cbCounter: Int;
+
     @Before
     public function setup():Void {
         objectCreator = mock(ObjectCreator);
@@ -87,13 +89,31 @@ class KhaPointerEventManagerTest {
         var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
         eventManager.registerEvent(display, PointerEventType.POINTER_1_DOWN, pointer1DownHandler);
         eventManager.registerEvent(display, PointerEventType.POINTER_1_UP, pointer1DownHandler);
-        eventManager.registerEvent(display, PointerEventType.POINTER_1_MOVE, pointer1DownHandler);
+        eventManager.registerEvent(display, PointerEventType.POINTER_MOVE, pointer1DownHandler);
         eventManager.registerEvent(display, PointerEventType.POINTER_1_CLICK, pointer1DownHandler);
         var subscriber: MappedSubscriber = eventManager.subscribers.get(display);
 
         eventManager.unregisterAll(display);
         objectCreator.disposeInstance(subscriber).verify();
         Assert.isNull(eventManager.subscribers.get(display));
+    }
+
+    @Test
+    public function shouldTrimSubscriberMapWhenNoEventsLeft(): Void {
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_DOWN, pointer1DownHandler);
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_UP, pointer1DownHandler);
+        eventManager.registerEvent(display, PointerEventType.POINTER_MOVE, pointer1DownHandler);
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_CLICK, pointer1DownHandler);
+        var subscriber: MappedSubscriber = eventManager.subscribers.get(display);
+
+        eventManager.unregisterEvent(display, PointerEventType.POINTER_1_DOWN, pointer1DownHandler);
+        eventManager.unregisterEvent(display, PointerEventType.POINTER_1_UP, pointer1DownHandler);
+        eventManager.unregisterEvent(display, PointerEventType.POINTER_MOVE, pointer1DownHandler);
+        eventManager.unregisterEvent(display, PointerEventType.POINTER_1_CLICK, pointer1DownHandler);
+
+        Assert.isNull(eventManager.subscribers.get(display));
+        objectCreator.disposeInstance(subscriber).verify();
     }
 
     @Test
@@ -107,7 +127,129 @@ class KhaPointerEventManagerTest {
         Assert.isNull(eventManager.subscribers);
     }
 
+    @Test
+    public function shouldPassEventsToHandlersByDisplayNode(): Void {
+        var cbCalled: Bool = false;
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+        var pointerEvent: PointerEvent = createPointerEvent(display, 23, 34);
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_DOWN, function(pe: PointerEvent): Void {
+            cbCalled = true;
+            Assert.areEqual(pointerEvent, pe);
+            Assert.areEqual(display, pe.target);
+        });
+
+        eventManager.onPointerDown(pointerEvent);
+        Assert.isTrue(cbCalled);
+    }
+
+    @Test
+    public function shouldNotPassEventsToHandlerIfHandlerNotRegistered(): Void {
+        var cbCalled: Bool = false;
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+        var pointerEvent: PointerEvent = createPointerEvent(display, 23, 34);
+        eventManager.registerEvent(display, PointerEventType.POINTER_2_DOWN, function(pe: PointerEvent): Void {
+            cbCalled = true;
+        });
+
+        eventManager.onPointerDown(pointerEvent);
+        Assert.isFalse(cbCalled);
+    }
+
+    @Test
+    public function shouldNotPassEventsToHandlerIfDisplayNodeHasNoEvents(): Void {
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+        var pointerEvent: PointerEvent = createPointerEvent(display, 23, 34);
+        eventManager.onPointerDown(pointerEvent);
+        Assert.isTrue(true);
+    }
+
+    @Test
+    public function shouldPassOnAllEvents(): Void {
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+        var pointerEvent: PointerEvent = createPointerEvent(display, 23, 34);
+        assignEvents(display);
+        eventManager.onPointerDown(pointerEvent);
+        eventManager.onPointerUp(pointerEvent);
+        eventManager.onPointerClick(pointerEvent);
+        eventManager.onPointerMove(pointerEvent);
+        eventManager.onPointerDoubleClick(pointerEvent);
+        eventManager.onPointerRightDown(pointerEvent);
+        eventManager.onPointerRightUp(pointerEvent);
+        eventManager.onPointerRightClick(pointerEvent);
+        eventManager.onPointerMiddleDown(pointerEvent);
+        eventManager.onPointerMiddleUp(pointerEvent);
+        eventManager.onPointerMiddleClick(pointerEvent);
+        eventManager.onScroll(pointerEvent);
+        Assert.areEqual(12, cbCounter);
+    }
+
+    @Test
+    public function shouldNotPassOnAllEvents(): Void {
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+        var pointerEvent: PointerEvent = createPointerEvent(display, 23, 34);
+        eventManager.onPointerDown(pointerEvent);
+        eventManager.onPointerUp(pointerEvent);
+        eventManager.onPointerClick(pointerEvent);
+        eventManager.onPointerMove(pointerEvent);
+        eventManager.onPointerDoubleClick(pointerEvent);
+        eventManager.onPointerRightDown(pointerEvent);
+        eventManager.onPointerRightUp(pointerEvent);
+        eventManager.onPointerRightClick(pointerEvent);
+        eventManager.onPointerMiddleDown(pointerEvent);
+        eventManager.onPointerMiddleUp(pointerEvent);
+        eventManager.onPointerMiddleClick(pointerEvent);
+        eventManager.onScroll(pointerEvent);
+        Assert.areEqual(0, cbCounter);
+    }
+
+    private function assignEvents(display: DisplayNode):Void {
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_DOWN, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_UP, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_MOVE, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_CLICK, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_1_DOUBLE_CLICK, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_2_DOWN, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_2_UP, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_2_CLICK, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_3_DOWN, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_3_UP, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.POINTER_3_CLICK, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+        eventManager.registerEvent(display, PointerEventType.ZOOM, function(pe: PointerEvent): Void {
+            cbCounter++;
+        });
+    }
+
     private function pointer1DownHandler(event: PointerEvent):Void {
 
+    }
+
+    private function createPointerEvent(displayNode:DisplayNode, x:Int, y:Int):PointerEvent {
+        var retVal: PointerEvent = new PointerEvent();
+        retVal.target = displayNode;
+        retVal.screenX = x;
+        retVal.screenY = y;
+        return retVal;
     }
 }

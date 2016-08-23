@@ -1,9 +1,10 @@
 package mocks;
 
+import display.two.TwoDimInteractiveDisplay;
 import display.two.TwoDimDisplayNode;
 import display.DisplayNodeContainer;
 import display.BitmapNode;
-class MockBitmapNode extends TwoDimDisplayNode implements BitmapNode {
+class MockBitmapNode extends TwoDimInteractiveDisplay implements BitmapNode {
 
     @:isVar
     public var imageData(get, set):Dynamic;

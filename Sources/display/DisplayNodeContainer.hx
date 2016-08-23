@@ -1,5 +1,5 @@
 package display;
-interface DisplayNodeContainer extends DisplayNode {
+interface DisplayNodeContainer extends InteractiveDisplay {
 
     var numChildren(get, null): UInt;
 

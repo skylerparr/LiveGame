@@ -1,6 +1,6 @@
 package display.two.kha;
 @IgnoreCover
-class KhaBitmapNode extends TwoDimDisplayNode implements BitmapNode {
+class KhaBitmapNode extends TwoDimInteractiveDisplay implements BitmapNode {
 
     @:isVar
     public var imageData(get, set):Dynamic;

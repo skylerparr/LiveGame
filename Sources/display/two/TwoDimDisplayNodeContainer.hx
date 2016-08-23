@@ -1,7 +1,7 @@
 package display.two;
 import display.DisplayNodeContainer;
 
-class TwoDimDisplayNodeContainer extends TwoDimDisplayNode implements DisplayNodeContainer {
+class TwoDimDisplayNodeContainer extends TwoDimInteractiveDisplay implements DisplayNodeContainer {
 
     public var children(get, null): Array<DisplayNode>;
     public var numChildren(get, null): UInt;

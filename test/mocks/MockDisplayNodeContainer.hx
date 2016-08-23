@@ -1,5 +1,7 @@
 package mocks;
 
+import input.PointerEvent;
+import input.PointerEventType;
 import display.DisplayNode;
 import display.DisplayNodeContainer;
 class MockDisplayNodeContainer implements DisplayNodeContainer {
@@ -168,6 +170,12 @@ class MockDisplayNodeContainer implements DisplayNodeContainer {
 
     public function removeChildAt(index:UInt):DisplayNode {
         return null;
+    }
+
+    public function registerPointerEvent(type:PointerEventType, handler:PointerEvent->Void):Void {
+    }
+
+    public function unRegisterPointerEvent(type:PointerEventType, handler:PointerEvent->Void):Void {
     }
 
 }

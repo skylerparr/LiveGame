@@ -115,6 +115,8 @@ class Playground implements BaseObject {
         hello.x = 400;
         topLayer.addChild(hello);
 
+        var button: BitmapNode = objectCreator.createInstance(BitmapNode);
+
         var tween: Tween = objectCreator.createInstance(Tween);
         tween.to(hello, 3000, {x: 500, y: 500}).delay(2000);
     }

@@ -1,5 +1,5 @@
 package display;
-interface BitmapNode extends DisplayNode {
+interface BitmapNode extends InteractiveDisplay {
     var imageData(get, set): Dynamic;
 
     var sx(get, set): UInt;

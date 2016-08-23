@@ -10,9 +10,18 @@ class TwoDimInteractiveDisplay extends TwoDimDisplayNode implements InteractiveD
         super();
     }
 
+    override public function dispose():Void {
+        super.dispose();
+        if(pointerEventManager != null) {
+            pointerEventManager.unregisterAll(this);
+        }
+    }
+
     public function registerPointerEvent(type:PointerEventType, handler:PointerEvent->Void):Void {
+        pointerEventManager.registerEvent(this, type, handler);
     }
 
     public function unRegisterPointerEvent(type:PointerEventType, handler:PointerEvent->Void):Void {
+        pointerEventManager.unregisterEvent(this, type, handler);
     }
 }

@@ -1,6 +1,5 @@
 package display.two.kha;
 
-import mocks.MockMouseNotifier;
 import input.DisplayEventMouseInputHandler;
 import geom.Point;
 class Kha2DRenderer implements Renderer {
@@ -124,8 +123,8 @@ class Kha2DRenderer implements Renderer {
     private inline function getWhite():mocks.MockColor {
         return new mocks.MockColor();
     }
-    public function getMouseHandlers(): MockMouseNotifier {
-        var retVal: MockMouseNotifier = new MockMouseNotifier();
+    public function getMouseHandlers(): mocks.MockMouseNotifier {
+        var retVal: mocks.MockMouseNotifier = new mocks.MockMouseNotifier();
         retVal.onMouseDown = onDown;
         retVal.onMouseUp = onUp;
         retVal.onMouseMove = onMove;

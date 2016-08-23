@@ -83,6 +83,10 @@ import display.LayerManager;
 import display.two.kha.Kha2DRenderer;
 import display.two.kha.KhaSprite;
 import display.layer.RenderableLayerManager;
+import input.PointerEventManager;
+import input.DisplayEventMouseInputHandlerDelegate;
+import input.DisplayEventMouseInputHandler;
+import input.kha.KhaPointerEventManager;
 import minject.Injector;
 @IgnoreCover
 class InjectionSettings {
@@ -106,6 +110,15 @@ class InjectionSettings {
 
         var assetLocator: AssetLocator = objectFactory.createInstance(AssetLoaderAssetLocator);
         injector.mapValue(AssetLocator, assetLocator);
+
+        var eventManager: KhaPointerEventManager = objectFactory.createInstance(KhaPointerEventManager);
+        injector.mapValue(PointerEventManager, eventManager);
+        injector.mapValue(input.PointingInputSourceListener, eventManager);
+
+        var mouseHandlerDelegate: DisplayEventMouseInputHandlerDelegate = objectFactory.createInstance(DisplayEventMouseInputHandlerDelegate);
+        injector.mapValue(DisplayEventMouseInputHandler, mouseHandlerDelegate);
+
+        display.two.TwoDimInteractiveDisplay.pointerEventManager = eventManager;
 
         var container: KhaSprite = objectFactory.createInstance(KhaSprite);
         var renderer: Kha2DRenderer = objectFactory.createInstance(Kha2DRenderer);
