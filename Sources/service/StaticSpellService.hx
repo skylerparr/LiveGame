@@ -1,6 +1,7 @@
 package service;
 import vo.mutable.MutableSpellVO;
 import vo.SpellVO;
+@IgnoreCover
 class StaticSpellService implements SpellService {
     public function new() {
     }

@@ -1,8 +1,6 @@
 package input;
 import core.BaseObject;
 interface PointingInputSourceListener extends BaseObject {
-    function onToolDeactivated( tool: PointingTool ): Void;
-
     /**
      *  Occurs when the user activates the pointer selection.
      */

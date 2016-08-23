@@ -7,7 +7,7 @@ import massive.munit.async.AsyncFactory;
 
 import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
-class QuadTreeNodeTest {
+class QuadTreeNodeLeafTest {
 
     @Before
     public function setup():Void {

@@ -1,4 +1,5 @@
 package handler;
+@IgnoreCover
 class IOCommands {
     //input commands
     public static inline var PLAYER_CONNECTED: Int = 1;
