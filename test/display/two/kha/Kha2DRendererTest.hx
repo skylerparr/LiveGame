@@ -244,8 +244,8 @@ class Kha2DRendererTest {
         displayEventMouseInputHandler.mouseMove(cast isNotNull, 5, 6).calls(function(args): Void {
             var objects: List<DisplayNode> = args[0];
             Assert.areEqual(2, objects.length);
-            Assert.areEqual(bitmap, objects.pop());
             Assert.areEqual(child, objects.pop());
+            Assert.areEqual(bitmap, objects.pop());
         });
 
         khaRenderer.render();

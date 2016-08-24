@@ -105,7 +105,7 @@ class Kha2DRenderer implements Renderer {
     }
 
     private inline function storeItemUnderMouse(displayNode: DisplayNode): Void {
-        nodesUnderPoint.add(displayNode);
+        nodesUnderPoint.push(displayNode);
     }
 
     private inline function isUnderMouse(x: Float, y: Float, width: Float, height: Float): Bool {
