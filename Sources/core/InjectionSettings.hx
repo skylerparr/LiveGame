@@ -151,13 +151,10 @@ class InjectionSettings {
         layerManager.addLayerByName(LayerNames.GAME_WORLD, viewPortContainer);
 
         container = objectFactory.createInstance(DisplayNodeContainer);
-        layerManager.addLayerByName("bottom", container);
+        layerManager.addLayerByName(LayerNames.UI, container);
 
         container = objectFactory.createInstance(DisplayNodeContainer);
-        layerManager.addLayerByName("middle", container);
-
-        container = objectFactory.createInstance(DisplayNodeContainer);
-        layerManager.addLayerByName("top", container);
+        layerManager.addLayerByName(LayerNames.DIALOGS, container);
 
         container = objectFactory.createInstance(DisplayNodeContainer);
         layerManager.addLayerByName(LayerNames.DEBUG, container);

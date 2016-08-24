@@ -1,4 +1,6 @@
 package scenes.playground;
+import vo.mutable.MutableSpellVO;
+import gameentities.HeroInteraction;
 import input.PointerEventType;
 import input.PointerEvent;
 import assets.ImageAsset;
@@ -47,6 +49,8 @@ class Playground implements BaseObject {
     public var playerService: PlayerService;
     @inject
     public var assetLocator: AssetLocator;
+    @inject
+    public var heroInteraction: HeroInteraction;
 
     private var lastUnit: InteractiveGameObject;
     private var rise: Float = 0;
@@ -107,7 +111,7 @@ class Playground implements BaseObject {
         grumpyCat.sh = image.height;
         bottomLayer.addChild(grumpyCat);
 
-        var topLayer:DisplayNodeContainer = uiLayerManager.getLayerByName("bottom");
+        var uiLayer:DisplayNodeContainer = uiLayerManager.getLayerByName(LayerNames.UI);
 
         var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
         hello.text = "hello world";
@@ -115,12 +119,39 @@ class Playground implements BaseObject {
         hello.fontSize = 32;
         hello.fontColor = 0xff0000ff;
         hello.x = 400;
-        topLayer.addChild(hello);
+        uiLayer.addChild(hello);
 
         var button: BitmapNode = objectCreator.createInstance(BitmapNode);
+        image = @await assetLocator.getAssetByName("zombie_but");
+        button.imageData = image.data;
+        button.sx = 0;
+        button.sy = 0;
+        button.sw = image.width;
+        button.sh = image.height;
+        button.name = "zombie1but";
+        button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onLeftClick);
+        uiLayer.addChild(button);
+
+        var button: BitmapNode = objectCreator.createInstance(BitmapNode);
+        image = @await assetLocator.getAssetByName("zombie_but");
+        button.imageData = image.data;
+        button.sx = 0;
+        button.sy = 0;
+        button.sw = image.width;
+        button.sh = image.height;
+        button.name = "zombie2but";
+        button.y = image.height;
+        button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onLeftClick);
+        uiLayer.addChild(button);
 
         var tween: Tween = objectCreator.createInstance(Tween);
         tween.to(hello, 3000, {x: 500, y: 500}).delay(2000);
+    }
+
+    private function onLeftClick(e:PointerEvent):Void {
+        var spell: MutableSpellVO = new MutableSpellVO();
+        spell.id = 1;
+        heroInteraction.castSpell(null, null, spell);
     }
 
     public function createUnit(unitId: Int, unitType: Int): GameObject {
