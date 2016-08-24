@@ -17,7 +17,10 @@ class PointTest {
     }
 
     @Test
-    public function testExample():Void {
-        Assert.isTrue(true);
+    public function shouldCalculateDistance(): Void {
+        var p1: Point = new Point(10, 10);
+        var p2: Point = new Point(20, 20);
+
+        Assert.areEqual(14142, Math.floor(Point.distance(p1, p2) * 1000));
     }
 }

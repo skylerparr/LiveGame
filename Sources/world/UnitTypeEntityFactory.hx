@@ -16,6 +16,8 @@ class UnitTypeEntityFactory implements EntityFactory {
     }
 
     public function dispose():Void {
+        objectCreator = null;
+        unitFactory = null;
     }
 
     public function createViewForEntity(worldEntity:WorldEntity):DisplayNode {

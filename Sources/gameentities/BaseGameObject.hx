@@ -16,12 +16,12 @@ class BaseGameObject implements GameObject {
     }
 
     public function dispose():Void {
+        worldPoint = null;
     }
 
     @:isVar
     public var visible(get, set):Bool;
 
-    @:isVar
     public var worldPoint(get, null):WorldPoint;
 
     @:isVar
@@ -66,6 +66,9 @@ class BaseGameObject implements GameObject {
     }
 
     public function get_worldPoint():WorldPoint {
+        if(worldPoint == null) {
+            return null;
+        }
         worldPoint.x = x;
         worldPoint.y = y;
         worldPoint.z = z;

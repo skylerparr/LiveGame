@@ -2,12 +2,12 @@ package animation;
 import core.ObjectCreator;
 import util.MappedSubscriber;
 class SpriteAnimationWithEvents extends SpriteAnimation implements AnimationWithEvents {
-    private static inline var ON_ANIMATION_COMPLETE: String = "onAnimationComplete";
+    public static inline var ON_ANIMATION_COMPLETE: String = "onAnimationComplete";
 
     @inject
     public var objectCreator: ObjectCreator;
 
-    private var mappedSubscriber: MappedSubscriber;
+    public var mappedSubscriber: MappedSubscriber;
 
     public function new() {
         super();

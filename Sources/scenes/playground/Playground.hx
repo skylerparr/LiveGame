@@ -1,4 +1,6 @@
 package scenes.playground;
+import input.PointerEventType;
+import input.PointerEvent;
 import assets.ImageAsset;
 import assets.AssetLocator;
 import io.InputOutputStream;
