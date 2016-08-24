@@ -1,4 +1,6 @@
 package core;
+import input.GameWorldInteractionManager;
+import input.BattleGameWorldInteractionManager;
 import gameentities.fx.MappedEffectManager;
 import gameentities.fx.EffectManager;
 import animation.SpriteAnimationWithEvents;
@@ -15,11 +17,9 @@ import gameentities.HeroInteraction;
 import world.two.WorldPoint2D;
 import world.WorldPoint;
 import input.tools.BattleKeyboardTool;
-import input.tools.BattlePointingTool;
 import input.PointingInputSourceListener;
 import input.GameInputTools;
 import input.tools.AssignedGameInputTools;
-import input.kha.KhaMouseInputSource;
 import input.kha.KhaKeyboardInputSourceListener;
 import input.KeyboardInputSourceListener;
 import world.two.SubscriberZSortingManager;
@@ -92,12 +92,11 @@ import minject.Injector;
 class InjectionSettings {
     public var injector: Injector = new Injector();
 
-    #if test
+#if test
     public function new(backbuffer: Dynamic, fonts: Map<String, Dynamic>) {
-    #else
+    }
+#else
     public function new(backbuffer: kha.Image, fonts: Map<String, kha.Font>) {
-    #end
-        #if !test
         ObjectFactory.injector = injector;
 
         var objectFactory: ObjectFactory = new ObjectFactory();
@@ -151,6 +150,13 @@ class InjectionSettings {
         layerManager.addLayerByName(LayerNames.GAME_WORLD, viewPortContainer);
 
         container = objectFactory.createInstance(DisplayNodeContainer);
+        container.width = 800;
+        container.height = 600;
+        container.mouseChildren = false;
+        container.mouseEnabled = true;
+        layerManager.addLayerByName(LayerNames.WORLD_INTERACTION, container);
+
+        container = objectFactory.createInstance(DisplayNodeContainer);
         layerManager.addLayerByName(LayerNames.UI, container);
 
         container = objectFactory.createInstance(DisplayNodeContainer);
@@ -161,6 +167,7 @@ class InjectionSettings {
 
         injector.mapValue(LayerManager, layerManager, "ui");
         injector.mapValue(LayerManager, gameWorldLayerManager, "world");
+
         injector.mapValue(Renderer, renderer);
 
         Kha2DRenderer.fonts = fonts;
@@ -234,16 +241,18 @@ class InjectionSettings {
         var inputTools: AssignedGameInputTools = objectFactory.createInstance(AssignedGameInputTools);
         injector.mapValue(GameInputTools, inputTools);
 
-        var mouseInputSource: KhaMouseInputSource = objectFactory.createInstance(KhaMouseInputSource);
-        injector.mapValue(PointingInputSourceListener, mouseInputSource);
-
         var keyboardListener: KhaKeyboardInputSourceListener = objectFactory.createInstance(KhaKeyboardInputSourceListener);
         injector.mapValue(KeyboardInputSourceListener, keyboardListener);
 
-        inputTools.currentTool = objectFactory.createInstance(BattlePointingTool);
+        inputTools.currentTool = objectFactory.createInstance(input.tools.DefaultBattlePointingTool);
         inputTools.keyboardTool = objectFactory.createInstance(BattleKeyboardTool);
 
+        var interactionLayer: DisplayNodeContainer = layerManager.getLayerByName(LayerNames.WORLD_INTERACTION);
+        var gameWorldInteractionManager: BattleGameWorldInteractionManager = objectFactory.createInstance(BattleGameWorldInteractionManager);
+        gameWorldInteractionManager.interactionContainer = interactionLayer;
+        injector.mapValue(GameWorldInteractionManager, gameWorldInteractionManager);
+
         objectFactory.createInstance(Playground);
-        #end
+#end
     }
 }

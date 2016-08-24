@@ -1,4 +1,5 @@
 package scenes.playground;
+import constants.ScreenConstants;
 import vo.mutable.MutableSpellVO;
 import gameentities.HeroInteraction;
 import input.PointerEventType;
@@ -129,10 +130,11 @@ class Playground implements BaseObject {
         button.sw = image.width;
         button.sh = image.height;
         button.name = "zombie1but";
+        button.y = ScreenConstants.screenHeight - image.height;
         button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onLeftClick);
         uiLayer.addChild(button);
 
-        var button: BitmapNode = objectCreator.createInstance(BitmapNode);
+        button = objectCreator.createInstance(BitmapNode);
         image = @await assetLocator.getAssetByName("zombie_but");
         button.imageData = image.data;
         button.sx = 0;
@@ -140,7 +142,8 @@ class Playground implements BaseObject {
         button.sw = image.width;
         button.sh = image.height;
         button.name = "zombie2but";
-        button.y = image.height;
+        button.x = image.width;
+        button.y = ScreenConstants.screenHeight - image.height;
         button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onLeftClick);
         uiLayer.addChild(button);
 

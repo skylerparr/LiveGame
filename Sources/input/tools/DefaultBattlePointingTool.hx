@@ -1,6 +1,5 @@
 package input.tools;
-class BattlePointingTool implements PointingTool {
-
+class DefaultBattlePointingTool implements PointingTool {
     public var name(get, null):String;
 
     public function get_name():String {
@@ -8,21 +7,6 @@ class BattlePointingTool implements PointingTool {
     }
 
     public function new() {
-    }
-
-    public function init():Void {
-    }
-
-    public function dispose():Void {
-    }
-
-    public function activate(args:Array<Dynamic>):Void {
-    }
-
-    public function deactivate():Void {
-    }
-
-    public function onToolDeactivated(tool:PointingTool):Void {
     }
 
     public function onPointerDown(e:PointerEvent):Void {
@@ -58,8 +42,19 @@ class BattlePointingTool implements PointingTool {
     public function onPointerMiddleUp(e:PointerEvent):Void {
     }
 
-    public function onPointerMiddleClick(event:PointerEvent):Void {
+    public function onPointerMiddleClick(e:PointerEvent):Void {
     }
 
+    public function init():Void {
+    }
+
+    public function dispose():Void {
+    }
+
+    public function activate(args:Array<Dynamic>):Void {
+    }
+
+    public function deactivate():Void {
+    }
 
 }
