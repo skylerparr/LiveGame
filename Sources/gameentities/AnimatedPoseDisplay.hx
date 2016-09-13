@@ -78,6 +78,9 @@ class AnimatedPoseDisplay extends KhaSprite {
         setPose(Poses.IDLE);
         addChild(bitmap);
 
+        width = bitmap.width;
+        height = bitmap.height;
+
         animationController = objectCreator.createInstance(AnimationController);
         animationController.animation = animation;
         animationController.start();

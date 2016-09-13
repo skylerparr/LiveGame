@@ -25,6 +25,10 @@ class StaticUnitFactory implements UnitFactory {
             {pose: Poses.IDLE, assetName: "zombie_idle", numberOfDirections: 8},
             {pose: Poses.RUN, assetName: "zombie_run", numberOfDirections: 8}
         ]);
+        mapping.set("3", [
+            {pose: Poses.IDLE, assetName: "yeti_idle", numberOfDirections: 8},
+            {pose: Poses.RUN, assetName: "yeti_run", numberOfDirections: 8}
+        ]);
     }
 
     public function dispose():Void {

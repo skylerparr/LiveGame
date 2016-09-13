@@ -15,6 +15,7 @@ class InteractiveGameObject extends BaseGameObject implements WorldEntityDisplay
 
     function set_display(value:DisplayNode): DisplayNode {
         this.thisDisplay = cast value;
+        footprint.footprint = new Rectangle(value.width * -0.5, -value.height, value.width, value.height);
         return this.thisDisplay;
     }
 
@@ -31,7 +32,7 @@ class InteractiveGameObject extends BaseGameObject implements WorldEntityDisplay
     override public function init():Void {
         super.init();
         footprint = new Footprint2D();
-        footprint.footprint = new Rectangle(0, 83, 76, 30);
+        footprint.footprint = new Rectangle(0, 0, 0, 0);
     }
 
     override public function set_lookAt(value:WorldPoint): WorldPoint {

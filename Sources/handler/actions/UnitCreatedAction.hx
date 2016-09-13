@@ -1,4 +1,5 @@
 package handler.actions;
+import gameentities.HeroInteraction;
 import vo.mutable.MutableUnitVO;
 import vo.PlayerVO;
 import service.PlayerService;
@@ -22,6 +23,8 @@ class UnitCreatedAction implements StrategyAction {
     public var gameWorld: GameWorld;
     @inject
     public var playerService: PlayerService;
+    @inject
+    public var heroInteraction: HeroInteraction;
 
     private var currentPlayer: PlayerVO;
 
@@ -47,7 +50,7 @@ class UnitCreatedAction implements StrategyAction {
             trace("unit type " + unitCreated.unitType);
             trace("pos x " + unitCreated.posX);
             trace("pos z " + unitCreated.posZ);
-            Console.assert(unitCreated.unitType < 3, "unit type does not exist");
+            Console.assert(unitCreated.unitType < 4, "unit type does not exist");
         }
         trace("unitCreated " + unitCreated.unitId);
         var unit: GameObject = createUnit(unitCreated.unitId, unitCreated.unitType);
@@ -64,6 +67,8 @@ class UnitCreatedAction implements StrategyAction {
         worldPoint.x = unitCreated.posX;
         worldPoint.z = unitCreated.posZ;
         gameWorld.addGameObject(unit, worldPoint);
+
+        heroInteraction.assignUnit(unit);
     }
 
     public function createUnit(unitId: Int, unitType: Int): GameObject {

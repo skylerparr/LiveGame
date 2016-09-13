@@ -14,4 +14,8 @@ class Point {
         var dy = pt1.y - pt2.y;
         return Math.sqrt (dx * dx + dy * dy);
     }
+
+    public function toString(): String {
+        return '${x},${y}';
+    }
 }

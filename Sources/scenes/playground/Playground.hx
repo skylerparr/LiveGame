@@ -131,7 +131,7 @@ class Playground implements BaseObject {
         button.sh = image.height;
         button.name = "zombie1but";
         button.y = ScreenConstants.screenHeight - image.height;
-        button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onLeftClick);
+        button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onZombieSpawn);
         uiLayer.addChild(button);
 
         button = objectCreator.createInstance(BitmapNode);
@@ -144,16 +144,22 @@ class Playground implements BaseObject {
         button.name = "zombie2but";
         button.x = image.width;
         button.y = ScreenConstants.screenHeight - image.height;
-        button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onLeftClick);
+        button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onYetiSpawn);
         uiLayer.addChild(button);
 
         var tween: Tween = objectCreator.createInstance(Tween);
         tween.to(hello, 3000, {x: 500, y: 500}).delay(2000);
     }
 
-    private function onLeftClick(e:PointerEvent):Void {
+    private function onZombieSpawn(e:PointerEvent):Void {
         var spell: MutableSpellVO = new MutableSpellVO();
-        spell.id = 1;
+        spell.id = 2;
+        heroInteraction.castSpell(null, null, spell);
+    }
+
+    private function onYetiSpawn(e:PointerEvent):Void {
+        var spell: MutableSpellVO = new MutableSpellVO();
+        spell.id = 3;
         heroInteraction.castSpell(null, null, spell);
     }
 

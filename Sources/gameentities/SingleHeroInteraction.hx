@@ -19,6 +19,8 @@ class SingleHeroInteraction implements HeroInteraction {
     private var unitMoveTo: UnitMoveTo;
     private var unitCastSpell: UnitCastSpell;
 
+    private var unitList: List<GameObject>;
+
     @:isVar
     public var hero(get, set):GameObject;
 
@@ -38,6 +40,7 @@ class SingleHeroInteraction implements HeroInteraction {
         heroLocation = objectCreator.createInstance(WorldPoint);
         unitMoveTo = objectCreator.createInstance(UnitMoveTo);
         unitCastSpell = objectCreator.createInstance(UnitCastSpell);
+        unitList = new List<GameObject>();
     }
 
     public function dispose():Void {
@@ -68,6 +71,7 @@ class SingleHeroInteraction implements HeroInteraction {
         }
         unitCastSpell.unitId = Std.parseInt(hero.id);
         unitCastSpell.spellId = spell.id;
+        trace(unitCastSpell.spellId);
         if(targetUnit != null) {
             unitCastSpell.targetUnitId = Std.parseInt(targetUnit.id);
         } else if(targetLocation != null) {
@@ -75,6 +79,15 @@ class SingleHeroInteraction implements HeroInteraction {
             unitCastSpell.targetPosZ = Std.int(targetLocation.z);
         }
         streamHandler.send(unitCastSpell);
+    }
+
+    public function moveSquadTo(targetUnit:GameObject, targetLocation:WorldPoint):Void {
+    }
+
+    public function assignUnit(targetUnit:GameObject):Void {
+        if(targetUnit != hero) {
+            unitList.add(targetUnit);
+        }
     }
 
 }
