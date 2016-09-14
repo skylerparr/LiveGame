@@ -43,6 +43,7 @@ import input.kha.KhaKeyboardInputSourceListenerTest;
 import input.kha.KhaPointerEventManagerTest;
 import input.tools.AssignedGameInputToolsTest;
 import input.tools.BattleKeyboardToolTest;
+import input.tools.DefaultBattlePointingToolTest;
 import integration.net.CPPSocketInputOutputStreamIntegrationTest;
 import lookup.MapHandlerLookupTest;
 import lookup.ReflectStrategyMapTest;
@@ -113,6 +114,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(input.kha.KhaPointerEventManagerTest);
 		add(input.tools.AssignedGameInputToolsTest);
 		add(input.tools.BattleKeyboardToolTest);
+		add(input.tools.DefaultBattlePointingToolTest);
 		add(integration.net.CPPSocketInputOutputStreamIntegrationTest);
 		add(lookup.MapHandlerLookupTest);
 		add(lookup.ReflectStrategyMapTest);

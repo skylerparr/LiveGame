@@ -49,16 +49,21 @@ class BattleKeyboardTool implements KeyboardTool {
     private function onUpdate():Void {
         handleUnitMove();
 
-        if(currentPressedKeys.exists("!")) {
-            var spell: MutableSpellVO = new MutableSpellVO();
-            spell.id = 1;
-            heroInteraction.castSpell(null, null, spell);
-            currentPressedKeys.remove("!");
-        }
+        spawnMinion("!", 2);
+        spawnMinion("@", 3);
 
         if(!keysPressed()) {
             subscribed = false;
             subscriber.unsubscribe(EventNames.ENTER_GAME_LOOP, onUpdate);
+        }
+    }
+
+    private inline function spawnMinion(key: String, id: Int): Void {
+        if(currentPressedKeys.exists(key)) {
+            var spell: MutableSpellVO = new MutableSpellVO();
+            spell.id = id;
+            heroInteraction.castSpell(null, null, spell);
+            currentPressedKeys.remove(key);
         }
     }
 

@@ -40,4 +40,7 @@ class UniqueCollection <T> {
         return orderEnforcer.iterator();
     }
 
+    public function asList(): List<T> {
+        return orderEnforcer;
+    }
 }

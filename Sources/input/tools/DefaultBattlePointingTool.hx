@@ -18,7 +18,7 @@ class DefaultBattlePointingTool implements PointingTool {
         return name;
     }
 
-    private var currentSelectedGameObject: GameObject;
+    public var currentSelectedGameObject: GameObject;
 
     public function new() {
     }
@@ -60,7 +60,7 @@ class DefaultBattlePointingTool implements PointingTool {
         if(currentSelectedGameObject != null) {
             var point: Point = new Point(e.screenX, e.screenY);
             var wp: WorldPoint = gameWorld.screenToWorld(point);
-            heroInteraction.moveSquadTo(currentSelectedGameObject, wp);
+            heroInteraction.moveSquad(currentSelectedGameObject, wp);
         }
     }
 

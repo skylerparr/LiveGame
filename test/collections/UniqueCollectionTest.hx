@@ -103,4 +103,17 @@ class UniqueCollectionTest {
         }
         Assert.isFalse(iterated);
     }
+
+    @Test
+    public function shouldGetAsList(): Void {
+        var item = {};
+        var item2 = "";
+        var item3 = new Rectangle();
+
+        collection.add(item);
+        collection.add(item2);
+        collection.add(item3);
+
+        Assert.areEqual(item, collection.asList().first());
+    }
 }

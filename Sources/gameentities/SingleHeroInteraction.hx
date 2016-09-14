@@ -1,4 +1,6 @@
 package gameentities;
+import collections.UniqueCollection;
+import handler.output.MoveSquadTo;
 import world.WorldPoint;
 import handler.output.UnitCastSpell;
 import vo.SpellVO;
@@ -18,11 +20,14 @@ class SingleHeroInteraction implements HeroInteraction {
     private var heroLocation: WorldPoint;
     private var unitMoveTo: UnitMoveTo;
     private var unitCastSpell: UnitCastSpell;
+    private var moveSquadTo: MoveSquadTo;
 
-    private var unitList: List<GameObject>;
+    private var unitList: UniqueCollection<GameObject>;
 
     @:isVar
     public var hero(get, set):GameObject;
+
+    public var units(get, null):List<GameObject>;
 
     public function set_hero(value:GameObject) {
         viewPortTracker.trackToGameObject(value);
@@ -33,6 +38,10 @@ class SingleHeroInteraction implements HeroInteraction {
         return hero;
     }
 
+    function get_units():List<GameObject> {
+        return unitList.asList();
+    }
+
     public function new() {
     }
 
@@ -40,7 +49,8 @@ class SingleHeroInteraction implements HeroInteraction {
         heroLocation = objectCreator.createInstance(WorldPoint);
         unitMoveTo = objectCreator.createInstance(UnitMoveTo);
         unitCastSpell = objectCreator.createInstance(UnitCastSpell);
-        unitList = new List<GameObject>();
+        moveSquadTo = objectCreator.createInstance(MoveSquadTo);
+        unitList = new UniqueCollection<GameObject>();
     }
 
     public function dispose():Void {
@@ -71,7 +81,6 @@ class SingleHeroInteraction implements HeroInteraction {
         }
         unitCastSpell.unitId = Std.parseInt(hero.id);
         unitCastSpell.spellId = spell.id;
-        trace(unitCastSpell.spellId);
         if(targetUnit != null) {
             unitCastSpell.targetUnitId = Std.parseInt(targetUnit.id);
         } else if(targetLocation != null) {
@@ -81,7 +90,15 @@ class SingleHeroInteraction implements HeroInteraction {
         streamHandler.send(unitCastSpell);
     }
 
-    public function moveSquadTo(targetUnit:GameObject, targetLocation:WorldPoint):Void {
+    public function moveSquad(targetUnit:GameObject, targetLocation:WorldPoint):Void {
+        if(hero.busy) {
+            return;
+        }
+        moveSquadTo.unitId = Std.parseInt(targetUnit.id);
+        moveSquadTo.posX = Std.int(targetLocation.x);
+        moveSquadTo.posZ = Std.int(targetLocation.z);
+
+        streamHandler.send(moveSquadTo);
     }
 
     public function assignUnit(targetUnit:GameObject):Void {

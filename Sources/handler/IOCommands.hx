@@ -13,6 +13,7 @@ class IOCommands {
     public static inline var PLAYER_CONNECT: Int = 101;
     public static inline var UNIT_MOVE_TO: Int = 103;
     public static inline var UNIT_CAST_SPELL: Int = 104;
+    public static inline var MOVE_SQUAD_TO: Int = 105;
 
     public function new() {
     }

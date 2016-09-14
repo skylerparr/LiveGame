@@ -1,5 +1,6 @@
 package gameentities;
 
+import handler.output.MoveSquadTo;
 import vo.mutable.MutableSpellVO;
 import vo.SpellVO;
 import handler.output.UnitCastSpell;
@@ -35,6 +36,7 @@ class SingleHeroInteractionTest {
         objectCreator.createInstance(WorldPoint).returns(new WorldPoint2D());
         objectCreator.createInstance(UnitMoveTo).returns(new UnitMoveTo());
         objectCreator.createInstance(UnitCastSpell).returns(new UnitCastSpell());
+        objectCreator.createInstance(MoveSquadTo).returns(new MoveSquadTo());
         streamHandler = mock(MockStreamHandler);
 
         heroInteraction = new SingleHeroInteraction();
@@ -127,7 +129,7 @@ class SingleHeroInteractionTest {
     }
 
     @Test
-    public function shouldNotSendCastSpellIfUnitIsBusy(): Void {
+    public function shouldNotSendCastSpellIfHeroIsBusy(): Void {
         var spell: MutableSpellVO = mock(MutableSpellVO);
         spell.id.returns(100);
         hero.busy.returns(true);
@@ -135,4 +137,57 @@ class SingleHeroInteractionTest {
 
         streamHandler.send(cast any).verify(0);
     }
+
+    @Test
+    public function shouldSendMoveSquad(): Void {
+        var targetLocation: WorldPoint = new WorldPoint2D(4823, 394);
+        streamHandler.send(cast any).calls(function(args): Void {
+            var handler: MoveSquadTo = cast args[0];
+            Assert.areEqual(5, handler.unitId);
+            Assert.areEqual(4823, handler.posX);
+            Assert.areEqual(394, handler.posZ);
+        });
+
+        var unit: MockGameObject = mock(MockGameObject);
+        unit.id.returns(5);
+        heroInteraction.moveSquad(unit, targetLocation);
+
+        streamHandler.send(cast instanceOf(MoveSquadTo)).verify();
+    }
+
+    @Test
+    public function shouldNotSendMoveSquadIfHeroIsBusy(): Void {
+        var targetLocation: WorldPoint = new WorldPoint2D(4823, 394);
+        var unit: MockGameObject = mock(MockGameObject);
+        hero.busy.returns(true);
+        heroInteraction.moveSquad(unit, targetLocation);
+        streamHandler.send(cast any).verify(0);
+    }
+
+    @Test
+    public function shouldAssignUnit(): Void {
+        var unit: MockGameObject = mock(MockGameObject);
+        heroInteraction.assignUnit(unit);
+
+        Assert.areEqual(unit, heroInteraction.units.first());
+    }
+
+    @Test
+    public function shouldNotAssignSameUnitMoreThanOnce(): Void {
+        var unit: MockGameObject = mock(MockGameObject);
+        heroInteraction.assignUnit(unit);
+        heroInteraction.assignUnit(unit);
+        heroInteraction.assignUnit(unit);
+        heroInteraction.assignUnit(unit);
+
+        Assert.areEqual(1, heroInteraction.units.length);
+        Assert.areEqual(unit, heroInteraction.units.first());
+    }
+
+    @Test
+    public function shouldNotAssignIfGameObjectIsHero(): Void {
+        heroInteraction.assignUnit(hero);
+        Assert.areEqual(0, heroInteraction.units.length);
+    }
+
 }
