@@ -147,13 +147,9 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
                 close();
             }
         }
-        var tmpBufLen: UInt = 0;
         if(buffer != null) {
             var tmpBuffer: Bytes = Bytes.alloc(bytesAvailable + lengthReady);
-            for(i in 0...tmpBuffer.length) {
-                tmpBuffer.set(i, buffer.get(i));
-            }
-            tmpBufLen = tmpBuffer.length;
+            tmpBuffer.blit(0, buffer, position, bytesAvailable);
             buffer = tmpBuffer;
         } else {
             buffer = Bytes.alloc(lengthReady);

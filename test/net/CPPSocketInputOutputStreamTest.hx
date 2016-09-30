@@ -348,6 +348,41 @@ class CPPSocketInputOutputStreamTest {
     }
 
     @Test
+    public function shouldResumeFromLastDataOnUpdate(): Void {
+        connectToSocket();
+        var i = 0;
+        var bytes = Bytes.alloc(16);
+        bytes.setInt32(0, 10);
+        bytes.setInt32(4, 20);
+        bytes.setInt32(8, 30);
+        bytes.setInt32(12, 40);
+        mockBytes(bytes);
+
+        socketStream.update();
+        Assert.areEqual(16, socketStream.bytesAvailable);
+
+        Assert.areEqual(10, socketStream.readInt());
+        Assert.areEqual(20, socketStream.readInt());
+
+        Assert.areEqual(8, socketStream.bytesAvailable);
+
+        input.reset();
+
+        var bytes = Bytes.alloc(8);
+        bytes.setInt32(0, 50);
+        bytes.setInt32(4, 60);
+        mockBytes(bytes);
+        Assert.areEqual(8, socketStream.bytesAvailable);
+        socketStream.update();
+        Assert.areEqual(16, socketStream.bytesAvailable);
+
+        Assert.areEqual(30, socketStream.readInt());
+        Assert.areEqual(40, socketStream.readInt());
+        Assert.areEqual(50, socketStream.readInt());
+        Assert.areEqual(60, socketStream.readInt());
+    }
+
+    @Test
     public function shouldDisposeSocketStream(): Void {
         connectToSocket();
         socketStream.subscribeToConnected(subscriptionCallback);

@@ -30,6 +30,7 @@ class UnitMoveAction implements StrategyAction {
         var unitMove: UnitMove = cast handler;
         var unit: GameObject = cast gameWorld.getGameObjectById(unitMove.unitId + "");
         if(unit == null) {
+            logger.logWarning('${unitMove.unitId} not found and was sent from server');
             return;
         }
         var targetPoint: WorldPoint2D = objectCreator.createInstance(WorldPoint2D);
