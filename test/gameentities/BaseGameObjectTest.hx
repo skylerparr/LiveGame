@@ -37,6 +37,7 @@ class BaseGameObjectTest {
         baseGameObject.y = 200;
         baseGameObject.z = 300;
         baseGameObject.lookAt = new WorldPoint2D(100, 200);
+        baseGameObject.visible = false;
 
         Assert.areEqual(100, baseGameObject.worldPoint.x);
         Assert.areEqual(200, baseGameObject.worldPoint.y);
@@ -44,6 +45,19 @@ class BaseGameObjectTest {
 
         Assert.areEqual(100, baseGameObject.lookAt.x);
         Assert.areEqual(200, baseGameObject.lookAt.z);
+
+        Assert.areEqual(100, baseGameObject.x);
+        Assert.areEqual(200, baseGameObject.y);
+        Assert.areEqual(300, baseGameObject.z);
+        Assert.isNotNull(baseGameObject.bounds);
+        Assert.areEqual(true, baseGameObject.busy);
+        Assert.areEqual("foo", baseGameObject.category);
+        Assert.isNotNull(baseGameObject.footprint);
+        Assert.areEqual("fd", baseGameObject.id);
+        Assert.areEqual(Poses.ATTACK, baseGameObject.pose);
+        Assert.areEqual("lkjfd", baseGameObject.type);
+
+        Assert.areEqual(false, baseGameObject.visible);
     }
 
     @Test

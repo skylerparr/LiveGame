@@ -128,10 +128,6 @@ class TwoDimDisplayNode implements DisplayNode {
         return this.mouseEnabled = value;
     }
 
-    public function set_parent(value:DisplayNodeContainer) {
-        return this.parent = value;
-    }
-
     public function set__private_parent(value:DisplayNodeContainer) {
         return this._private_parent = value;
     }
