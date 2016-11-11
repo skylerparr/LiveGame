@@ -35,7 +35,16 @@ class InteractiveGameObject extends BaseGameObject implements WorldEntityDisplay
         footprint.footprint = new Rectangle(0, 0, 0, 0);
     }
 
+    override public function dispose():Void {
+        thisDisplay = null;
+        animation = null;
+        super.dispose();
+    }
+
     override public function set_lookAt(value:WorldPoint): WorldPoint {
+        if(thisDisplay == null) {
+            return value;
+        }
         var direction: Float = MathUtil.getDirectionInDegrees(worldPoint, value);
         direction = (direction + 180) % 360;
         var distanceBetweenDirections: Float = 360 / thisDisplay.totalDirections;
@@ -46,6 +55,9 @@ class InteractiveGameObject extends BaseGameObject implements WorldEntityDisplay
     }
 
     override public function set_pose(value:Poses):Poses {
+        if(thisDisplay == null) {
+            return value;
+        }
         this.pose = value;
         thisDisplay.setPose(pose);
         return value;

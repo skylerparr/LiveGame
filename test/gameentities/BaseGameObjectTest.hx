@@ -18,6 +18,13 @@ class BaseGameObjectTest {
     public function setup():Void {
         baseGameObject = new BaseGameObject();
         baseGameObject.init();
+
+        baseGameObject.pose = Poses.ATTACK;
+        baseGameObject.type = "hello";
+        baseGameObject.category = "world";
+        baseGameObject.footprint = new Footprint2D();
+        baseGameObject.bounds = new Bounds2D();
+        baseGameObject.lookAt = new WorldPoint2D();
     }
 
     @After
@@ -64,5 +71,11 @@ class BaseGameObjectTest {
     public function shouldDispose(): Void {
         baseGameObject.dispose();
         Assert.isNull(baseGameObject.worldPoint);
+        Assert.isNull(baseGameObject.footprint);
+        Assert.isNull(baseGameObject.bounds);
+        Assert.isNull(baseGameObject.category);
+        Assert.isNull(baseGameObject.type);
+        Assert.isNull(baseGameObject.pose);
+        Assert.isNull(baseGameObject.lookAt);
     }
 }

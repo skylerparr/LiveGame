@@ -17,6 +17,12 @@ class BaseGameObject implements GameObject {
 
     public function dispose():Void {
         worldPoint = null;
+        footprint = null;
+        lookAt = null;
+        bounds = null;
+        type = null;
+        category = null;
+        pose = null;
     }
 
     @:isVar

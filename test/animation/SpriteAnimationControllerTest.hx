@@ -178,6 +178,12 @@ class SpriteAnimationControllerTest {
     }
 
     @Test
+    public function shouldAssignProperties(): Void {
+        controller.loops = true;
+        Assert.isTrue(controller.loops);
+    }
+
+    @Test
     public function shouldDisposeAllReferences(): Void {
         controller.dispose();
 
