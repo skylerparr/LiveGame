@@ -14,27 +14,27 @@ class MutablePlayerVO implements PlayerVO {
         units = new Map<Int, UnitVO>();
     }
 
-    function set_id(value:Int) {
+    public function set_id(value:Int) {
         return this.id = value;
     }
 
-    function get_id():Int {
+    public function get_id():Int {
         return id;
     }
 
-    function set_name(value:String) {
+    public function set_name(value:String) {
         return this.name = value;
     }
 
-    function get_name():String {
+    public function get_name():String {
         return name;
     }
 
-    function get_units():Map<Int, UnitVO> {
+    public function get_units():Map<Int, UnitVO> {
         return units;
     }
 
-    function set_units(value:Map<Int, UnitVO>) {
+    public function set_units(value:Map<Int, UnitVO>) {
         return this.units = value;
     }
 }

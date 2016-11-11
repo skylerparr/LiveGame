@@ -1,4 +1,6 @@
 package handler.actions;
+import vo.UnitVO;
+import gameentities.BaseGameObject;
 import world.WorldPoint;
 import geom.Point;
 import vo.mutable.MutableUnitVO;
@@ -28,7 +30,7 @@ class HeroCreatedAction implements StrategyAction {
     @inject
     public var playerService: PlayerService;
 
-    private var currentPlayer: PlayerVO;
+    public var currentPlayer: PlayerVO;
 
     public function new() {
     }
@@ -40,6 +42,12 @@ class HeroCreatedAction implements StrategyAction {
     }
 
     public function dispose():Void {
+        currentPlayer = null;
+        playerService = null;
+        gameWorld = null;
+        objectCreator = null;
+        logger = null;
+        heroInteraction = null;
     }
 
     public function execute(handler:IOHandler):Void {
@@ -47,7 +55,7 @@ class HeroCreatedAction implements StrategyAction {
         var unitCreated: UnitCreated = cast handler;
         var unit: GameObject = createUnit(unitCreated.unitId, unitCreated.unitType);
 
-        var unitVO: MutableUnitVO = objectCreator.createInstance(MutableUnitVO);
+        var unitVO: UnitVO = objectCreator.createInstance(MutableUnitVO);
         unitVO.id = unitCreated.unitId;
         unitVO.unitType = unitCreated.unitType;
 
@@ -63,13 +71,12 @@ class HeroCreatedAction implements StrategyAction {
     public function createUnit(unitId: Int, unitType: Int): GameObject {
         #if !test
         var unit: InteractiveGameObject = objectCreator.createInstance(InteractiveGameObject);
+        #else
+        var unit: BaseGameObject = objectCreator.createInstance(BaseGameObject);
+        #end
         unit.id = unitId + "";
         unit.type = unitType + "";
-
         return unit;
-        #else
-        return null;
-        #end
     }
 
 }

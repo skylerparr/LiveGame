@@ -18,6 +18,8 @@ class PlayerConnectedAction implements StrategyAction {
     }
 
     public function dispose():Void {
+        logger = null;
+        playerService = null;
     }
 
     public function execute(handler:IOHandler):Void {

@@ -9,7 +9,7 @@ class ConnectedPlayerService implements PlayerService {
     @:isVar
     public var uniqueId(get, null):Int;
 
-    function get_uniqueId():Int {
+    public function get_uniqueId():Int {
         return uniqueId;
     }
 
