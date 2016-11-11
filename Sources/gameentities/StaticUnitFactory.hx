@@ -8,7 +8,7 @@ class StaticUnitFactory implements UnitFactory {
     @inject
     public var objectCreator: ObjectCreator;
     
-    private var mapping: Map<String, Array<AnimationPoseMapping>>;
+    public var mapping: Map<String, Array<AnimationPoseMapping>>;
 
     public function new() {
     }

@@ -15,6 +15,7 @@ class Point {
         return Math.sqrt (dx * dx + dy * dy);
     }
 
+    @IgnoreCover
     public function toString(): String {
         return '${x},${y}';
     }

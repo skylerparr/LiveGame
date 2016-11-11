@@ -51,7 +51,22 @@ class MappedEffectManagerTest {
         objectCreator.disposeInstance(specialEffect);
     }
 
-    @IgnoreCover
+    @Test
+    public function shouldNotCallEndIfEffectNotFound(): Void {
+        effectManager.endEffect("foo");
+        specialEffect.end(cast any).verify(0);
+    }
+
+    @Test
+    public function shouldDispose(): Void {
+        var key: String = effectManager.spawnEffect(SpecialEffect, worldPoint);
+
+        effectManager.dispose();
+        objectCreator.disposeInstance(specialEffect).verify();
+        Assert.isNull(effectManager.objectCreator);
+        Assert.isNull(effectManager.mappedEffect);
+    }
+
     private function endSpecialEffect(args):Void {
         args[0](specialEffect);
     }

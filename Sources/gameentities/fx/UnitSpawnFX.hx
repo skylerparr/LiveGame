@@ -4,13 +4,11 @@ import constants.LayerNames;
 import display.DisplayNodeContainer;
 import constants.Poses;
 import world.WorldPoint;
-import geom.Point;
 import assets.AssetLocator;
 import core.ObjectCreator;
 import display.LayerManager;
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
 class UnitSpawnFX implements SpecialEffect {
-    private static var point: Point = new Point();
 
     @inject("world")
     public var layerManager: LayerManager;
@@ -19,8 +17,8 @@ class UnitSpawnFX implements SpecialEffect {
     @inject
     public var assetLocator: AssetLocator;
 
-    private var animatedPoseDisplay: AnimatedPoseDisplay;
-    private var container: DisplayNodeContainer;
+    public var animatedPoseDisplay: AnimatedPoseDisplay;
+    public var container: DisplayNodeContainer;
 
     public function new() {
     }
@@ -31,8 +29,6 @@ class UnitSpawnFX implements SpecialEffect {
 
     public function dispose():Void {
         disposeAnimation();
-        animatedPoseDisplay.animation.unsubscribeOnComplete(onIdleComplete);
-        animatedPoseDisplay.animation.unsubscribeOnComplete(onDieComplete);
 
         container = null;
         animatedPoseDisplay = null;
@@ -62,6 +58,12 @@ class UnitSpawnFX implements SpecialEffect {
     }
 
     public function end(onComplete:SpecialEffect->Void):Void {
+        if(animatedPoseDisplay == null) {
+            if(onComplete != null) {
+                onComplete(this);
+            }
+            return;
+        }
         endAnimation(function(): Void {
             if(onComplete != null) {
                 onComplete(this);
@@ -84,6 +86,7 @@ class UnitSpawnFX implements SpecialEffect {
             container.removeChild(animatedPoseDisplay);
         }
         if(animatedPoseDisplay != null) {
+            animatedPoseDisplay.animation.unsubscribeOnComplete(onIdleComplete);
             animatedPoseDisplay.animation.unsubscribeOnComplete(onDieComplete);
         }
         if(objectCreator != null) {
