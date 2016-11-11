@@ -27,6 +27,10 @@ class DefaultBattlePointingTool implements PointingTool {
     }
 
     public function dispose():Void {
+        gameWorld = null;
+        heroInteraction = null;
+        name = null;
+        currentSelectedGameObject = null;
     }
 
     public function activate(args:Array<Dynamic>):Void {

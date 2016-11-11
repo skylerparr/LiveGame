@@ -69,4 +69,30 @@ class DefaultBattlePointingToolTest {
 
         heroInteraction.moveSquad(cast any, wp).verify(0);
     }
+
+    @Test
+    public function shouldDoNothingForAllOtherEvents(): Void {
+        battleTool.activate(null);
+        battleTool.deactivate();
+        battleTool.onPointerDown(null);
+        battleTool.onPointerMove(null);
+        battleTool.onPointerUp(null);
+        battleTool.onPointerRightDown(null);
+        battleTool.onPointerRightUp(null);
+        battleTool.onPointerDoubleClick(null);
+        battleTool.onScroll(null);
+        battleTool.onPointerMiddleDown(null);
+        battleTool.onPointerMiddleUp(null);
+        battleTool.onPointerMiddleClick(null);
+    }
+
+    @Test
+    public function shouldDispose(): Void {
+        battleTool.dispose();
+
+        Assert.isNull(battleTool.name);
+        Assert.isNull(battleTool.currentSelectedGameObject);
+        Assert.isNull(battleTool.heroInteraction);
+        Assert.isNull(battleTool.gameWorld);
+    }
 }
