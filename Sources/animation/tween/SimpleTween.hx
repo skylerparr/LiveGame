@@ -15,9 +15,9 @@ class SimpleTween implements Tween {
     public var originalProperties: Dynamic;
     public var originalTargetProperties: Dynamic;
 
-    private var tweenTarget: TweenTarget;
+    public var tweenTarget: TweenTarget;
     private var started: Bool;
-    private var target: Dynamic;
+    public var target: Dynamic;
 
     public function new() {
     }

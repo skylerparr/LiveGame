@@ -8,10 +8,11 @@ import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
 class AssignedGameInputToolsTest {
 
-
+    private var inputTools: AssignedGameInputTools;
 
     @Before
     public function setup():Void {
+        inputTools = new AssignedGameInputTools();
     }
 
     @After

@@ -1,4 +1,5 @@
 package error;
+@IgnoreCover
 class TraceLogger implements Logger {
     public function new() {
     }
