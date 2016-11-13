@@ -16,11 +16,16 @@ class MultiTweenControllerTest {
     private var controller: MultiTweenController;
     private var subscriber: Subscriber;
     private var tween: Tween;
+    private var updateFunction: Void->Void;
 
     @Before
     public function setup():Void {
         tween = mock(Tween);
         subscriber = mock(MappedSubscriber);
+
+        subscriber.subscribe(EventNames.ENTER_GAME_LOOP, cast isNotNull).calls(function(args: Array<Dynamic>): Void {
+            updateFunction = args[1];
+        });
 
         controller = new MultiTweenController();
         controller.subscriber = subscriber;
@@ -56,4 +61,53 @@ class MultiTweenControllerTest {
         controller.removeTween(tween);
         Assert.isNull(controller.allTweens.get(tween));
     }
+
+    @Test
+    public function shouldUpdateAllTweens(): Void {
+        var tweens: Array<Tween> = generateTweens();
+        updateFunction();
+        for(t in tweens) {
+            t.update().verify();
+        }
+    }
+
+    @Test
+    public function shouldPauseAllTweens(): Void {
+        var tweens: Array<Tween> = generateTweens();
+        controller.pauseAll();
+        for(t in tweens) {
+            t.pause().verify();
+        }
+    }
+
+    @Test
+    public function shouldResumeAllTweens(): Void {
+        var tweens: Array<Tween> = generateTweens();
+        controller.resumeAll();
+        for(t in tweens) {
+            t.resume().verify();
+        }
+    }
+
+    @Test
+    public function shouldStopAllTweens(): Void {
+        var tweens: Array<Tween> = generateTweens();
+        controller.stopAll();
+        for(t in tweens) {
+            t.stop().verify();
+        }
+    }
+
+    private function generateTweens():Array<Tween> {
+        var tweens: Array<Tween> = [];
+        for(i in 0...10) {
+            var t: Tween = mock(Tween);
+            tweens.push(t);
+        }
+        for(t in tweens) {
+            controller.addTween(t);
+        }
+        return tweens;
+    }
+
 }
