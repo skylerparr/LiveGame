@@ -5,7 +5,7 @@ class MultiTweenController implements TweenController {
     @inject
     public var subscriber: Subscriber;
 
-    private var allTweens: Map<Tween, Tween>;
+    public var allTweens: Map<Tween, Tween>;
 
     public function new() {
     }
@@ -17,6 +17,8 @@ class MultiTweenController implements TweenController {
 
     public function dispose():Void {
         subscriber.unsubscribe(EventNames.ENTER_GAME_LOOP, onUpdate);
+        subscriber = null;
+        allTweens = null;
     }
 
     private function onUpdate():Void {
