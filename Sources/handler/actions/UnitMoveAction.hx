@@ -24,6 +24,10 @@ class UnitMoveAction implements StrategyAction {
     }
 
     public function dispose():Void {
+        logger = null;
+        gameWorld = null;
+        interactionManager = null;
+        objectCreator = null;
     }
 
     public function execute(handler:IOHandler):Void {

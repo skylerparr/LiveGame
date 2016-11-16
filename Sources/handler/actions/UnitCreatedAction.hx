@@ -1,4 +1,5 @@
 package handler.actions;
+import gameentities.BaseGameObject;
 import gameentities.HeroInteraction;
 import vo.mutable.MutableUnitVO;
 import vo.PlayerVO;
@@ -26,7 +27,7 @@ class UnitCreatedAction implements StrategyAction {
     @inject
     public var heroInteraction: HeroInteraction;
 
-    private var currentPlayer: PlayerVO;
+    public var currentPlayer: PlayerVO;
 
     public function new() {
     }
@@ -38,23 +39,18 @@ class UnitCreatedAction implements StrategyAction {
     }
 
     public function dispose():Void {
+        logger = null;
+        objectCreator = null;
+        gameWorld = null;
+        playerService = null;
+        heroInteraction = null;
+        currentPlayer = null;
     }
 
     public function execute(handler:IOHandler):Void {
         var unitCreated: UnitCreated = cast handler;
 
-        if(unitCreated.unitType > 2) {
-            trace("cmd id " + unitCreated.cmdId);
-            trace("player id " + unitCreated.playerId);
-            trace("unit id " + unitCreated.unitId);
-            trace("unit type " + unitCreated.unitType);
-            trace("pos x " + unitCreated.posX);
-            trace("pos z " + unitCreated.posZ);
-            Console.assert(unitCreated.unitType < 4, "unit type does not exist");
-        }
-        trace("unitCreated " + unitCreated.unitId);
         var unit: GameObject = createUnit(unitCreated.unitId, unitCreated.unitType);
-
         var unitVO: MutableUnitVO = objectCreator.createInstance(MutableUnitVO);
         unitVO.id = unitCreated.unitId;
         unitVO.unitType = unitCreated.unitType;
@@ -74,13 +70,12 @@ class UnitCreatedAction implements StrategyAction {
     public function createUnit(unitId: Int, unitType: Int): GameObject {
         #if !test
         var unit: InteractiveGameObject = objectCreator.createInstance(InteractiveGameObject);
+        #else
+        var unit: BaseGameObject = objectCreator.createInstance(BaseGameObject);
+        #end
         unit.id = unitId + "";
         unit.type = unitType + "";
-
         return unit;
-        #else
-        return null;
-        #end
     }
 
 }

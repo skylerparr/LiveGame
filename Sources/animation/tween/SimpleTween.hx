@@ -9,14 +9,14 @@ class SimpleTween implements Tween {
     @inject
     public var tweenController: TweenController;
 
-    private var startTime: UInt;
-    private var duration: UInt;
+    public var startTime: UInt;
+    public var duration: UInt;
 
     public var originalProperties: Dynamic;
     public var originalTargetProperties: Dynamic;
 
     public var tweenTarget: TweenTarget;
-    private var started: Bool;
+    public var started: Bool;
     public var target: Dynamic;
 
     public function new() {
@@ -41,7 +41,7 @@ class SimpleTween implements Tween {
         started = false;
         originalTargetProperties = {};
         this.target = target;
-        startTime = Timer.now();
+        startTime = getNow();
         this.duration = duration;
         originalProperties = properties;
         storeOriginalTargetValues();
@@ -51,22 +51,22 @@ class SimpleTween implements Tween {
     }
 
     public function update():Void {
-        var now = Timer.now();
+        var now = getNow();
         var diff: Int = now - startTime;
 
         if(tweenTarget.delayValue > 0) {
             tweenTarget.delay(tweenTarget.delayValue - diff);
-            if(tweenTarget.delayValue >= 0) {
-                startTime = Timer.now();
+            if(tweenTarget.delayValue <= 0) {
+                startTime = getNow();
                 tweenTarget.delay(0);
-                return;
             }
+            return;
         }
 
-        var percentComplete: Float = (diff) / duration;
+        var percentComplete: Float = diff / duration;
         var delta: Float = tweenTarget.easeFunction(diff, 0, 1, duration);
 
-        if(percentComplete > 1) {
+        if(percentComplete >= 1) {
             updateFields(1);
             stop();
             if(tweenTarget.completeFunction != null) {
@@ -89,7 +89,7 @@ class SimpleTween implements Tween {
         }
     }
 
-    public function updateFields(percentComplete: Float):Void {
+    public inline function updateFields(percentComplete: Float):Void {
         var fields: Array<String> = Reflect.fields(originalProperties);
         for(field in fields) {
             var startPoint: Float = Reflect.getProperty(originalTargetProperties, field);
@@ -120,4 +120,7 @@ class SimpleTween implements Tween {
     public function reset():Void {
     }
 
+    public #if !test inline #end function getNow(): UInt {
+        return Timer.now();
+    }
 }

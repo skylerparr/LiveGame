@@ -16,23 +16,23 @@ class SimpleTweenTarget implements TweenTarget {
     @:isVar
     public var delayValue(get, null): UInt;
 
-    function get_easeFunction():Float->Float->Float->Float->Float {
+    public function get_easeFunction():Float->Float->Float->Float->Float {
         return easeFunction;
     }
 
-    function get_beginFunction(): Tween->Void {
+    public function get_beginFunction(): Tween->Void {
         return beginFunction;
     }
 
-    function get_updateFunction(): Tween->Void {
+    public function get_updateFunction(): Tween->Void {
         return updateFunction;
     }
 
-    function get_completeFunction(): Tween->Void {
+    public function get_completeFunction(): Tween->Void {
         return completeFunction;
     }
 
-    function get_delayValue(): UInt {
+    public function get_delayValue(): UInt {
         return delayValue;
     }
 
