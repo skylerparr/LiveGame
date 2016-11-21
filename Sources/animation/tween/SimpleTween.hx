@@ -56,8 +56,8 @@ class SimpleTween implements Tween {
 
         if(tweenTarget.delayValue > 0) {
             tweenTarget.delay(tweenTarget.delayValue - diff);
+            startTime = now;
             if(tweenTarget.delayValue <= 0) {
-                startTime = getNow();
                 tweenTarget.delay(0);
             }
             return;

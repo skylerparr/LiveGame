@@ -35,5 +35,11 @@ class GameLoopViewPortTracker implements ViewPortTracker {
     private function onUpdate():Void {
         viewPort.x = (viewPort.width * -0.5) + gameObject.x;
         viewPort.y = (viewPort.height * -0.5) + gameObject.z;
+        if(viewPort.x < 0) {
+            viewPort.x = 0;
+        }
+        if(viewPort.y < 0) {
+            viewPort.y = 0;
+        }
     }
 }

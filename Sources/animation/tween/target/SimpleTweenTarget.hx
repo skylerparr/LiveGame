@@ -14,7 +14,7 @@ class SimpleTweenTarget implements TweenTarget {
     public var completeFunction(get, null): Tween->Void;
 
     @:isVar
-    public var delayValue(get, null): UInt;
+    public var delayValue(get, null): Int;
 
     public function get_easeFunction():Float->Float->Float->Float->Float {
         return easeFunction;
@@ -32,7 +32,7 @@ class SimpleTweenTarget implements TweenTarget {
         return completeFunction;
     }
 
-    public function get_delayValue(): UInt {
+    public function get_delayValue(): Int {
         return delayValue;
     }
 
@@ -55,7 +55,7 @@ class SimpleTweenTarget implements TweenTarget {
         return this;
     }
 
-    public function delay(time:UInt):TweenTarget {
+    public function delay(time:Int):TweenTarget {
         this.delayValue = time;
         return this;
     }

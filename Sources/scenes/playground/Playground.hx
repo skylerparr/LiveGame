@@ -54,9 +54,6 @@ class Playground implements BaseObject {
     public var heroInteraction: HeroInteraction;
 
     private var lastUnit: InteractiveGameObject;
-    private var rise: Float = 0;
-    private var run: Float = 0;
-    private var targetLocation: WorldPoint = new WorldPoint2D();
     private var playerConnected: Bool = false;
     private var currentPlayer: PlayerVO;
     private var unit: GameObject;
