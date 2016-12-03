@@ -105,7 +105,7 @@ class SimpleTweenTest {
             Assert.areEqual(10, objectToTween.x);
         }
 
-        Assert.areEqual(0, simpleTween.startTime);
+        Assert.areEqual(9, simpleTween.startTime);
         tweenTarget.delay(20).verify();
 
         Mockatoo.reset(tweenTarget);
