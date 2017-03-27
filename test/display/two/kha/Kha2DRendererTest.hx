@@ -108,7 +108,8 @@ class Kha2DRendererTest {
         textField.y.verify();
 
         graphics.set_fontSize(10).verify();
-        graphics.set_font(fonts.get("sample")).verify();
+        var font = fonts.get("sample");
+        graphics.set_font(font).verify();
         graphics.set_color(cast any).verify(2);
         graphics.drawString("foo", 1, 2).verify();
     }

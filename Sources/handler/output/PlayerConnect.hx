@@ -25,5 +25,6 @@ class PlayerConnect implements IOHandler {
     public function write(stream:InputOutputStream):Void {
         stream.writeUnsignedByte(cmdId);
         stream.writeInt(playerId);
+        stream.writeInt(49052);
     }
 }
