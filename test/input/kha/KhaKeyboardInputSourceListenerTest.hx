@@ -42,19 +42,19 @@ class KhaKeyboardInputSourceListenerTest {
     public function shouldCaptureKeyDownAndPassToTool(): Void {
         gameInputTools.keyboardTool.returns(currentKeyboardTool);
 
-        keyboard.onKeyDown(MockKeyboardKey.CHAR, "a");
+        keyboard.onKeyDown(MockKeyboardKey.A);
 
         currentKeyboardTool.onKeyDown(keyEvent).verify();
-        Assert.areEqual("a", keyEvent.key);
+        Assert.areEqual(65, keyEvent.key);
     }
 
     @Test
     public function shouldCaptureKeyUpAndPassToTool(): Void {
         gameInputTools.keyboardTool.returns(currentKeyboardTool);
 
-        keyboard.onKeyUp(MockKeyboardKey.CHAR, "a");
+        keyboard.onKeyUp(MockKeyboardKey.A);
 
         currentKeyboardTool.onKeyUp(keyEvent).verify();
-        Assert.areEqual("a", keyEvent.key);
+        Assert.areEqual(65, keyEvent.key);
     }
 }

@@ -25,14 +25,17 @@ class KhaKeyboardInputSourceListener implements BaseObject {
         keyEvent = null;
     }
 
-    public function onKeyDown(key: #if test input.kha.MockKeyboardKey #else kha.Key #end, char: String):Void {
-        keyEvent.key = char;
+    public function onKeyDown(key: #if test input.kha.MockKeyboardKey #else kha.input.KeyCode #end):Void {
+        keyEvent.key = cast(key, Int);
         gameInputTools.keyboardTool.onKeyDown(keyEvent);
     }
 
-    public function onKeyUp(key: #if test input.kha.MockKeyboardKey #else kha.Key #end, char:String):Void {
-        keyEvent.key = char;
+    public function onKeyUp(key: #if test input.kha.MockKeyboardKey #else kha.input.KeyCode #end):Void {
+        keyEvent.key = cast(key, Int);
         gameInputTools.keyboardTool.onKeyUp(keyEvent);
+    }
+
+    public function onKeyPress(char: String):Void {
     }
 
     #if test
@@ -41,7 +44,7 @@ class KhaKeyboardInputSourceListener implements BaseObject {
     }
     #else
     public function initKeyboardNotifications():Void {
-        kha.input.Keyboard.get(0).notify(onKeyDown, onKeyUp);
+        kha.input.Keyboard.get(0).notify(onKeyDown, onKeyUp, onKeyPress);
     }
     #end
 }

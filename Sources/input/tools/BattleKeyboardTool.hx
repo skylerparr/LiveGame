@@ -13,10 +13,10 @@ class BattleKeyboardTool implements KeyboardTool {
 
     private static inline var VARIATION: Float = 3;
 
-    private static inline var NORTH_KEY: String = "w";
-    private static inline var SOUTH_KEY: String = "s";
-    private static inline var WEST_KEY: String = "a";
-    private static inline var EAST_KEY: String = "d";
+    private static inline var NORTH_KEY: Int = 87;
+    private static inline var SOUTH_KEY: Int = 83;
+    private static inline var WEST_KEY: Int = 65;
+    private static inline var EAST_KEY: Int = 68;
 
     @inject
     public var objectCreator: ObjectCreator;
@@ -25,7 +25,7 @@ class BattleKeyboardTool implements KeyboardTool {
     @inject
     public var subscriber: Subscriber;
 
-    public var currentPressedKeys: Map<String, KeyEvent>;
+    public var currentPressedKeys: Map<Int, KeyEvent>;
 
     private var targetX: Float;
     private var targetZ: Float;
@@ -40,7 +40,7 @@ class BattleKeyboardTool implements KeyboardTool {
         targetZ = 0;
         targetChosen = false;
 
-        currentPressedKeys = new Map<String, KeyEvent>();
+        currentPressedKeys = new Map<Int, KeyEvent>();
     }
 
     public function dispose():Void {
@@ -49,8 +49,8 @@ class BattleKeyboardTool implements KeyboardTool {
     private function onUpdate():Void {
         handleUnitMove();
 
-        spawnMinion("!", 2);
-        spawnMinion("@", 3);
+        spawnMinion(49, 2);
+        spawnMinion(64, 3);
 
         if(!keysPressed()) {
             subscribed = false;
@@ -58,7 +58,7 @@ class BattleKeyboardTool implements KeyboardTool {
         }
     }
 
-    private inline function spawnMinion(key: String, id: Int): Void {
+    private inline function spawnMinion(key: Int, id: Int): Void {
         if(currentPressedKeys.exists(key)) {
             var spell: MutableSpellVO = new MutableSpellVO();
             spell.id = id;
@@ -68,7 +68,7 @@ class BattleKeyboardTool implements KeyboardTool {
     }
 
     public function onKeyDown(keyEvent:KeyEvent):Void {
-        var key: String = keyEvent.key.toLowerCase();
+        var key: Int = keyEvent.key;
         currentPressedKeys.set(key, keyEvent);
         targetChosen = true;
         if(moveKeyPressed()) {
@@ -82,7 +82,7 @@ class BattleKeyboardTool implements KeyboardTool {
     }
 
     public function onKeyUp(keyEvent:KeyEvent):Void {
-        var key: String = keyEvent.key.toLowerCase();
+        var key: Int = keyEvent.key;
         if(isMoveKey(key)) {
             resetTargetChosen(key);
         }
@@ -134,7 +134,7 @@ class BattleKeyboardTool implements KeyboardTool {
             currentPressedKeys.exists(SOUTH_KEY);
     }
 
-    private inline function isMoveKey(key: String): Bool {
+    private inline function isMoveKey(key: Int): Bool {
         var retVal: Bool = false;
         switch key {
             case SOUTH_KEY:
@@ -149,7 +149,7 @@ class BattleKeyboardTool implements KeyboardTool {
         return retVal;
     }
 
-    private inline function resetTargetChosen(key: String): Void {
+    private inline function resetTargetChosen(key: Int): Void {
         switch key {
             case SOUTH_KEY:
                 targetChosen = false;

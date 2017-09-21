@@ -1,5 +1,6 @@
 package input.tools;
 
+import input.kha.MockKeyboardKey;
 import mocks.MockHeroInteraction;
 import world.WorldPoint;
 import world.two.WorldPoint2D;
@@ -44,27 +45,27 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldStoreKeyEventsOnKeyDown(): Void {
-        var keyEvent = sendKeyDownEvent("w");
-        Assert.areEqual(keyEvent, keyboardTool.currentPressedKeys.get("w"));
+        var keyEvent = sendKeyDownEvent(MockKeyboardKey.W);
+        Assert.areEqual(keyEvent, keyboardTool.currentPressedKeys.get(MockKeyboardKey.W));
 
-        var keyEvent2 = sendKeyDownEvent("d");
-        Assert.areEqual(keyEvent2, keyboardTool.currentPressedKeys.get("d"));
+        var keyEvent2 = sendKeyDownEvent(MockKeyboardKey.D);
+        Assert.areEqual(keyEvent2, keyboardTool.currentPressedKeys.get(MockKeyboardKey.D));
     }
 
     @Test
     public function shouldRemoveKeyOnKeyUp(): Void {
-        sendKeyDownEvent("w");
-        sendKeyUpEvent("w");
-        Assert.isNull(keyboardTool.currentPressedKeys.get("w"));
+        sendKeyDownEvent(MockKeyboardKey.W);
+        sendKeyUpEvent(MockKeyboardKey.W);
+        Assert.isNull(keyboardTool.currentPressedKeys.get(MockKeyboardKey.W));
 
-        sendKeyDownEvent("d");
-        sendKeyUpEvent("d");
-        Assert.isNull(keyboardTool.currentPressedKeys.get("d"));
+        sendKeyDownEvent(MockKeyboardKey.D);
+        sendKeyUpEvent(MockKeyboardKey.D);
+        Assert.isNull(keyboardTool.currentPressedKeys.get(MockKeyboardKey.D));
     }
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToSouthLocationOnUpdate(): Void {
-        sendKeyDownEvent("s");
+        sendKeyDownEvent(MockKeyboardKey.S);
 
         heroInteraction.moveTo(cast isNotNull).calls(moveToValidation(100, 100 + moveDistance));
         mockHeroLocation(100, 100);
@@ -75,7 +76,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotCrashIfHeroIsNotAssigned(): Void {
-        sendKeyDownEvent("s");
+        sendKeyDownEvent(MockKeyboardKey.S);
 
         heroInteraction.getCurrentLocation().returns(null);
         mockHeroLocation(100, 100);
@@ -86,14 +87,14 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToCurrentLocationIfSouthKeyIsDepressed(): Void {
-        sendKeyDownEvent("s");
+        sendKeyDownEvent(MockKeyboardKey.S);
 
         mockHeroLocation(100, 100);
         mockHeroLocation(100, 120);
         mockHeroLocation(100, 140);
         runGameLoop(3);
 
-        sendKeyUpEvent("s");
+        sendKeyUpEvent(MockKeyboardKey.S);
 
         heroInteraction.moveTo(cast isNotNull).calls(moveToValidation(100, 140));
         subscriber.notify(EventNames.ENTER_GAME_LOOP, null);
@@ -103,14 +104,14 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToCurrentLocationIfNorthKeyIsDepressed(): Void {
-        sendKeyDownEvent("w");
+        sendKeyDownEvent(MockKeyboardKey.W);
 
         mockHeroLocation(100, 200);
         mockHeroLocation(100, 180);
         mockHeroLocation(100, 160);
         runGameLoop(3);
 
-        sendKeyUpEvent("w");
+        sendKeyUpEvent(MockKeyboardKey.W);
 
         heroInteraction.moveTo(cast isNotNull).calls(moveToValidation(100, 160));
         subscriber.notify(EventNames.ENTER_GAME_LOOP, null);
@@ -120,7 +121,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToNorthLocationOnUpdate(): Void {
-        sendKeyDownEvent("w");
+        sendKeyDownEvent(MockKeyboardKey.W);
 
         mockHeroLocation(100, 200);
         mockHeroLocation(100, 190);
@@ -133,7 +134,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotNotifyHeroInteractionToMoveHeroIfHeroIsNotAtTargetLocation(): Void {
-        sendKeyDownEvent("s");
+        sendKeyDownEvent(MockKeyboardKey.S);
 
         mockHeroLocation(100, 100);
         mockHeroLocation(100, 130);
@@ -146,7 +147,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveIfHeroIsAtTargetLocation(): Void {
-        sendKeyDownEvent("s");
+        sendKeyDownEvent(MockKeyboardKey.S);
 
         mockHeroLocation(100, 100);
         mockHeroLocation(100, 130);
@@ -162,7 +163,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToWestLocationOnUpdate(): Void {
-        sendKeyDownEvent("a");
+        sendKeyDownEvent(MockKeyboardKey.A);
 
         heroInteraction.moveTo(cast isNotNull).calls(moveToValidation(200 - moveDistance, 100));
         mockHeroLocation(200, 100);
@@ -173,13 +174,13 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToCurrentLocationIfWestKeyIsDepressed(): Void {
-        sendKeyDownEvent("a");
+        sendKeyDownEvent(MockKeyboardKey.A);
 
         mockHeroLocation(200, 100);
         mockHeroLocation(180, 100);
         mockHeroLocation(160, 100);
         runGameLoop(3);
-        sendKeyUpEvent("a");
+        sendKeyUpEvent(MockKeyboardKey.A);
 
         heroInteraction.moveTo(cast isNotNull).calls(moveToValidation(160, 100));
         subscriber.notify(EventNames.ENTER_GAME_LOOP, null);
@@ -189,7 +190,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveWestIfHeroIsAtTargetLocation(): Void {
-        sendKeyDownEvent("a");
+        sendKeyDownEvent(MockKeyboardKey.A);
 
         mockHeroLocation(200, 100);
         mockHeroLocation(190, 100);
@@ -205,7 +206,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToEastLocationOnUpdate(): Void {
-        sendKeyDownEvent("d");
+        sendKeyDownEvent(MockKeyboardKey.D);
 
         heroInteraction.moveTo(cast isNotNull).calls(moveToValidation(100 + moveDistance, 100));
         mockHeroLocation(100, 100);
@@ -216,13 +217,13 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveHeroToCurrentLocationIfEastKeyIsDepressed(): Void {
-        sendKeyDownEvent("d");
+        sendKeyDownEvent(MockKeyboardKey.D);
 
         mockHeroLocation(100, 100);
         mockHeroLocation(220, 100);
         mockHeroLocation(240, 100);
         runGameLoop(3);
-        sendKeyUpEvent("d");
+        sendKeyUpEvent(MockKeyboardKey.D);
 
         heroInteraction.moveTo(cast isNotNull).calls(moveToValidation(240, 100));
         subscriber.notify(EventNames.ENTER_GAME_LOOP, null);
@@ -232,7 +233,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionToMoveEastIfHeroIsAtTargetLocation(): Void {
-        sendKeyDownEvent("d");
+        sendKeyDownEvent(MockKeyboardKey.D);
 
         mockHeroLocation(100, 100);
         mockHeroLocation(130, 100);
@@ -255,10 +256,10 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionIfKeysPressedThenStopIfNoKeysPressed(): Void {
-        sendKeyDownEvent("d");
+        sendKeyDownEvent(MockKeyboardKey.D);
         mockHeroLocation(100, 100);
         runGameLoop(1);
-        sendKeyUpEvent("d");
+        sendKeyUpEvent(MockKeyboardKey.D);
         mockHeroLocation(100, 100);
         runGameLoop(7);
         heroInteraction.moveTo(cast any).verify(2);
@@ -266,10 +267,10 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotifyHeroInteractionIfKeyIsPressed(): Void {
-        sendKeyDownEvent("d");
+        sendKeyDownEvent(MockKeyboardKey.D);
         mockHeroLocation(100, 100);
         runGameLoop(1);
-        sendKeyDownEvent("w");
+        sendKeyDownEvent(MockKeyboardKey.W);
         mockHeroLocation(90, 100);
         runGameLoop(1);
 
@@ -278,7 +279,7 @@ class BattleKeyboardToolTest {
 
     @Test
     public function shouldNotNotifyHeroInteractionMoveIfKeyPressedIsNotAMoveKey(): Void {
-        sendKeyDownEvent("\\");
+        sendKeyDownEvent(MockKeyboardKey.Slash);
         mockHeroLocation(100, 100);
         runGameLoop(1);
 
@@ -301,7 +302,7 @@ class BattleKeyboardToolTest {
     }
 
     @IgnoreCover
-    private function sendKeyDownEvent(key:String):KeyEvent {
+    private function sendKeyDownEvent(key:Int):KeyEvent {
         var keyEvent: KeyEvent = new KeyEvent();
         keyEvent.key = key;
         keyboardTool.onKeyDown(keyEvent);
@@ -309,7 +310,7 @@ class BattleKeyboardToolTest {
     }
 
     @IgnoreCover
-    private function sendKeyUpEvent(key:String):KeyEvent {
+    private function sendKeyUpEvent(key:Int):KeyEvent {
         var keyEvent: KeyEvent = new KeyEvent();
         keyEvent.key = key;
         keyboardTool.onKeyUp(keyEvent);

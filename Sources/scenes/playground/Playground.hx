@@ -78,6 +78,7 @@ class Playground implements BaseObject {
     }
 
     private function onConnected(stream: InputOutputStream): Void {
+        trace("connected");
         var playerConnect = new PlayerConnect();
         playerConnect.playerId = playerService.uniqueId;
         streamHandler.send(playerConnect);

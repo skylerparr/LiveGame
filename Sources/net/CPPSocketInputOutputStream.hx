@@ -93,6 +93,10 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
                 errorManager.logError(e);
             }
         }
+
+        connected = true;
+        Sys.sleep(0.01); //give the server a moment to process this
+        subscriber.notify(CONNECTED, [this]);
     }
 
     public function close(): Void {

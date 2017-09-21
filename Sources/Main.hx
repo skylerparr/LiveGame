@@ -9,7 +9,7 @@ class Main {
     public static function main() {
         mconsole.Console.start();
         #if !test
-        System.init("Live Game", 800, 600, initialized);
+        System.init({title: "Live Game", width: 800, height: 600}, initialized);
         #end
     }
 
