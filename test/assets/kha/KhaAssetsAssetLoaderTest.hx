@@ -168,4 +168,10 @@ class KhaAssetsAssetLoaderTest {
 
         Assert.areEqual(0, cbCount);
     }
+
+    @Test
+    public function shouldDispose(): Void {
+        assetLoader.dispose();
+        Assert.isNull(assetLoader.currentlyLoadingMap);
+    }
 }

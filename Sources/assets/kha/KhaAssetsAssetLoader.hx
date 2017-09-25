@@ -13,6 +13,7 @@ class KhaAssetsAssetLoader implements AssetLoader {
     }
 
     public function dispose():Void {
+        currentlyLoadingMap = null;
     }
 
     public function loadImage(imageName:String, onComplete: Resource->Void):Void {

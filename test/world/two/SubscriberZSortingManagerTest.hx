@@ -81,6 +81,20 @@ class SubscriberZSortingManagerTest {
         Assert.areEqual(entityA.display, children[1]);
     }
 
+    @Test
+    public function shouldDispose(): Void {
+        subscriber = mock(MappedSubscriber);
+        sortingManager.subscriber = subscriber;
+        sortingManager.updateEvent = "myEvent";
+
+        sortingManager.dispose();
+
+        subscriber.unsubscribe("myEvent", cast isNotNull).verify();
+        Assert.isNull(sortingManager.updateEvent);
+        Assert.isNull(sortingManager.subscriber);
+        Assert.isNull(sortingManager.gameWorld);
+    }
+
     @IgnoreCover
     private function createDisplay(posX:Float, posY:Float, x: Float, y: Float, w: Float, h: Float):DisplayWorldEntity {
         var display: TwoDimDisplayNode = new TwoDimDisplayNode();

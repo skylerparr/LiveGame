@@ -38,6 +38,9 @@ class SubscriberZSortingManager implements ZSortingManager {
     }
 
     public function dispose():Void {
+        updateEvent = null;
+        subscriber = null;
+        gameWorld = null;
     }
 
     public function onUpdate():Void {
