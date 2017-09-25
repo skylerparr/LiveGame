@@ -84,6 +84,9 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
             input = socket.input;
             position = 0;
             socket.connect(new Host(hostname), port);
+            connected = true;
+            Sys.sleep(0.01); //give the server a moment to process this
+            subscriber.notify(CONNECTED, [this]);
         } catch(e: Dynamic) {
             if(e == "Blocking") {
                 connected = true;
@@ -92,11 +95,8 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
             } else {
                 errorManager.logError(e);
             }
+            return;
         }
-
-        connected = true;
-        Sys.sleep(0.01); //give the server a moment to process this
-        subscriber.notify(CONNECTED, [this]);
     }
 
     public function close(): Void {

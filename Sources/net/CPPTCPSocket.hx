@@ -18,7 +18,7 @@ class CPPTCPSocket implements TCPSocket {
         input = socket.input;
         output = socket.output;
         output.bigEndian = true;
-        socket.setBlocking(false);
+        socket.setBlocking(true);
         socket.setFastSend(true);
     }
 
