@@ -57,4 +57,13 @@ class KhaKeyboardInputSourceListenerTest {
         currentKeyboardTool.onKeyUp(keyEvent).verify();
         Assert.areEqual(65, keyEvent.key);
     }
+
+    @Test
+    public function shouldDispose(): Void {
+        keyboard.dispose();
+
+        objectCreator.disposeInstance(keyEvent).verify();
+        Assert.isNull(keyboard.objectCreator);
+        Assert.isNull(keyboard.gameInputTools);
+    }
 }

@@ -35,7 +35,9 @@ class KhaKeyboardInputSourceListener implements BaseObject {
         gameInputTools.keyboardTool.onKeyUp(keyEvent);
     }
 
+    @IgnoreCover
     public function onKeyPress(char: String):Void {
+        //no use for this at this time
     }
 
     #if test

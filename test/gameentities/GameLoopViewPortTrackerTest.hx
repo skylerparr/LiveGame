@@ -7,9 +7,7 @@ import mocks.MockViewPort;
 import util.MappedSubscriber;
 import util.Subscriber;
 import world.ViewPort;
-import massive.munit.util.Timer;
 import massive.munit.Assert;
-import massive.munit.async.AsyncFactory;
 
 import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
@@ -69,10 +67,44 @@ class GameLoopViewPortTrackerTest {
     }
 
     @Test
-    public function shouldotSubscribeIfGameObjectIsNull(): Void {
+    public function shouldNotSubscribeIfGameObjectIsNull(): Void {
         viewPortTracker.trackToGameObject(null);
         subscriber.notify(EventNames.ENTER_GAME_LOOP, []);
         viewPort.set_x(cast any).verify(0);
         viewPort.set_y(cast any).verify(0);
+    }
+
+    @Test
+    public function shouldNotTrackViewportBelowZeroOnX(): Void {
+        viewPort.get_x().returns(-200);
+
+        viewPortTracker.trackToGameObject(gameObject);
+        subscriber.notify(EventNames.ENTER_GAME_LOOP, []);
+
+        viewPort.set_x(0).verify();
+    }
+
+    @Test
+    public function shouldNotTrackViewportBelowZeroOnY(): Void {
+        viewPort.get_y().returns(-200);
+
+        viewPortTracker.trackToGameObject(gameObject);
+        subscriber.notify(EventNames.ENTER_GAME_LOOP, []);
+
+        viewPort.set_y(0).verify();
+    }
+
+    @Test
+    public function shouldDispose(): Void {
+        subscriber = mock(MappedSubscriber);
+        viewPortTracker.subscriber = subscriber;
+
+        viewPortTracker.dispose();
+
+        subscriber.unsubscribe(EventNames.ENTER_GAME_LOOP, cast any).verify();
+
+        Assert.isNull(viewPortTracker.viewPort);
+        Assert.isNull(viewPortTracker.subscriber);
+        Assert.isNull(viewPortTracker.gameObject);
     }
 }

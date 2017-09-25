@@ -19,6 +19,10 @@ class GameLoopViewPortTracker implements ViewPortTracker {
     }
 
     public function dispose():Void {
+        untrackFromGameObject();
+        subscriber = null;
+        viewPort = null;
+        gameObject = null;
     }
 
     public function trackToGameObject(gameObject:GameObject):Void {
