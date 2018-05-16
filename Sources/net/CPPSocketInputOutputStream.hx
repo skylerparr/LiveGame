@@ -79,23 +79,16 @@ class CPPSocketInputOutputStream implements TCPSocketConnector implements InputO
         if(connected) {
             return;
         }
+        output = socket.output;
+        input = socket.input;
+        position = 0;
         try {
-            output = socket.output;
-            input = socket.input;
-            position = 0;
             socket.connect(new Host(hostname), port);
             connected = true;
             Sys.sleep(0.01); //give the server a moment to process this
             subscriber.notify(CONNECTED, [this]);
         } catch(e: Dynamic) {
-            if(e == "Blocking") {
-                connected = true;
-                Sys.sleep(0.01); //give the server a moment to process this
-                subscriber.notify(CONNECTED, [this]);
-            } else {
-                errorManager.logError(e);
-            }
-            return;
+            errorManager.logError(e);
         }
     }
 

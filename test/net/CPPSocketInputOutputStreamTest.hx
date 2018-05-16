@@ -448,7 +448,6 @@ class CPPSocketInputOutputStreamTest {
 
     @IgnoreCover
     private function connectToSocket():Void {
-        socket.connect(cast any, 1337).throws("Blocking");
         socketStream.connect("localhost", 1337);
     }
 

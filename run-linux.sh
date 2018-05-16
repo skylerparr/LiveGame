@@ -1,1 +1,1 @@
-haxelib run kha linux --compile && cd build/linux && ./Empty && cd ../..
+node Kha/make.js --compile && cd build/linux && ./Empty && cd ../..
