@@ -39,7 +39,6 @@ class BattleKeyboardTool implements KeyboardTool {
         targetX = 0;
         targetZ = 0;
         targetChosen = false;
-
         currentPressedKeys = new Map<Int, KeyEvent>();
     }
 
@@ -96,7 +95,7 @@ class BattleKeyboardTool implements KeyboardTool {
         }
 
         if(moveKeyPressed() && currentLocation.x + VARIATION >= targetX && currentLocation.x - VARIATION <= targetX &&
-        currentLocation.z + VARIATION >= targetZ && currentLocation.z - VARIATION <= targetZ) {
+                currentLocation.z + VARIATION >= targetZ && currentLocation.z - VARIATION <= targetZ) {
             targetChosen = false;
         }
         if(!targetChosen) {

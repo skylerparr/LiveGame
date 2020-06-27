@@ -1,5 +1,6 @@
 package;
 #if !test
+import constants.ScreenConstants;
 import kha.Font;
 import kha.Scheduler;
 import kha.Assets;
@@ -48,7 +49,7 @@ class LiveGame {
     private var audioChannel: AudioChannel;
 
     public function new() {
-        backbuffer = Image.createRenderTarget(800, 600);
+        backbuffer = Image.createRenderTarget(ScreenConstants.screenWidth, ScreenConstants.screenHeight);
     }
 
     public function render(framebuffer:Framebuffer):Void {

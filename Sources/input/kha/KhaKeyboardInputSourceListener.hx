@@ -23,15 +23,20 @@ class KhaKeyboardInputSourceListener implements BaseObject {
         objectCreator = null;
         gameInputTools = null;
         keyEvent = null;
+        #if !test
+        kha.input.Keyboard.get(0).remove(onKeyDown, onKeyUp, onKeyPress);
+        #end
     }
 
     public function onKeyDown(key: #if test input.kha.MockKeyboardKey #else kha.input.KeyCode #end):Void {
-        keyEvent.key = cast(key, Int);
+        var k: Int = cast(key, Int);
+        keyEvent.key = k;
         gameInputTools.keyboardTool.onKeyDown(keyEvent);
     }
 
     public function onKeyUp(key: #if test input.kha.MockKeyboardKey #else kha.input.KeyCode #end):Void {
-        keyEvent.key = cast(key, Int);
+        var k: Int = cast(key, Int);
+        keyEvent.key = k;
         gameInputTools.keyboardTool.onKeyUp(keyEvent);
     }
 

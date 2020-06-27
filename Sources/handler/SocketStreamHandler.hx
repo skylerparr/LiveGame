@@ -123,7 +123,9 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
         handler.read(stream);
 
         var action: StrategyAction = strategyMap.locate(handler);
-        action.execute(handler);
+        if(action != null) {
+            action.execute(handler);
+        }
 
         handler = null;
         onDataReceived(stream);

@@ -20,20 +20,20 @@ class ReflectStrategyMap implements StrategyMap {
     @inject
     public var objectCreator: ObjectCreator;
 
-    public var handlerMap: ObjectMap<Dynamic, StrategyAction>;
+    public var handlerMap: Map<String, StrategyAction>;
 
     public function new() {
     }
 
     public function init():Void {
-        handlerMap = new ObjectMap<Dynamic, StrategyAction>();
+        handlerMap = new Map<String, StrategyAction>();
 
-        handlerMap.set(PlayerConnected, objectCreator.createInstance(PlayerConnectedAction));
-        handlerMap.set(UnitCreated, objectCreator.createInstance(UnitCreatedAction));
-        handlerMap.set(HeroCreated, objectCreator.createInstance(HeroCreatedAction));
-        handlerMap.set(UnitMove, objectCreator.createInstance(UnitMoveAction));
-        handlerMap.set(UnitCastingSpell, objectCreator.createInstance(UnitCastingSpellAction));
-        handlerMap.set(UnitCastedSpell, objectCreator.createInstance(UnitCastedSpellAction));
+        handlerMap.set(Type.getClassName(PlayerConnected), objectCreator.createInstance(PlayerConnectedAction));
+        handlerMap.set(Type.getClassName(UnitCreated), objectCreator.createInstance(UnitCreatedAction));
+        handlerMap.set(Type.getClassName(HeroCreated), objectCreator.createInstance(HeroCreatedAction));
+        handlerMap.set(Type.getClassName(UnitMove), objectCreator.createInstance(UnitMoveAction));
+        handlerMap.set(Type.getClassName(UnitCastingSpell), objectCreator.createInstance(UnitCastingSpellAction));
+        handlerMap.set(Type.getClassName(UnitCastedSpell), objectCreator.createInstance(UnitCastedSpellAction));
     }
 
     public function dispose():Void {
@@ -42,7 +42,7 @@ class ReflectStrategyMap implements StrategyMap {
     }
 
     public function locate(handler:IOHandler):StrategyAction {
-        return handlerMap.get(Type.getClass(handler));
+        return handlerMap.get(Type.getClassName(Type.getClass(handler)));
     }
 
 }

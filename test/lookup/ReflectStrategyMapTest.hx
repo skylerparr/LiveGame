@@ -93,13 +93,13 @@ class ReflectStrategyMapTest {
         Assert.isNull(strategyMap.objectCreator);
     }
 
-    @IgnoreCover
     private function validateAction(action:Class<StrategyAction>, handler: Class<IOHandler>):Void {
         expectedAction = Type.createInstance(action, []);
         objectCreator.createInstance(action).returns(expectedAction);
         strategyMap.init();
 
         var action: StrategyAction = strategyMap.locate(Type.createInstance(handler, []));
+        Assert.isNotNull(action);
         Assert.areEqual(expectedAction, action);
     }
 }
