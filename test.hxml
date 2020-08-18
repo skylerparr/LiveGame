@@ -49,6 +49,7 @@
 -lib hamcrest
 -lib mockatoo
 -lib minject
+-lib mcover
 -lib continuation
 -lib actuate
 -lib hxcpp-debugger
