@@ -13,10 +13,9 @@ class SingleHeroInteraction implements HeroInteraction {
     @inject
     public var objectCreator: ObjectCreator;
     @inject
-    public var streamHandler: StreamHandler;
-    @inject
     public var viewPortTracker: ViewPortTracker;
 
+    public var streamHandler: StreamHandler;
     private var heroLocation: WorldPoint;
     private var unitMoveTo: UnitMoveTo;
     private var unitCastSpell: UnitCastSpell;

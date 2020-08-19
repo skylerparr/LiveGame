@@ -40,8 +40,14 @@ import handler.StrategyMap;
 import handler.StreamHandler;
 import net.TCPSocketConnector;
 import io.InputOutputStream;
+#if cpp
 import net.CPPSocketInputOutputStream;
 import net.CPPTCPSocket;
+#else
+import net.NullIOStream;
+import net.NullTCPSocket;
+import net.NullTCPSocketConnector;
+#end
 import net.TCPSocket;
 import assets.SoundAsset;
 import assets.kha.KhaSoundAsset;
@@ -220,6 +226,7 @@ class InjectionSettings {
 
         injector.mapValue(SpellService, objectFactory.createInstance(StaticSpellService));
 
+        #if cpp
         injector.mapSingletonOf(TCPSocket, CPPTCPSocket);
         var socketIOStream: CPPSocketInputOutputStream = objectFactory.createInstance(CPPSocketInputOutputStream);
 
@@ -229,6 +236,11 @@ class InjectionSettings {
 
         injector.mapValue(InputOutputStream, socketIOStream);
         injector.mapValue(TCPSocketConnector, socketIOStream);
+        #else
+        injector.mapSingletonOf(InputOutputStream, net.NullIOStream);
+        injector.mapSingletonOf(TCPSocket, net.NullTCPSocket);
+        injector.mapSingletonOf(TCPSocketConnector, net.NullTCPSocketConnector);
+        #end
 
         injector.mapValue(ApplicationSettings, objectFactory.createInstance(MapApplicationSettings));
         injector.mapValue(StrategyMap, objectFactory.createInstance(ReflectStrategyMap));

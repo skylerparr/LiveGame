@@ -1,4 +1,3 @@
 [submodule "Kha"]
 	path = Kha
-	url = ../Kha
-	branch = master
+	url = https://github.com/Kode/Kha

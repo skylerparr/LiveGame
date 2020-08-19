@@ -52,8 +52,8 @@ class LiveGame {
         backbuffer = Image.createRenderTarget(ScreenConstants.screenWidth, ScreenConstants.screenHeight);
     }
 
-    public function render(framebuffer:Framebuffer):Void {
-        this.framebuffer = framebuffer;
+    public function render(framebuffer:Array<Framebuffer>):Void {
+        this.framebuffer = framebuffer[0];
         if(initialized) {
             return;
         }

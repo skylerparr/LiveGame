@@ -1,5 +1,5 @@
 package animation;
-import cpp.vm.Thread;
+import sys.thread.Thread;
 @IgnoreCover
 class ThreadedAnimationManager extends SubscribedAnimationManager {
 
