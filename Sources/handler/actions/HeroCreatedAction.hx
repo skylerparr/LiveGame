@@ -59,6 +59,7 @@ class HeroCreatedAction implements StrategyAction {
         unitVO.id = unitCreated.unitId;
         unitVO.unitType = unitCreated.unitType;
 
+        trace(currentPlayer.id, unitCreated.playerId);
         if(currentPlayer.id == unitCreated.playerId) {
             currentPlayer.units.set(unitVO.id, unitVO);
             heroInteraction.hero = unit;

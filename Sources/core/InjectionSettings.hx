@@ -1,4 +1,7 @@
 package core;
+import haxe.io.BytesOutput;
+import handler.LocalStreamHandler;
+import constants.ScreenConstants;
 import input.GameWorldInteractionManager;
 import input.BattleGameWorldInteractionManager;
 import gameentities.fx.MappedEffectManager;
@@ -40,13 +43,11 @@ import handler.StrategyMap;
 import handler.StreamHandler;
 import net.TCPSocketConnector;
 import io.InputOutputStream;
-#if cpp
+#if (multiplayer && cpp)
 import net.CPPSocketInputOutputStream;
 import net.CPPTCPSocket;
 #else
-import net.NullIOStream;
-import net.NullTCPSocket;
-import net.NullTCPSocketConnector;
+import net.BufferIOStream;
 #end
 import net.TCPSocket;
 import assets.SoundAsset;
@@ -197,8 +198,8 @@ class InjectionSettings {
         injector.mapClass(Tween, SimpleTween);
 
         var viewPort: ViewPort2D = objectFactory.createInstance(ViewPort2D, [viewPortContainer]);
-        viewPort.width = 800;
-        viewPort.height = 600;
+        viewPort.width = ScreenConstants.screenWidth;
+        viewPort.height = ScreenConstants.screenHeight;
         injector.mapValue(ViewPort, viewPort);
 
         injector.mapValue(ViewPortTracker, objectFactory.createInstance(GameLoopViewPortTracker));
@@ -216,7 +217,8 @@ class InjectionSettings {
         zSorting.updateEvent = EventNames.ENTER_GAME_LOOP;
         injector.mapValue(ZSortingManager, zSorting);
 
-        injector.mapValue(UnitInteractionManager, objectFactory.createInstance(BattleUnitInteractionManager));
+        var unitInteractionManager: UnitInteractionManager = cast objectFactory.createInstance(BattleUnitInteractionManager);
+        injector.mapValue(UnitInteractionManager, unitInteractionManager);
 
         var fps: Fps = objectFactory.createInstance(Fps);
         injector.mapValue(Fps, fps);
@@ -226,7 +228,7 @@ class InjectionSettings {
 
         injector.mapValue(SpellService, objectFactory.createInstance(StaticSpellService));
 
-        #if cpp
+        #if (multiplayer && cpp)
         injector.mapSingletonOf(TCPSocket, CPPTCPSocket);
         var socketIOStream: CPPSocketInputOutputStream = objectFactory.createInstance(CPPSocketInputOutputStream);
 
@@ -237,15 +239,19 @@ class InjectionSettings {
         injector.mapValue(InputOutputStream, socketIOStream);
         injector.mapValue(TCPSocketConnector, socketIOStream);
         #else
-        injector.mapSingletonOf(InputOutputStream, net.NullIOStream);
-        injector.mapSingletonOf(TCPSocket, net.NullTCPSocket);
-        injector.mapSingletonOf(TCPSocketConnector, net.NullTCPSocketConnector);
+        var bytesOutput: BytesOutput = new BytesOutput();
+        var localStream: BufferIOStream = objectFactory.createInstance(BufferIOStream, [bytesOutput]);
+        injector.mapValue(InputOutputStream, localStream);
         #end
 
         injector.mapValue(ApplicationSettings, objectFactory.createInstance(MapApplicationSettings));
         injector.mapValue(StrategyMap, objectFactory.createInstance(ReflectStrategyMap));
         injector.mapValue(HandlerLookup, objectFactory.createInstance(MapHandlerLookup));
+        #if (multiplayer && cpp)
         var streamHandler: SocketStreamHandler = objectFactory.createInstance(SocketStreamHandler);
+        #else
+        var streamHandler: LocalStreamHandler = objectFactory.createInstance(LocalStreamHandler);
+        #end
         injector.mapValue(StreamHandler, streamHandler);
 
         heroInteraction.streamHandler = streamHandler;

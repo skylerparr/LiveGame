@@ -71,7 +71,8 @@ class SocketStreamHandler implements StreamHandler implements BaseObject {
 
         connector.connect(
             settings.getSetting(SettingKeys.SOCKET_HOST),
-            settings.getSetting(SettingKeys.SOCKET_PORT));
+            settings.getSetting(SettingKeys.SOCKET_PORT)
+        );
     }
 
     public function end():Void {

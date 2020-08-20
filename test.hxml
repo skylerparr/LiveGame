@@ -60,6 +60,7 @@
 -cp test
 -D HXCPP_M64
 -D test
+-D multiplayer
 #-debug
 #-D HXCPP_DEBUGGER
 #-D integration

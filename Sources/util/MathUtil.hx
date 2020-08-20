@@ -55,6 +55,6 @@ class MathUtil {
     }
 
     public static inline function calculateDistance(pointA: WorldPoint, pointB: WorldPoint): Float {
-        return Math.sqrt( Math.abs( (pointA.x - pointB.x) * (pointA.x - pointB.x) ) + Math.abs( (pointA.y - pointB.y) * (pointA.y - pointB.y) ) );
+        return Math.sqrt( Math.abs( (pointA.x - pointB.x) * (pointA.x - pointB.x) ) + Math.abs( (pointA.z - pointB.z) * (pointA.z - pointB.z) ) );
     }
 }

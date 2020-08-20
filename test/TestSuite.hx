@@ -26,6 +26,7 @@ import handler.actions.UnitCastedSpellActionTest;
 import handler.actions.HeroCreatedActionTest;
 import handler.actions.UnitMoveActionTest;
 import handler.actions.UnitCastingSpellActionTest;
+import handler.LocalStreamHandlerTest;
 import handler.SocketStreamHandlerTest;
 import gameentities.fx.MappedEffectManagerTest;
 import gameentities.fx.UnitSpawnFXTest;
@@ -95,6 +96,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(handler.actions.HeroCreatedActionTest);
 		add(handler.actions.UnitMoveActionTest);
 		add(handler.actions.UnitCastingSpellActionTest);
+		add(handler.LocalStreamHandlerTest);
 		add(handler.SocketStreamHandlerTest);
 		add(gameentities.fx.MappedEffectManagerTest);
 		add(gameentities.fx.UnitSpawnFXTest);

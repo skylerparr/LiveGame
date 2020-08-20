@@ -7,6 +7,7 @@ import io.InputOutputStream;
 import error.Logger;
 import util.MappedSubscriber;
 import core.ObjectCreator;
+import haxe.io.BytesOutput;
 #end
 import massive.munit.Assert;
 import mockatoo.Mockatoo;
@@ -31,8 +32,10 @@ class CPPSocketInputOutputStreamTest {
         subscriber.init();
         objectCreator = mock(ObjectCreator);
         objectCreator.createInstance(MappedSubscriber).returns(subscriber);
-        socket = mock(TCPSocket);
         output = mock(Output);
+        var buffer: BufferIOStream = new BufferIOStream(output);
+        objectCreator.createInstance(BufferIOStream, cast any).returns(buffer);
+        socket = mock(TCPSocket);
         input = mock(Input);
         socket.output.returns(output);
         socket.input.returns(input);
@@ -395,9 +398,7 @@ class CPPSocketInputOutputStreamTest {
         objectCreator.disposeInstance(subscriber);
         Assert.isNull(socketStream.subscriber);
         Assert.isNull(socketStream.input);
-        Assert.isNull(socketStream.output);
         Assert.isNull(socketStream.buffer);
-        Assert.isNull(socketStream.bufferInput);
         Assert.isNull(socketStream.socket);
         Assert.isNull(socketStream.errorManager);
         Assert.isNull(socketStream.objectCreator);

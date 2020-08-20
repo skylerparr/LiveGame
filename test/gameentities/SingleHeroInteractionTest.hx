@@ -190,4 +190,29 @@ class SingleHeroInteractionTest {
         Assert.areEqual(0, heroInteraction.units.length);
     }
 
+    @Test
+    public function shouldDispose(): Void {
+        heroInteraction.dispose();
+
+        viewPortTracker.untrackFromGameObject().verify();
+
+        Assert.isNull(heroInteraction.units);
+        Assert.isNull(heroInteraction.objectCreator);
+        Assert.isNull(heroInteraction.viewPortTracker);
+        Assert.isNull(heroInteraction.hero);
+    }
+
+    @Test
+    public function shouldReturnNullIfUnitListIsNull(): Void {
+        heroInteraction.dispose();
+
+        Assert.isNull(heroInteraction.units);
+    }
+
+    @Test
+    public function shouldNotCrashIfDisposeIsCalledMoreThanOnce(): Void {
+        heroInteraction.dispose();
+        heroInteraction.dispose();
+    }
+
 }

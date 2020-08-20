@@ -29,7 +29,9 @@ class SingleHeroInteraction implements HeroInteraction {
     public var units(get, null):List<GameObject>;
 
     public function set_hero(value:GameObject) {
-        viewPortTracker.trackToGameObject(value);
+        if(viewPortTracker != null && value != null) {
+            viewPortTracker.trackToGameObject(value);
+        }
         return this.hero = value;
     }
 
@@ -38,6 +40,9 @@ class SingleHeroInteraction implements HeroInteraction {
     }
 
     function get_units():List<GameObject> {
+        if(unitList == null) {
+            return null;
+        }
         return unitList.asList();
     }
 
@@ -53,6 +58,16 @@ class SingleHeroInteraction implements HeroInteraction {
     }
 
     public function dispose():Void {
+        if(viewPortTracker == null) {
+            return;
+        }
+        viewPortTracker.untrackFromGameObject();
+
+        unitList = null;
+        heroLocation = null;
+        objectCreator = null;
+        viewPortTracker = null;
+        this.hero = null;
     }
 
     public function getCurrentLocation():WorldPoint {

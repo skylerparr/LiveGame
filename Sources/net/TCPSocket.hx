@@ -1,9 +1,9 @@
 package net;
-#if cpp
+#if (multiplayer && cpp)
 import sys.net.Host;
 #end
 interface TCPSocket {
-    #if cpp
+    #if (multiplayer && cpp)
     var input(default,null) : haxe.io.Input;
 
     var output(default,null) : haxe.io.Output;

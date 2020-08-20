@@ -113,7 +113,7 @@ class Playground implements BaseObject {
         var uiLayer:DisplayNodeContainer = uiLayerManager.getLayerByName(LayerNames.UI);
 
         var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
-        hello.text = "hello world, snake";
+        hello.text = "hello world";
         hello.fontName = "helveticaneue_light";
         hello.fontSize = 32;
         hello.fontColor = 0xff0000ff;

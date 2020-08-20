@@ -44,4 +44,8 @@ class WorldPoint2D implements WorldPoint {
     public function get_z():Float {
         return z;
     }
+
+    public function toString(): String {
+        return '${x}, ${z}';
+    }
 }
