@@ -1,5 +1,6 @@
 package handler;
 
+import game.GameLogicInput;
 import haxe.io.BytesOutput;
 import util.MappedSubscriber;
 import net.BufferIOStream;
@@ -16,16 +17,19 @@ class LocalStreamHandlerTest {
   private var streamHandler: LocalStreamHandler;
   private var objectCreator: ObjectCreator;
   private var output: BytesOutput;
+  private var gameLogicInput: GameLogicInput;
 
   @Before
   public function setup() {
     streamHandler = new LocalStreamHandler();
     objectCreator = mock(ObjectCreator);
+    gameLogicInput = mock(GameLogicInput);
 
     output = new BytesOutput();
     objectCreator.createInstance(BufferIOStream).returns(new BufferIOStream(output));
 
     streamHandler.objectCreator = objectCreator;
+    streamHandler.gameLogicInput = gameLogicInput;
   }
 
   @After
@@ -68,8 +72,9 @@ class LocalStreamHandlerTest {
     var cb = function(io: InputOutputStream): Void {
 
     };
-    streamHandler.subscribeToConnected(cb);
-    streamHandler.unsubscribeToConnected(cb);
+    streamHandler.subscribeToClose(cb);
+    Assert.isNotNull(streamHandler.closedHandlers.get(cb));
+    streamHandler.unsubscribeToClose(cb);
     Assert.isNull(streamHandler.closedHandlers.get(cb));
   }
 
@@ -93,6 +98,21 @@ class LocalStreamHandlerTest {
   }
 
   @Test
+  public function shouldDoNothingIfThereAreNoSubscribers(): Void {
+    var connected: Bool = false;
+    var connect = function(io: InputOutputStream): Void {
+      connected = true;
+    };
+    var closed: Bool = false;
+    var close = function(io: InputOutputStream): Void {
+      closed = true;
+    };
+    streamHandler.start();
+    Assert.isFalse(connected);
+    Assert.isFalse(closed);
+  }
+
+  @Test
   public function shouldDispatchClosedHandlersOnEnd(): Void {
     var connected: Bool = false;
     var connect = function(io: InputOutputStream): Void {
@@ -109,5 +129,13 @@ class LocalStreamHandlerTest {
 
     Assert.isFalse(connected);
     Assert.isTrue(closed);
+  }
+
+  @Test
+  public function shouldSendIOHandlerToGameLogicInput(): Void {
+    var handler: IOHandler = mock(IOHandler);
+    streamHandler.send(handler);
+
+    gameLogicInput.input(handler).verify();
   }
 }

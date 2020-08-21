@@ -1,4 +1,9 @@
 package core;
+import game.GameLogicStrategyMap;
+import game.GameLogicInputHandler;
+import game.GameLogicInput;
+import game.LocalGameLogic;
+import game.GameLogic;
 import haxe.io.BytesOutput;
 import handler.LocalStreamHandler;
 import constants.ScreenConstants;
@@ -250,6 +255,9 @@ class InjectionSettings {
         #if (multiplayer && cpp)
         var streamHandler: SocketStreamHandler = objectFactory.createInstance(SocketStreamHandler);
         #else
+        injector.mapSingletonOf(GameLogic, LocalGameLogic);
+        injector.mapValue(StrategyMap, objectFactory.createInstance(GameLogicStrategyMap), "GameLogicStrategyMap");
+        injector.mapSingletonOf(GameLogicInput, GameLogicInputHandler);
         var streamHandler: LocalStreamHandler = objectFactory.createInstance(LocalStreamHandler);
         #end
         injector.mapValue(StreamHandler, streamHandler);

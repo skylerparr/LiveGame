@@ -1,10 +1,6 @@
 package handler;
+import game.GameLogicInput;
 import handler.output.PlayerConnect;
-import handler.actions.HeroCreatedAction;
-import handler.input.HeroCreated;
-import handler.actions.PlayerConnectedAction;
-import handler.input.PlayerConnected;
-import util.Subscriber;
 import net.BufferIOStream;
 import core.ObjectCreator;
 import io.InputOutputStream;
@@ -12,6 +8,8 @@ import haxe.ds.ObjectMap;
 class LocalStreamHandler implements StreamHandler {
   @inject
   public var objectCreator: ObjectCreator;
+  @inject
+  public var gameLogicInput: GameLogicInput;
 
   public var connectedHandlers: ObjectMap<Dynamic, InputOutputStream>;
   public var closedHandlers: ObjectMap<Dynamic, InputOutputStream>;
@@ -36,28 +34,7 @@ class LocalStreamHandler implements StreamHandler {
   }
 
   public function send(handler:IOHandler):Void {
-    switch(handler.cmdId) {
-      case IOCommands.PLAYER_CONNECT:
-        var playerId = cast(handler, PlayerConnect).playerId;
-        var playerConnected: PlayerConnected = new PlayerConnected();
-        playerConnected.identifier = playerId;
-        playerConnected.playerId = playerId;
-
-        var action: StrategyAction = objectCreator.createInstance(PlayerConnectedAction);
-        action.execute(playerConnected);
-
-        var unitHeroCreated: HeroCreated = new HeroCreated();
-        unitHeroCreated.playerId = playerId;
-        unitHeroCreated.unitId = 1;
-        unitHeroCreated.unitType = 1;
-        unitHeroCreated.posX = 250;
-        unitHeroCreated.posZ = 250;
-
-        var action: StrategyAction = objectCreator.createInstance(HeroCreatedAction);
-        action.execute(unitHeroCreated);
-      case _:
-        trace(handler.cmdId);
-    }
+    gameLogicInput.input(handler);
   }
 
   public function subscribeToConnected(callback:(InputOutputStream) -> Void):Void {
