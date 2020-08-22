@@ -24,7 +24,7 @@ class PlayerConnectedAction implements StrategyAction {
 
     public function execute(handler:IOHandler):Void {
         var playerAction: PlayerConnected = cast handler;
-        logger.logDebug("player id " + playerAction.playerId);
+        logger.logDebug('player id ${playerAction.playerId}, identifier ${playerAction.identifier}');
 
         if(playerService.uniqueId == playerAction.identifier) {
             playerService.getCurrentPlayer(function(player: PlayerVO): Void {

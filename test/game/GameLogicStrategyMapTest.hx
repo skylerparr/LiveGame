@@ -1,5 +1,7 @@
 package game;
 
+import game.actions.UnitMoveToAction;
+import handler.output.UnitMoveTo;
 import core.ObjectCreator;
 import game.actions.PlayerConnectAction;
 import handler.output.PlayerConnect;
@@ -21,6 +23,7 @@ class GameLogicStrategyMapTest {
     strategyMap.objectCreator = objectCreator;
 
     objectCreator.createInstance(PlayerConnectAction).returns(new PlayerConnectAction());
+    objectCreator.createInstance(UnitMoveToAction).returns(new UnitMoveToAction());
     strategyMap.init();
   }
 
@@ -40,5 +43,11 @@ class GameLogicStrategyMapTest {
   public function shouldGetPlayerConnectAction(): Void {
     var action: StrategyAction = strategyMap.locate(new PlayerConnect());
     Assert.areEqual(Type.getClass(action), PlayerConnectAction);
+  }
+
+  @Test
+  public function shouldGetUnitMoveToAction(): Void {
+    var action: StrategyAction = strategyMap.locate(new UnitMoveTo());
+    Assert.areEqual(Type.getClass(action), UnitMoveToAction);
   }
 }

@@ -1,4 +1,6 @@
 package game;
+import game.actions.UnitMoveToAction;
+import handler.output.UnitMoveTo;
 import game.actions.PlayerConnectAction;
 import handler.output.PlayerConnect;
 import core.ObjectCreator;
@@ -18,6 +20,7 @@ class GameLogicStrategyMap implements StrategyMap {
     handlerMap = new Map<String, StrategyAction>();
 
     handlerMap.set(Type.getClassName(PlayerConnect), objectCreator.createInstance(PlayerConnectAction));
+    handlerMap.set(Type.getClassName(UnitMoveTo), objectCreator.createInstance(UnitMoveToAction));
   }
 
   public function dispose():Void {

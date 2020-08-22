@@ -10,8 +10,8 @@ class UnitMove implements IOHandler {
     }
 
     public var unitId: Int;
-    public var posX: Int;
-    public var posZ: Int;
+    public var posX: Float;
+    public var posZ: Float;
     public var time: Int;
 
     function get_cmdId():UInt {
@@ -20,15 +20,15 @@ class UnitMove implements IOHandler {
 
     function get_totalBytes():UInt {
         return ByteValues.INT +
-            ByteValues.INT +
-            ByteValues.INT +
+            ByteValues.FLOAT +
+            ByteValues.FLOAT +
             ByteValues.INT;
     }
 
     public function read(stream:InputOutputStream):Void {
         unitId = stream.readInt();
-        posX = stream.readInt();
-        posZ = stream.readInt();
+        posX = stream.readFloat();
+        posZ = stream.readFloat();
         time = stream.readInt();
     }
 
