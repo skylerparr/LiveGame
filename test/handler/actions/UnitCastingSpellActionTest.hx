@@ -70,6 +70,17 @@ class UnitCastingSpellActionTest {
         unitInteractionManager.startCastingSpell(spell, gameObject, cast isNotNull).verify();
     }
 
+    @Test
+    public function shouldDispose(): Void {
+        castingSpellAction.dispose();
+
+        Assert.isNull(castingSpellAction.logger);
+        Assert.isNull(castingSpellAction.gameWorld);
+        Assert.isNull(castingSpellAction.interactionManager);
+        Assert.isNull(castingSpellAction.objectCreator);
+        Assert.isNull(castingSpellAction.spellService);
+    }
+
     @IgnoreCover
     private function getSpell(id:Int): Void {
         spellService.getSpellById(id, cast isNotNull).calls(function(args): Void {

@@ -121,6 +121,19 @@ class RenderableLayerManagerTest {
     }
 
     @Test
+    public function shouldGetAllDefinedLayers(): Void {
+        var top: DisplayNodeContainer = new TwoDimDisplayNodeContainer();
+        top.init();
+
+        layerManager.addLayerByName("bottom", bottomContainer);
+        layerManager.addLayerByName("top", top);
+
+        var layers: Array<DisplayNodeContainer> = layerManager.getLayers();
+        Assert.areEqual(layers[0], top);
+        Assert.areEqual(layers[1], bottomContainer);
+    }
+
+    @Test
     public function shouldDisposeAllReferences(): Void {
         layerManager.dispose();
 

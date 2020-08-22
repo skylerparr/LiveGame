@@ -149,6 +149,12 @@ class TwoDimDisplayNodeContainerTest {
     }
 
     @Test
+    public function shouldGetAndSetMouseChildren(): Void {
+        container.mouseChildren = true;
+        Assert.isTrue(container.mouseChildren);
+    }
+
+    @Test
     public function shouldDisposeAllReferences(): Void {
         var retNode: DisplayNode = container.addChild(node);
 

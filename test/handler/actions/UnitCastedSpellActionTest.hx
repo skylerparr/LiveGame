@@ -69,6 +69,29 @@ class UnitCastedSpellActionTest {
         interactionManager.spellCasted(spell, gameObject, cast isNotNull, null).verify();
     }
 
+    @Test
+    public function shouldInvokeSpellCastedToInteractionManagerIfGameObjectIsNull(): Void {
+        unitCastedSpell.unitId = -1;
+        unitCastedSpell.spellId = 1;
+        unitCastedSpell.posX = 14;
+        unitCastedSpell.posZ = 24;
+
+        getSpell(1);
+        unitCastedSpellAction.execute(unitCastedSpell);
+        interactionManager.spellCasted(null, null, null, null).verify();
+    }
+
+    @Test
+    public function shouldDispose(): Void {
+        unitCastedSpellAction.dispose();
+
+        Assert.isNull(unitCastedSpellAction.logger);
+        Assert.isNull(unitCastedSpellAction.gameWorld);
+        Assert.isNull(unitCastedSpellAction.interactionManager);
+        Assert.isNull(unitCastedSpellAction.objectCreator);
+        Assert.isNull(unitCastedSpellAction.spellService);
+    }
+
     @IgnoreCover
     private function getSpell(id:Int): Void {
         spellService.getSpellById(id, cast isNotNull).calls(function(args): Void {

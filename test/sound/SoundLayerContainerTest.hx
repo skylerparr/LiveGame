@@ -227,7 +227,8 @@ class SoundLayerContainerTest {
     public function shouldSetTheVolumeOnAllSoundHandles(): Void {
         addAllSounds();
 
-        soundLayer.volume= 0.8;
+        soundLayer.volume = 0.8;
+        Assert.areEqual(soundLayer.volume, 0.8);
 
         soundHandle.set_volume(0.8).verify();
         soundHandle1.set_volume(0.8).verify();

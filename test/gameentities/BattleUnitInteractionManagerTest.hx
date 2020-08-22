@@ -280,6 +280,12 @@ class BattleUnitInteractionManagerTest {
         Assert.isFalse(interactionManager.specialEffectMap.exists(gameObject2));
     }
 
+    @Test
+    public function shouldDoNothingIfGameObjectIsNull(): Void {
+        interactionManager.spellCasted(null, null, null, null);
+        effectManager.endEffect(cast any).verify(0);
+    }
+
     @IgnoreCover
     private function assignUpdateFunction(args):TweenTarget {
         updateFunction = args[0];

@@ -413,6 +413,24 @@ class GameWorld2DTest {
         gameObject.set_display(display).verify();
     }
 
+    @Test
+    public function shouldGetAndSetGameWorldDimensions(): Void {
+        gameWorld.totalWidth = 48923;
+        gameWorld.totalHeight = 3831;
+
+        Assert.areEqual(gameWorld.totalWidth, 48923);
+        Assert.areEqual(gameWorld.totalHeight, 3831);
+    }
+    
+    @Test
+    public function shouldGetAndSetDisplayContainer(): Void {
+        var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
+
+        gameWorld.displayContainer = display;
+
+        Assert.areEqual(gameWorld.displayContainer, display);
+    }
+
     @IgnoreCover
     private inline function getGameObjectCount(): UInt {
         var objCount: Int = 0;

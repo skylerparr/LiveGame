@@ -43,6 +43,10 @@ class BattleKeyboardTool implements KeyboardTool {
     }
 
     public function dispose():Void {
+        objectCreator = null;
+        heroInteraction = null;
+        subscriber = null;
+        currentPressedKeys = null;
     }
 
     private function onUpdate():Void {

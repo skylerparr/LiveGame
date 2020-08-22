@@ -286,6 +286,24 @@ class BattleKeyboardToolTest {
         heroInteraction.moveTo(cast isNotNull).verify(0);
     }
 
+    @Test
+    public function shouldDispose(): Void {
+        keyboardTool.dispose();
+
+        Assert.isNull(keyboardTool.objectCreator);
+        Assert.isNull(keyboardTool.heroInteraction);
+        Assert.isNull(keyboardTool.subscriber);
+        Assert.isNull(keyboardTool.currentPressedKeys);
+    }
+
+    @Test
+    public function shouldNotifyHeroInteractionToCastSpellIfSpellButtonPressed(): Void {
+        sendKeyDownEvent(49);
+        runGameLoop(1);
+
+        heroInteraction.castSpell(null, null, cast isNotNull).verify();
+    }
+
     @IgnoreCover
     private inline function mockHeroLocation(x:Float, z:Float):Void {
         var worldPoint: WorldPoint2D = new WorldPoint2D(x, z);

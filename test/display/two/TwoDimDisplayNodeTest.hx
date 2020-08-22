@@ -80,4 +80,5 @@ class TwoDimDisplayNodeTest {
         Assert.areEqual("foo", display.name);
         Assert.areEqual(false, display.mouseEnabled);
     }
+
 }

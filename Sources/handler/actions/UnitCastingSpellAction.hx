@@ -28,6 +28,11 @@ class UnitCastingSpellAction implements StrategyAction {
     }
 
     public function dispose():Void {
+        logger = null;
+        gameWorld = null;
+        interactionManager = null;
+        objectCreator = null;
+        spellService = null;
     }
 
     public function execute(handler:IOHandler):Void {

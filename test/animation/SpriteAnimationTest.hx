@@ -114,6 +114,23 @@ class SpriteAnimationTest {
         animation.setFrame(3);
         Assert.areEqual(2, animation.currentFrame);
     }
+    
+    @Test
+    public function shouldGetAndSetFrameTime(): Void {
+        animation.frameTime = 238;
+        Assert.areEqual(animation.frameTime, 238);
+    }
+    
+    @Test
+    public function shouldSetCurrentFrameToZeroIfCurrentFrameIsGreatherThanMaxFrames(): Void {
+        animation.frames = [mock(Frame), mock(Frame), mock(Frame)];
+        animation.nextFrame();
+        animation.nextFrame();
+        animation.nextFrame();
+
+        animation.frames = [mock(Frame)];
+        Assert.areEqual(animation.currentFrame, 0);
+    }
 
     @Test
     public function shouldDispseAllReferences(): Void {

@@ -149,6 +149,7 @@ class SimpleSoundManagerTest {
         soundManager.addSoundLayer("ambient", soundLayer2);
 
         soundManager.masterVolume = 0.5;
+        Assert.areEqual(soundManager.masterVolume, 0.5);
 
         soundLayer.set_volume(0.5).verify();
         soundLayer1.set_volume(0.375).verify();

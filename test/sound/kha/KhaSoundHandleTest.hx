@@ -433,6 +433,18 @@ class KhaSoundHandleTest {
         Assert.isNull(soundHandle.mappedSubscriber);
     }
 
+    @Test
+    public function shouldReturnVolumeOfZeroIfSoundIsNull(): Void {
+        soundHandle.sound = null;
+        Assert.areEqual(soundHandle.volume, 0);
+    }
+
+    @Test
+    public function shouldReturnPositionOfZeroIfSoundIsNull(): Void {
+        soundHandle.sound = null;
+        Assert.areEqual(soundHandle.position = 2, 0);
+    }
+
     @IgnoreCover
     private function initializeWithNull():Void {
         soundHandle = new KhaSoundHandle(null);

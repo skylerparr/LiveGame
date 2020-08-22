@@ -53,7 +53,7 @@
 -lib continuation
 -lib actuate
 -lib hxcpp-debugger
---macro mcover.MCover.coverage([''],['Sources'],['animation.spec.JSONArray','vo.mutable.*','handler.input.*','handler.output.*','error.*','constants.*'])
+--macro mcover.MCover.coverage([''],['Sources'],['animation.spec.JSONArray','vo.mutable.*','handler.input.*','handler.output.*','error.*','constants.*', 'com.dongxiguo.continuation.*'])
 -D MCOVER
 -cp Sources
 
