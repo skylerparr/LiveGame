@@ -51,15 +51,18 @@ class TestMain
 		#if MCOVER
 			var client = new mcover.coverage.munit.client.MCoverPrintClient();
 			var httpClient = new HTTPClient(new mcover.coverage.munit.client.MCoverSummaryReportClient());
+			#if sys
+				mcover.coverage.MCoverage.getLogger().addClient(new mcover.coverage.client.LcovPrintClient("mcover unittests", "coverage/lcov.info"));
+				mcover.coverage.MCoverage.getLogger().addClient(new CoverageFileOutputClient("coverage/coverage.txt"));
+			#end
 		#else
-			var client = new RichPrintClient();
-			var httpClient = new HTTPClient(new SummaryReportClient());
+		var client = new RichPrintClient();
+		var httpClient = new HTTPClient(new SummaryReportClient());
 		#end
 
-		var runner:TestRunner = new TestRunner(client); 
+		var runner:TestRunner = new TestRunner(client);
 		runner.addResultClient(httpClient);
-		//runner.addResultClient(ObjectFactoryTest HTTPClient(ObjectFactoryTest JUnitReportClient()));
-		
+		runner.addResultClient(new HTTPClient(new JUnitReportClient()));
 		runner.completionHandler = completionHandler;
 		
 		#if js
@@ -89,6 +92,9 @@ class TestMain
 	*/
 	function completionHandler(successful:Bool):Void
 	{
+		var logger = mcover.coverage.MCoverage.getLogger();
+		logger.report();
+
 		try
 		{
 			#if flash

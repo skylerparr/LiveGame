@@ -1,10 +1,12 @@
 package game.vo;
+import collections.UniqueCollection;
 import world.GameObject;
 import gameentities.BaseGameObject;
+@IgnoreCover
 class HeroVO extends BaseGameObject implements UnitMovement {
   public var playerId: Int;
   public var unitType: Int;
-  public var units: Array<GameObject>;
+  public var units: UniqueCollection<GameObject>;
 
   public var speed: Float;
   public var targetX: Float;
@@ -14,6 +16,6 @@ class HeroVO extends BaseGameObject implements UnitMovement {
 
   public function new() {
     super();
-    units = [];
+    units = new UniqueCollection<GameObject>();
   }
 }

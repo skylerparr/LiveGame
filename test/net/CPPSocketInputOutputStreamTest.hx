@@ -1,5 +1,5 @@
 package net;
-#if cpp
+#if (cpp && multiplayer)
 import haxe.io.Input;
 import haxe.io.Bytes;
 import haxe.io.Output;
@@ -16,7 +16,7 @@ import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
 
 class CPPSocketInputOutputStreamTest {
-#if cpp
+#if (cpp && multiplayer)
     private var objectCreator: ObjectCreator;
     private var subscriber: MappedSubscriber;
     private var socket: TCPSocket;

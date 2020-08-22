@@ -7,3 +7,4 @@ report
 *.xcf
 tools/frame_generator/frame_generator.n
 .temp
+/coverage
