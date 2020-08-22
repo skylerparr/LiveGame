@@ -64,6 +64,7 @@ class SubscribedAnimationManager implements AnimationManager {
         animations.remove(animation);
     }
 
+    @IgnoreCover
     public inline function getTime(): UInt {
         #if test
         return 0;

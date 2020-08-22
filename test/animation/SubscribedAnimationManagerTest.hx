@@ -87,6 +87,15 @@ class SubscribedAnimationManagerTest {
         }
         animation.nextFrame().verify();
     }
+    
+    @Test
+    public function shouldUnsubscribeFromEventNameIfNullIsPassed(): Void {
+        animationManager.init();
+        animationManager.eventName = "myEvent";
+        subscriber.unsubscribe("myEvent", cast any).verify(0);
+        animationManager.eventName = null;
+        subscriber.unsubscribe("myEvent", cast any).verify();
+    }
 
     @Test
     public function shouldDisposeAllReferences(): Void {
