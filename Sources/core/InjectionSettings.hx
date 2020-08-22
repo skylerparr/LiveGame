@@ -1,5 +1,4 @@
 package core;
-import game.GameLogicStrategyMap;
 import game.GameLogicInputHandler;
 import game.GameLogicInput;
 import game.LocalGameLogic;
@@ -256,7 +255,6 @@ class InjectionSettings {
         var streamHandler: SocketStreamHandler = objectFactory.createInstance(SocketStreamHandler);
         #else
         injector.mapValue(GameLogic, objectFactory.createInstance(LocalGameLogic));
-        injector.mapValue(StrategyMap, objectFactory.createInstance(GameLogicStrategyMap), "GameLogicStrategyMap");
         injector.mapSingletonOf(GameLogicInput, GameLogicInputHandler);
         var streamHandler: LocalStreamHandler = objectFactory.createInstance(LocalStreamHandler);
         #end

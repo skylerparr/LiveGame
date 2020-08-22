@@ -1,10 +1,14 @@
 package game;
+import handler.output.UnitCastSpell;
+import handler.output.UnitMoveTo;
+import handler.output.PlayerConnect;
+import handler.IOCommands;
 import handler.StrategyAction;
 import handler.StrategyMap;
 import handler.IOHandler;
 class GameLogicInputHandler implements GameLogicInput {
-  @inject("GameLogicStrategyMap")
-  public var strategyMap: StrategyMap;
+  @inject
+  public var gameLogic: GameLogic;
 
   public function new() {
   }
@@ -13,17 +17,21 @@ class GameLogicInputHandler implements GameLogicInput {
   }
 
   public function dispose():Void {
-    strategyMap = null;
+    gameLogic = null;
   }
 
   public function input(handler:IOHandler):Void {
-    var action: StrategyAction = strategyMap.locate(handler);
-    // todo: remove me
-    if(action == null) {
-      trace('action for ${handler} is null');
-      return;
+    switch(handler.cmdId) {
+      case IOCommands.UNIT_MOVE_TO:
+        var h: UnitMoveTo = cast handler;
+        gameLogic.moveUnitTo(h.unitId, h.posX, h.posZ);
+      case IOCommands.UNIT_CAST_SPELL:
+        var h: UnitCastSpell = cast handler;
+        gameLogic.unitCastSpell(h.unitId, h.spellId, h.targetUnitId, h.targetPosX, h.targetPosZ);
+      case IOCommands.PLAYER_CONNECT:
+        var h: PlayerConnect = cast handler;
+        gameLogic.playerConnect(h.playerId);
     }
-    action.execute(handler);
   }
 
 }
