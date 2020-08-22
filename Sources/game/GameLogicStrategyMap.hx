@@ -1,4 +1,6 @@
 package game;
+import game.actions.UnitCastSpellAction;
+import handler.output.UnitCastSpell;
 import game.actions.UnitMoveToAction;
 import handler.output.UnitMoveTo;
 import game.actions.PlayerConnectAction;
@@ -21,6 +23,7 @@ class GameLogicStrategyMap implements StrategyMap {
 
     handlerMap.set(Type.getClassName(PlayerConnect), objectCreator.createInstance(PlayerConnectAction));
     handlerMap.set(Type.getClassName(UnitMoveTo), objectCreator.createInstance(UnitMoveToAction));
+    handlerMap.set(Type.getClassName(UnitCastSpell), objectCreator.createInstance(UnitCastSpellAction));
   }
 
   public function dispose():Void {

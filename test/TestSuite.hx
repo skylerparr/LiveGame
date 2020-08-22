@@ -57,6 +57,7 @@ import sound.SimpleSoundManagerTest;
 import game.GameLogicInputHandlerTest;
 import game.GameLogicStrategyMapTest;
 import game.actions.UnitMoveToActionTest;
+import game.actions.UnitCastSpellActionTest;
 import game.actions.PlayerConnectActionTest;
 import game.LocalGameLogicTest;
 import collections.UniqueCollectionTest;
@@ -132,6 +133,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(game.GameLogicInputHandlerTest);
 		add(game.GameLogicStrategyMapTest);
 		add(game.actions.UnitMoveToActionTest);
+		add(game.actions.UnitCastSpellActionTest);
 		add(game.actions.PlayerConnectActionTest);
 		add(game.LocalGameLogicTest);
 		add(collections.UniqueCollectionTest);

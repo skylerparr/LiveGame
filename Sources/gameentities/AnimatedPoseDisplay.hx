@@ -54,6 +54,7 @@ class AnimatedPoseDisplay extends KhaSprite {
 
     public function generateAnimations(mapping: Array<AnimationPoseMapping>): Void {
         this.mapping = mapping;
+        animation = objectCreator.createInstance(AnimationWithEvents);
         createDisplay(function(): Void {
 
         });
@@ -70,7 +71,6 @@ class AnimatedPoseDisplay extends KhaSprite {
         var idle: Array<TexturePackerJSONArrayFrameSpec> = directionPoseMap.get(Poses.IDLE);
         totalDirections = idle.length;
 
-        animation = objectCreator.createInstance(AnimationWithEvents);
         animation.frameTime = 70;
 
         bitmap = objectCreator.createInstance(BitmapNode);

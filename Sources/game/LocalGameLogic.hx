@@ -1,4 +1,6 @@
 package game;
+import handler.actions.UnitCastingSpellAction;
+import handler.input.UnitCastingSpell;
 import game.vo.UnitMovement;
 import game.vo.HeroVO;
 import world.GameObject;
@@ -89,6 +91,7 @@ class LocalGameLogic implements GameLogic {
     unit.time = time;
     unit.startTime = stamp;
 
+    // if the time is less than 1 second, the player probably was meant to be stopped
     if(time < 1000) {
       unit.targetX = unit.x;
       unit.targetZ = unit.z;
@@ -106,4 +109,22 @@ class LocalGameLogic implements GameLogic {
     var action: StrategyAction = objectCreator.createInstance(UnitMoveAction);
     action.execute(handler);
   }
+
+  public function unitCastSpell(unitId:Int, spellId:Int, targetUnitId:Int, targetPosX:Int, targetPosZ:Int):Void {
+    var unit: UnitMovement = unitMap.get(unitId + "");
+    if(unit == null) {
+      trace('unit ${unitId} is null');
+      return;
+    }
+
+    var castingSpell: UnitCastingSpell = objectCreator.createInstance(UnitCastingSpell);
+    castingSpell.unitId = 1;
+    castingSpell.spellId = 1;
+    castingSpell.posX = unit.x + 20;
+    castingSpell.posZ = unit.z;
+
+    var action: StrategyAction = objectCreator.createInstance(UnitCastingSpellAction);
+    action.execute(castingSpell);
+  }
+
 }

@@ -11,8 +11,8 @@ class UnitCastingSpell implements IOHandler {
 
     public var unitId: Int;
     public var spellId: Int;
-    public var posX: Int;
-    public var posZ: Int;
+    public var posX: Float;
+    public var posZ: Float;
 
     function get_cmdId():UInt {
         return IOCommands.UNIT_CASTING_SPELL;
@@ -21,15 +21,15 @@ class UnitCastingSpell implements IOHandler {
     function get_totalBytes():UInt {
         return ByteValues.INT +
         ByteValues.INT +
-        ByteValues.INT +
-        ByteValues.INT;
+        ByteValues.FLOAT +
+        ByteValues.FLOAT;
     }
 
     public function read(stream:InputOutputStream):Void {
         unitId = stream.readInt();
         spellId = stream.readInt();
-        posX = stream.readInt();
-        posZ = stream.readInt();
+        posX = stream.readFloat();
+        posZ = stream.readFloat();
     }
 
     public function write(stream:InputOutputStream):Void {

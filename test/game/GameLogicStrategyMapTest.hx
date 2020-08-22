@@ -1,5 +1,7 @@
 package game;
 
+import game.actions.UnitCastSpellAction;
+import handler.output.UnitCastSpell;
 import game.actions.UnitMoveToAction;
 import handler.output.UnitMoveTo;
 import core.ObjectCreator;
@@ -24,6 +26,7 @@ class GameLogicStrategyMapTest {
 
     objectCreator.createInstance(PlayerConnectAction).returns(new PlayerConnectAction());
     objectCreator.createInstance(UnitMoveToAction).returns(new UnitMoveToAction());
+    objectCreator.createInstance(UnitCastSpellAction).returns(new UnitCastSpellAction());
     strategyMap.init();
   }
 
@@ -50,4 +53,11 @@ class GameLogicStrategyMapTest {
     var action: StrategyAction = strategyMap.locate(new UnitMoveTo());
     Assert.areEqual(Type.getClass(action), UnitMoveToAction);
   }
+
+  @Test
+  public function shouldGetUnitCastSpellAction(): Void {
+    var action: StrategyAction = strategyMap.locate(new UnitCastSpell());
+    Assert.areEqual(Type.getClass(action), UnitCastSpellAction);
+  }
+
 }
