@@ -31,6 +31,8 @@ class GameLogicInputHandler implements GameLogicInput {
       case IOCommands.PLAYER_CONNECT:
         var h: PlayerConnect = cast handler;
         gameLogic.playerConnect(h.playerId);
+      case _:
+        trace('unhandled action ${handler}');
     }
   }
 

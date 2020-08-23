@@ -4,14 +4,14 @@ import gameentities.UnitInteractionManager;
 import world.WorldEntity;
 import world.two.WorldPoint2D;
 import world.GameObject;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import handler.input.UnitMove;
 import error.Logger;
 class UnitMoveAction implements StrategyAction {
     @inject
     public var logger: Logger;
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var interactionManager: UnitInteractionManager;
     @inject

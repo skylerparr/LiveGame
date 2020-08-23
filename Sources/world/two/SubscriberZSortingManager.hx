@@ -7,7 +7,7 @@ class SubscriberZSortingManager implements ZSortingManager {
     @inject
     public var subscriber: Subscriber;
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
 
     @:isVar
     public var updateEvent(get, set): String;

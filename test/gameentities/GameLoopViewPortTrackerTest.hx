@@ -75,26 +75,6 @@ class GameLoopViewPortTrackerTest {
     }
 
     @Test
-    public function shouldNotTrackViewportBelowZeroOnX(): Void {
-        viewPort.get_x().returns(-200);
-
-        viewPortTracker.trackToGameObject(gameObject);
-        subscriber.notify(EventNames.ENTER_GAME_LOOP, []);
-
-        viewPort.set_x(0).verify();
-    }
-
-    @Test
-    public function shouldNotTrackViewportBelowZeroOnY(): Void {
-        viewPort.get_y().returns(-200);
-
-        viewPortTracker.trackToGameObject(gameObject);
-        subscriber.notify(EventNames.ENTER_GAME_LOOP, []);
-
-        viewPort.set_y(0).verify();
-    }
-
-    @Test
     public function shouldDispose(): Void {
         subscriber = mock(MappedSubscriber);
         viewPortTracker.subscriber = subscriber;

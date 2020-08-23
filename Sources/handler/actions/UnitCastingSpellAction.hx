@@ -5,7 +5,7 @@ import vo.SpellVO;
 import service.SpellService;
 import core.ObjectCreator;
 import gameentities.UnitInteractionManager;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import error.Logger;
 import handler.input.UnitCastingSpell;
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
@@ -13,7 +13,7 @@ class UnitCastingSpellAction implements StrategyAction {
     @inject
     public var logger: Logger;
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var interactionManager: UnitInteractionManager;
     @inject

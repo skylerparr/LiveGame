@@ -6,7 +6,7 @@ import geom.Point;
 import vo.mutable.MutableUnitVO;
 import world.GameObject;
 import handler.input.UnitCreated;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import core.ObjectCreator;
 import gameentities.HeroInteraction;
 import error.Logger;
@@ -26,7 +26,7 @@ class HeroCreatedAction implements StrategyAction {
     @inject
     public var objectCreator: ObjectCreator;
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var playerService: PlayerService;
 

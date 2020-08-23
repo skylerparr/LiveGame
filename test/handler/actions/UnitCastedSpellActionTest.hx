@@ -9,7 +9,7 @@ import mocks.MockGameWorld;
 import gameentities.UnitInteractionManager;
 import service.SpellService;
 import core.ObjectCreator;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
 import massive.munit.async.AsyncFactory;

@@ -20,7 +20,7 @@ import handler.StreamHandler;
 import gameentities.InteractiveGameObject;
 import world.two.WorldPoint2D;
 import util.Subscriber;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import constants.LayerNames;
 import display.TextFieldNode;
 import display.DisplayNodeContainer;
@@ -41,7 +41,7 @@ class Playground implements BaseObject {
     @inject("ui")
     public var uiLayerManager: LayerManager;
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var subscriber: Subscriber;
     @inject
@@ -112,14 +112,6 @@ class Playground implements BaseObject {
 
         var uiLayer:DisplayNodeContainer = uiLayerManager.getLayerByName(LayerNames.UI);
 
-        var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
-        hello.text = "hello world";
-        hello.fontName = "helveticaneue_light";
-        hello.fontSize = 32;
-        hello.fontColor = 0xff0000ff;
-        hello.x = 400;
-        uiLayer.addChild(hello);
-
         var button: BitmapNode = objectCreator.createInstance(BitmapNode);
         image = @await assetLocator.getAssetByName("zombie_but");
         button.imageData = image.data;
@@ -144,6 +136,18 @@ class Playground implements BaseObject {
         button.y = ScreenConstants.screenHeight - image.height;
         button.registerPointerEvent(PointerEventType.POINTER_1_CLICK, onYetiSpawn);
         uiLayer.addChild(button);
+    }
+
+    private inline function testTween(): Void {
+        var uiLayer:DisplayNodeContainer = uiLayerManager.getLayerByName(LayerNames.UI);
+
+        var hello: TextFieldNode = objectCreator.createInstance(TextFieldNode);
+        hello.text = "hello world";
+        hello.fontName = "helveticaneue_light";
+        hello.fontSize = 32;
+        hello.fontColor = 0xff0000ff;
+        hello.x = 400;
+        uiLayer.addChild(hello);
 
         var tween: Tween = objectCreator.createInstance(Tween);
         tween.to(hello, 3000, {x: 500, y: 500}).delay(2000);

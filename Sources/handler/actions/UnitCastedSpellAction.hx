@@ -6,14 +6,14 @@ import handler.input.UnitCastedSpell;
 import service.SpellService;
 import core.ObjectCreator;
 import gameentities.UnitInteractionManager;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import error.Logger;
 @:build(com.dongxiguo.continuation.Continuation.cpsByMeta(":async"))
 class UnitCastedSpellAction implements StrategyAction {
     @inject
     public var logger: Logger;
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var interactionManager: UnitInteractionManager;
     @inject
@@ -46,7 +46,6 @@ class UnitCastedSpellAction implements StrategyAction {
         var gameObject: GameObject = cast gameWorld.getGameObjectById(unitCastedSpell.unitId + "");
         if(gameObject == null) {
             interactionManager.spellCasted(null, null, null, null);
-            trace("game object not found for " + unitCastedSpell.unitId);
             return;
         }
         var worldPoint: WorldPoint = objectCreator.createInstance(WorldPoint);

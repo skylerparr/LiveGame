@@ -68,7 +68,7 @@ import error.TraceLogger;
 import error.Logger;
 import units.EntityFactory;
 import world.two.GameWorld2D;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import animation.SpriteAnimationController;
 import animation.AnimationController;
 import constants.EventNames;
@@ -161,8 +161,8 @@ class InjectionSettings {
         layerManager.addLayerByName(LayerNames.GAME_WORLD, viewPortContainer);
 
         container = objectFactory.createInstance(DisplayNodeContainer);
-        container.width = 800;
-        container.height = 600;
+        container.width = ScreenConstants.screenWidth;
+        container.height = ScreenConstants.screenHeight;
         container.mouseChildren = false;
         container.mouseEnabled = true;
         layerManager.addLayerByName(LayerNames.WORLD_INTERACTION, container);
@@ -215,7 +215,7 @@ class InjectionSettings {
         injector.mapValue(EntityFactory, objectFactory.createInstance(UnitTypeEntityFactory));
 
         var gameWorld: GameWorld2D = objectFactory.createInstance(GameWorld2D);
-        injector.mapValue(GameWorld, gameWorld);
+        injector.mapValue(GameWorldDisplay, gameWorld);
 
         var zSorting: SubscriberZSortingManager = objectFactory.createInstance(SubscriberZSortingManager);
         zSorting.updateEvent = EventNames.ENTER_GAME_LOOP;

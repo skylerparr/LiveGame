@@ -1,9 +1,10 @@
-package game.vo;
+package vo.mutable;
+import game.UnitMovement;
 import collections.UniqueCollection;
 import world.GameObject;
 import gameentities.BaseGameObject;
 @IgnoreCover
-class HeroVO extends BaseGameObject implements UnitMovement {
+class MutableHeroVO extends BaseGameObject implements UnitMovement {
   public var playerId: Int;
   public var unitType: Int;
   public var units: UniqueCollection<GameObject>;

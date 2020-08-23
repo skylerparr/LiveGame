@@ -11,7 +11,7 @@ import vo.mutable.MutableSpellVO;
 import service.SpellService;
 import handler.output.UnitCastSpell;
 import core.ObjectCreator;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import gameentities.UnitInteractionManager;
 import massive.munit.util.Timer;
 import massive.munit.Assert;

@@ -1,76 +1,45 @@
 package world;
-import display.DisplayNodeContainer;
 import geom.Point;
-import display.DisplayNode;
 import core.BaseObject;
 interface GameWorld extends BaseObject {
-    /**
-     * Return a collection of the placeables on the map.
-     */
-    var gameObjects(get, null): List<WorldEntity>;
+  /**
+   * Return a collection of the placeables on the map.
+   */
+  var gameObjects(get, null): List<WorldEntity>;
 
-    /**
-     * get the container where all world entities displays
-     * are contained
-     */
-    var displayContainer(get, null): DisplayNodeContainer;
+  /**
+   * Add a placeable to the map at the provided position.
+   *
+   * @param worldEntity
+   * @param worldPt
+   */
+  function addGameObject( gameObject: WorldEntity, worldPt: WorldPoint ): Void;
 
-    /**
-     * Add a placeable to the map at the provided position.
-     *
-     * @param worldEntity
-     * @param worldPt
-     */
-    function addGameObject( gameObject: WorldEntity, worldPt: WorldPoint ): Void;
+  /**
+   * Move an existing Placeable item to a new point.
+   *
+   * @param item
+   * @param worldPt
+   */
+  function moveItemTo( item: WorldEntity, worldPt: WorldPoint ): Void;
 
-    /**
-     * Move an existing Placeable item to a new point.
-     *
-     * @param item
-     * @param worldPt
-     */
-    function moveItemTo( item: WorldEntity, worldPt: WorldPoint ): Void;
+  /**
+   * Remove a placeable item from the map.
+   *
+   * @param worldEntity
+   */
+  function removeGameObject( gameObject: WorldEntity ): Void;
 
-    /**
-     * Remove a placeable item from the map.
-     *
-     * @param worldEntity
-     */
-    function removeGameObject( gameObject: WorldEntity ): Void;
+  /**
+   * Removes all game objects in the scene
+   */
+  function removeAllObjects(): Void;
 
-    function removeAllObjects(): Void;
+  function getGameObjectById(id: String): WorldEntity;
 
-    /**
-     * Given a game Object the world map will return a display node associated with it.
-     *
-     * @param worldEntity
-     * @return display associated with the game Object
-     */
-    function getDisplayByGameObject(gameObject: WorldEntity): DisplayNode;
+  function getItemAt(worldPoint: WorldPoint): WorldEntity;
 
-    /**
-     * Returns the gameobject associated by the display node
-     *
-     * @param displayNode
-     * @return the gameobject associated with the display node
-     */
-    function getWorldEntityByDisplay(displayNode: DisplayNode): WorldEntity;
+  function worldToScreen(worldPoint: WorldPoint): Point;
 
-    /**
-     * current playable area, extends passed viewport
-     */
-    var totalWidth(get, null): Float;
-
-    /**
-     * currently playable area, extends passed viewport
-     */
-    var totalHeight(get, null): Float;
-
-    function getGameObjectById(id: String): WorldEntity;
-
-    function getItemAt(worldPoint: WorldPoint): WorldEntity;
-
-    function worldToScreen(worldPoint: WorldPoint): Point;
-
-    function screenToWorld(point: Point): WorldPoint;
+  function screenToWorld(point: Point): WorldPoint;
 }

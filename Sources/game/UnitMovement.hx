@@ -1,4 +1,4 @@
-package game.vo;
+package game;
 import world.GameObject;
 interface UnitMovement extends GameObject {
   var speed: Float;

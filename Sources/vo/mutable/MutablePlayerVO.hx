@@ -10,6 +10,9 @@ class MutablePlayerVO implements PlayerVO {
     @:isVar
     public var units(get, set):Map<Int, UnitVO>;
 
+    @:isVar
+    public var hero(get, set):UnitVO;
+
     public function new() {
         units = new Map<Int, UnitVO>();
     }
@@ -36,5 +39,13 @@ class MutablePlayerVO implements PlayerVO {
 
     public function set_units(value:Map<Int, UnitVO>) {
         return this.units = value;
+    }
+
+    function get_hero():UnitVO {
+        return hero;
+    }
+
+    function set_hero(value:UnitVO):UnitVO {
+        return this.hero = value;
     }
 }

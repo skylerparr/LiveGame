@@ -9,11 +9,11 @@ import animation.tween.Tween;
 import world.two.WorldPoint2D;
 import world.GameObject;
 import core.ObjectCreator;
-import world.GameWorld;
+import world.GameWorldDisplay;
 class BattleUnitInteractionManager implements UnitInteractionManager {
 
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var objectCreator: ObjectCreator;
     @inject

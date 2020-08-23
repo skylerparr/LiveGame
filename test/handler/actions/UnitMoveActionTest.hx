@@ -6,7 +6,7 @@ import world.two.WorldPoint2D;
 import handler.input.UnitMove;
 import core.ObjectCreator;
 import gameentities.UnitInteractionManager;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import massive.munit.util.Timer;
 import massive.munit.Assert;
 import massive.munit.async.AsyncFactory;
@@ -17,7 +17,7 @@ class UnitMoveActionTest {
 
     private var unitMoveAction: UnitMoveAction;
     private var logger: Logger;
-    private var gameWorld: GameWorld;
+    private var gameWorld: GameWorldDisplay;
     private var interactionManger: UnitInteractionManager;
     private var objectCreator: ObjectCreator;
     private var handler: UnitMove;
@@ -26,7 +26,7 @@ class UnitMoveActionTest {
     @Before
     public function setup():Void {
         logger = mock(Logger);
-        gameWorld = mock(GameWorld);
+        gameWorld = mock(GameWorldDisplay);
         interactionManger = mock(UnitInteractionManager);
         objectCreator = mock(ObjectCreator);
 

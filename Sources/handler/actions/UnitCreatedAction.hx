@@ -6,7 +6,7 @@ import vo.PlayerVO;
 import service.PlayerService;
 import world.GameObject;
 import handler.input.UnitCreated;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import core.ObjectCreator;
 #if !test
 import gameentities.InteractiveGameObject;
@@ -21,7 +21,7 @@ class UnitCreatedAction implements StrategyAction {
     @inject
     public var objectCreator: ObjectCreator;
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var playerService: PlayerService;
     @inject

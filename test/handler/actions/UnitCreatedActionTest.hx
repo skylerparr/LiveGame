@@ -10,7 +10,7 @@ import handler.input.UnitCreated;
 import vo.PlayerVO;
 import gameentities.HeroInteraction;
 import service.PlayerService;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import core.ObjectCreator;
 import error.Logger;
 import massive.munit.util.Timer;
@@ -24,7 +24,7 @@ class UnitCreatedActionTest {
     private var unitCreatedAction: UnitCreatedAction;
     private var logger: Logger;
     private var objectCreator: ObjectCreator;
-    private var gameWorld: GameWorld;
+    private var gameWorld: GameWorldDisplay;
     private var playerService: PlayerService;
     private var heroInteraction: HeroInteraction;
     private var currentPlayer: MutablePlayerVO;
@@ -38,7 +38,7 @@ class UnitCreatedActionTest {
     public function setup():Void {
         logger = mock(Logger);
         objectCreator = mock(ObjectCreator);
-        gameWorld = mock(GameWorld);
+        gameWorld = mock(GameWorldDisplay);
         playerService = mock(PlayerService);
         heroInteraction = mock(HeroInteraction);
         currentPlayer = mock(MutablePlayerVO);

@@ -9,7 +9,7 @@ import handler.input.HeroCreated;
 import gameentities.BaseGameObject;
 import vo.PlayerVO;
 import service.PlayerService;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import core.ObjectCreator;
 import error.Logger;
 import gameentities.HeroInteraction;
@@ -25,7 +25,7 @@ class HeroCreatedActionTest {
     private var heroInteraction: MockHeroInteraction;
     private var logger: Logger;
     private var objectCreator: ObjectCreator;
-    private var gameWorld: GameWorld;
+    private var gameWorld: GameWorldDisplay;
     private var playerService: PlayerService;
     private var playerVO: MutablePlayerVO;
     private var baseGameObject: BaseGameObject;
@@ -38,7 +38,7 @@ class HeroCreatedActionTest {
         heroInteraction = mock(MockHeroInteraction);
         logger = mock(Logger);
         objectCreator = mock(ObjectCreator);
-        gameWorld = mock(GameWorld);
+        gameWorld = mock(GameWorldDisplay);
         playerService = mock(PlayerService);
         playerVO = mock(MutablePlayerVO);
         baseGameObject = mock(BaseGameObject);

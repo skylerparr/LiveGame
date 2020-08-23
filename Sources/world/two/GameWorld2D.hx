@@ -6,7 +6,7 @@ import constants.LayerNames;
 import display.DisplayNodeContainer;
 import display.LayerManager;
 import geom.Point;
-class GameWorld2D implements GameWorld {
+class GameWorld2D implements GameWorldDisplay {
 
     @inject
     public var viewPort: ViewPort;

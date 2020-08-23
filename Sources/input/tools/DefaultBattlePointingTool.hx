@@ -4,11 +4,11 @@ import gameentities.HeroInteraction;
 import world.WorldEntity;
 import world.WorldPoint;
 import geom.Point;
-import world.GameWorld;
+import world.GameWorldDisplay;
 class DefaultBattlePointingTool implements PointingTool {
 
     @inject
-    public var gameWorld: GameWorld;
+    public var gameWorld: GameWorldDisplay;
     @inject
     public var heroInteraction: HeroInteraction;
 

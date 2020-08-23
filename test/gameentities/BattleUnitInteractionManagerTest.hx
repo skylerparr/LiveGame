@@ -7,7 +7,7 @@ import constants.Poses;
 import mocks.MockTweenTarget;
 import mocks.MockGameWorld;
 import world.two.WorldPoint2D;
-import world.GameWorld;
+import world.GameWorldDisplay;
 import core.ObjectCreator;
 import animation.tween.TweenTarget;
 import animation.tween.Tween;
@@ -22,7 +22,7 @@ class BattleUnitInteractionManagerTest {
 
     private var interactionManager: BattleUnitInteractionManager;
     private var objectCreator: ObjectCreator;
-    private var gameWorld: GameWorld;
+    private var gameWorld: GameWorldDisplay;
     private var effectManager: EffectManager;
     private var wp: WorldPoint2D;
     private var tween:Tween;
