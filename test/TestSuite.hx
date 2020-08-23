@@ -56,6 +56,7 @@ import sound.kha.KhaSoundHandleTest;
 import sound.SimpleSoundManagerTest;
 import game.GameLogicInputHandlerTest;
 import game.LocalGameLogicTest;
+import game.SinglePlayerInteractionTest;
 import collections.UniqueCollectionTest;
 import collections.QuadTreeNodeLeafTest;
 import collections.QuadTreeTest;
@@ -128,6 +129,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(sound.SimpleSoundManagerTest);
 		add(game.GameLogicInputHandlerTest);
 		add(game.LocalGameLogicTest);
+		add(game.SinglePlayerInteractionTest);
 		add(collections.UniqueCollectionTest);
 		add(collections.QuadTreeNodeLeafTest);
 		add(collections.QuadTreeTest);

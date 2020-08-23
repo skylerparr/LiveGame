@@ -16,7 +16,7 @@ class ConnectedPlayerService implements PlayerService {
     }
 
     public function init():Void {
-        uniqueId = Std.random(65535);
+        uniqueId = 1;
         currentPlayer = new MutablePlayerVO();
     }
 
