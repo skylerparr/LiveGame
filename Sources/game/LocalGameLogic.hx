@@ -33,7 +33,7 @@ class LocalGameLogic implements GameLogic {
   private static var pointA: Point = new Point();
   private static var pointB: Point = new Point();
 
-  private var unitMap: Map<String, UnitMovement>;
+  private var unitMap: Map<Int, UnitMovement>;
 
   private var functionsToInvoke: List<Dynamic>;
   private var playerId: Int;
@@ -42,7 +42,7 @@ class LocalGameLogic implements GameLogic {
   }
 
   public function init():Void {
-    unitMap = new Map<String, UnitMovement>();
+    unitMap = new Map<Int, UnitMovement>();
     functionsToInvoke = new List<Dynamic>();
 
     subscriber.subscribe(EventNames.ENTER_GAME_LOOP, onUpdate);
@@ -81,7 +81,7 @@ class LocalGameLogic implements GameLogic {
 
       var hero: MutableHeroVO = objectCreator.createInstance(MutableHeroVO);
       hero.playerId = playerId;
-      hero.id = unitHeroCreated.unitId + "";
+      hero.id = unitHeroCreated.unitId;
       hero.unitType = unitHeroCreated.unitType;
       hero.speed = 2.5;
       hero.x = unitHeroCreated.posX;
@@ -95,7 +95,7 @@ class LocalGameLogic implements GameLogic {
   }
 
   public function moveUnitTo(unitId:UInt, posX:Int, posZ:Int):Void {
-    var unit: UnitMovement = unitMap.get(unitId + "");
+    var unit: UnitMovement = unitMap.get(unitId);
     if(unit == null) {
       trace('unit ${unitId} is null');
       return;
@@ -133,7 +133,7 @@ class LocalGameLogic implements GameLogic {
   }
 
   public function unitCastSpell(unitId:Int, spellId:Int, targetUnitId:Int, targetPosX:Int, targetPosZ:Int):Void {
-    var unit: UnitMovement = unitMap.get(unitId + "");
+    var unit: UnitMovement = unitMap.get(unitId);
     if(unit == null) {
       trace('unit ${unitId} is null');
       return;

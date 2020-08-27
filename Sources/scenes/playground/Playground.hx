@@ -1,4 +1,5 @@
 package scenes.playground;
+import error.Logger;
 import constants.ScreenConstants;
 import vo.mutable.MutableSpellVO;
 import gameentities.HeroInteraction;
@@ -52,6 +53,8 @@ class Playground implements BaseObject {
     public var assetLocator: AssetLocator;
     @inject
     public var heroInteraction: HeroInteraction;
+    @inject
+    public var logger: Logger;
 
     private var lastUnit: InteractiveGameObject;
     private var playerConnected: Bool = false;
@@ -168,7 +171,7 @@ class Playground implements BaseObject {
     public function createUnit(unitId: Int, unitType: Int): GameObject {
         #if !test
         var unit: InteractiveGameObject = objectCreator.createInstance(InteractiveGameObject);
-        unit.id = unitId + "";
+        unit.id = unitId;
 
         return unit;
         #else

@@ -32,7 +32,7 @@ class UnitMoveAction implements StrategyAction {
 
     public function execute(handler:IOHandler):Void {
         var unitMove: UnitMove = cast handler;
-        var unit: GameObject = cast gameWorld.getGameObjectById(unitMove.unitId + "");
+        var unit: GameObject = cast gameWorld.getGameObjectById(unitMove.unitId);
         if(unit == null) {
             logger.logWarning('${unitMove.unitId} not found and was sent from server');
             return;

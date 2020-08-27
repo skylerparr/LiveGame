@@ -37,7 +37,7 @@ class BaseGameObjectTest {
         baseGameObject.busy = true;
         baseGameObject.category = "foo";
         baseGameObject.footprint = new Footprint2D();
-        baseGameObject.id = "fd";
+        baseGameObject.id = 56;
         baseGameObject.pose = Poses.ATTACK;
         baseGameObject.type = "lkjfd";
         baseGameObject.x = 100;
@@ -60,7 +60,7 @@ class BaseGameObjectTest {
         Assert.areEqual(true, baseGameObject.busy);
         Assert.areEqual("foo", baseGameObject.category);
         Assert.isNotNull(baseGameObject.footprint);
-        Assert.areEqual("fd", baseGameObject.id);
+        Assert.areEqual(56, baseGameObject.id);
         Assert.areEqual(Poses.ATTACK, baseGameObject.pose);
         Assert.areEqual("lkjfd", baseGameObject.type);
 

@@ -64,7 +64,7 @@ import assets.AssetLoaderAssetLocator;
 import assets.AssetLocator;
 import assets.kha.KhaAssetsAssetLoader;
 import assets.AssetLoader;
-import error.TraceLogger;
+import error.ConsoleLogger;
 import error.Logger;
 import units.EntityFactory;
 import world.two.GameWorld2D;
@@ -114,7 +114,7 @@ class InjectionSettings {
         injector.mapValue(ObjectCreator, objectFactory);
         injector.mapValue(kha.graphics2.Graphics, backbuffer.g2);
 
-        injector.mapSingletonOf(Logger, TraceLogger);
+        injector.mapSingletonOf(Logger, ConsoleLogger);
         var assetLoader: AssetLoader = objectFactory.createInstance(KhaAssetsAssetLoader);
         injector.mapValue(AssetLoader, assetLoader);
 

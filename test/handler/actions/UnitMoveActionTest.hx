@@ -54,7 +54,7 @@ class UnitMoveActionTest {
     @Test
     public function shouldTranslateGameObject(): Void {
         var unit: GameObject = mock(GameObject);
-        gameWorld.getGameObjectById("342").returns(unit);
+        gameWorld.getGameObjectById(342).returns(unit);
         unitMoveAction.execute(handler);
         Assert.areEqual(100, worldPoint.x);
         Assert.areEqual(200, worldPoint.z);

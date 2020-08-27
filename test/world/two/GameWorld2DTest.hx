@@ -279,14 +279,14 @@ class GameWorld2DTest {
     @Test
     public function shouldGetWorldEntityById(): Void {
         var gameObject: MockGameObject = mock(MockGameObject);
-        gameObject.id.returns("12");
+        gameObject.id.returns(12);
         var display: MockDisplayNodeContainer = mock(MockDisplayNodeContainer);
 
         entityFactory.createViewForEntity(gameObject).returns(display);
 
         gameWorld.addGameObject(gameObject, wp);
 
-        Assert.areEqual(gameObject, gameWorld.getGameObjectById("12"));
+        Assert.areEqual(gameObject, gameWorld.getGameObjectById(12));
     }
 
     @Test

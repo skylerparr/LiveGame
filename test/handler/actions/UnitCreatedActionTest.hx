@@ -90,7 +90,7 @@ class UnitCreatedActionTest {
     public function shouldCreateUnitAndAddItToTheGameWorld(): Void {
         unitCreatedAction.execute(unitCreated);
 
-        gameObject.set_id("33").verify();
+        gameObject.set_id(33).verify();
         gameObject.set_type("34").verify();
 
         Assert.areEqual(33, unitVO.id);

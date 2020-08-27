@@ -1,6 +1,7 @@
 package game;
+import world.WorldEntity;
 import world.GameObject;
-interface UnitMovement extends GameObject {
+interface UnitMovement extends WorldEntity {
   var speed: Float;
   var targetX: Float;
   var targetZ: Float;

@@ -83,7 +83,7 @@ class SingleHeroInteraction implements HeroInteraction {
         if(hero.busy) {
             return;
         }
-        unitMoveTo.unitId = Std.parseInt(hero.id);
+        unitMoveTo.unitId = hero.id;
         unitMoveTo.posX = Std.int(worldPoint.x);
         unitMoveTo.posZ = Std.int(worldPoint.z);
         streamHandler.send(unitMoveTo);
@@ -93,10 +93,10 @@ class SingleHeroInteraction implements HeroInteraction {
         if(hero.busy) {
             return;
         }
-        unitCastSpell.unitId = Std.parseInt(hero.id);
+        unitCastSpell.unitId = hero.id;
         unitCastSpell.spellId = spell.id;
         if(targetUnit != null) {
-            unitCastSpell.targetUnitId = Std.parseInt(targetUnit.id);
+            unitCastSpell.targetUnitId = targetUnit.id;
         } else if(targetLocation != null) {
             unitCastSpell.targetPosX = Std.int(targetLocation.x);
             unitCastSpell.targetPosZ = Std.int(targetLocation.z);
@@ -108,7 +108,7 @@ class SingleHeroInteraction implements HeroInteraction {
         if(hero.busy) {
             return;
         }
-        moveSquadTo.unitId = Std.parseInt(targetUnit.id);
+        moveSquadTo.unitId = targetUnit.id;
         moveSquadTo.posX = Std.int(targetLocation.x);
         moveSquadTo.posZ = Std.int(targetLocation.z);
 

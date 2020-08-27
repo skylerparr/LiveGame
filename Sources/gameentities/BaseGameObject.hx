@@ -34,7 +34,7 @@ class BaseGameObject implements GameObject {
     public var lookAt(get, set):WorldPoint;
 
     @:isVar
-    public var id(get, set):String;
+    public var id(get, set):Int;
 
     @:isVar
     public var footprint(get, set):Footprint;
@@ -97,11 +97,11 @@ class BaseGameObject implements GameObject {
         return pose;
     }
 
-    public function set_id(value:String) {
+    public function set_id(value:Int) {
         return this.id = value;
     }
 
-    public function get_id():String {
+    public function get_id():Int {
         return id;
     }
 

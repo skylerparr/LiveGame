@@ -35,11 +35,7 @@ interface GameWorld extends BaseObject {
    */
   function removeAllObjects(): Void;
 
-  function getGameObjectById(id: String): WorldEntity;
+  function getGameObjectById(id: Int): WorldEntity;
 
   function getItemAt(worldPoint: WorldPoint): WorldEntity;
-
-  function worldToScreen(worldPoint: WorldPoint): Point;
-
-  function screenToWorld(point: Point): WorldPoint;
 }

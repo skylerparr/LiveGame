@@ -36,4 +36,7 @@ interface GameWorldDisplay extends GameWorld {
      */
     var totalHeight(get, null): Float;
 
+    function worldToScreen(worldPoint: WorldPoint): Point;
+
+    function screenToWorld(point: Point): WorldPoint;
 }

@@ -74,7 +74,7 @@ class HeroCreatedAction implements StrategyAction {
         #else
         var unit: BaseGameObject = objectCreator.createInstance(BaseGameObject);
         #end
-        unit.id = unitId + "";
+        unit.id = unitId;
         unit.type = unitType + "";
         return unit;
     }

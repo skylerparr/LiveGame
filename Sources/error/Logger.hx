@@ -5,4 +5,5 @@ interface Logger {
     function logWarning(msg: Dynamic): Void;
     function logError(msg: Dynamic): Void;
     function logFatal(msg: Dynamic): Void;
+    function logNull(msg: Dynamic): Void;
 }

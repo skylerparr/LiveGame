@@ -43,7 +43,7 @@ class UnitCastedSpellAction implements StrategyAction {
     @:async
     private function castSpell(unitCastedSpell: UnitCastedSpell): Void {
         var spell: SpellVO = @await spellService.getSpellById(unitCastedSpell.spellId);
-        var gameObject: GameObject = cast gameWorld.getGameObjectById(unitCastedSpell.unitId + "");
+        var gameObject: GameObject = cast gameWorld.getGameObjectById(unitCastedSpell.unitId);
         if(gameObject == null) {
             interactionManager.spellCasted(null, null, null, null);
             return;

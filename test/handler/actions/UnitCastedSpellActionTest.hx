@@ -37,7 +37,7 @@ class UnitCastedSpellActionTest {
 
         objectCreator.createInstance(WorldPoint).returns(new WorldPoint2D());
 
-        gameWorld.getGameObjectById("12").returns(gameObject);
+        gameWorld.getGameObjectById(12).returns(gameObject);
         spell = new MutableSpellVO();
         spell.id = 1;
 

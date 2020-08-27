@@ -20,7 +20,7 @@ class GameWorld2D implements GameWorldDisplay {
 
     public var gameObjectLayer: DisplayNodeContainer;
     public var objectToDisplayMap: Map<WorldEntity, DisplayNode>;
-    public var entityIndex: Map<String, WorldEntity>;
+    public var entityIndex: Map<Int, WorldEntity>;
     public var displayToObjectMap: Map<DisplayNode, WorldEntity>;
 
     public function new() {
@@ -74,7 +74,7 @@ class GameWorld2D implements GameWorldDisplay {
         gameObjectLayer = layerManger.getLayerByName(LayerNames.GAME_OBJECTS);
         gameObjects = new List<WorldEntity>();
         objectToDisplayMap = new Map<WorldEntity, DisplayNode>();
-        entityIndex = new Map<String, WorldEntity>();
+        entityIndex = new Map<Int, WorldEntity>();
         displayToObjectMap = new Map<DisplayNode, WorldEntity>();
     }
 
@@ -161,7 +161,7 @@ class GameWorld2D implements GameWorldDisplay {
         return displayToObjectMap.get(displayNode);
     }
 
-    public function getGameObjectById(id:String):WorldEntity {
+    public function getGameObjectById(id:Int):WorldEntity {
         return entityIndex.get(id);
     }
 

@@ -5,7 +5,7 @@ interface WorldEntity extends BaseObject {
      * unique identifier of this piece of content
      *
      */
-    var id(get, null): String;
+    var id(get, null): Int;
 
     /**
      *  Get the footPrint of Placeable Item;
